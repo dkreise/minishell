@@ -1,6 +1,0 @@
-
-
-
-
-
-hola que tal
