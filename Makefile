@@ -36,7 +36,7 @@ $(OBJ_DIR)/%.o: %.c
 	${CC} $(CFLAGS) -Iinc/libft -MMD -c $< -o $@
 
 all:
-	#@$(MAKE) -C $(READLINE) --no-print-directory
+#	@$(MAKE) -C $(READLINE) --no-print-directory
 	@$(MAKE) -C $(LIBFT) --no-print-directory
 	$(MAKE) $(NAME) --no-print-directory
 
