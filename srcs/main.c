@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/03 22:44:48 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/04 12:10:25 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	print_header(void)
 int main(int ac, char **av , char **env)
 {
 	char *line;
-	int	i;
-	int	j;
 
 	(void)ac;
 	(void)av;
+	int	i;
+	int	j;
 	i = 0;
 	while (env[i] != NULL)
 	{
@@ -41,7 +41,7 @@ int main(int ac, char **av , char **env)
 		printf("\n");
 		i++;
 	}
-	printf("%i\n", i);
+	print_header();
 	while (1)
 	{
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
