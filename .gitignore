@@ -2,3 +2,5 @@ readline
 readline/*
 objs
 minishell
+.o
+*/*.o
