@@ -3,12 +3,12 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
 #########
 
 #########
-FILES += parser lst_functions
-
+FILES_DIANA += parser lst_functions
+FILES = main
 # FILES += executor
 
 SRC = $(addsuffix .c, $(FILES))

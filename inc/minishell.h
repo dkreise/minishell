@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/04 12:45:21 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/04 15:24:45 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ typedef struct s_token
 	int 			type;
 	struct s_token	*next;
 } t_token;
-/*
-typedef struct s_toklst
+
+typedef struct s_env
 {
-	t_token	*first;
-} t_toklst;*/
+	char			*data;
+	struct s_env	*next; 
+} t_env;
 
 t_token	*new_token(char *value, int type);
 t_token	*token_last(t_token *tok);
