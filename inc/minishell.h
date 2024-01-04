@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/04 12:45:21 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/04 17:12:36 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,12 @@ typedef struct s_toklst
 t_token	*new_token(char *value, int type);
 t_token	*token_last(t_token *tok);
 void	addback_token(t_token **tok, char *value, int type);
+int		add_space(char *line, t_token **tok_first, int i);
+int		add_singquote(char *line, t_token **tok_first, int i);
+int		add_dblquote(char *line, t_token **tok_first, int i);
+int		add_specchar(char *line, t_token **tok_first, int i);
+int		add_str(char *line, t_token **tok_first, int i);
+int		is_specchar(char c);
+void	parser_error(char *msg, t_token **tok);
 
 #endif
