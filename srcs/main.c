@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/09 18:50:26 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/09 21:29:16 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,17 @@ void	exec_blt(char **cmd, t_env *env)
 {
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
-	if (ft_strncmp(cmd[0], "export", 6) == 0)
+	if (ft_strncmp(cmd[0], "export", 7) == 0)
 		ft_export(cmd, &env);
+	if (ft_strncmp(cmd[0], "unset", 6) == 0)
+		ft_unset(cmd, &env);
 }
 
 int main(int ac, char **av , char **enviroment)
 {
 	char *line;
 	t_env *env;
-	char *test[] = {
-        "export",
-        "mini==concha",
-		"333333333",
-        NULL
-	};
+	char **test;
 	(void)ac;
 	(void)av;
 	print_header();
@@ -86,7 +83,7 @@ int main(int ac, char **av , char **enviroment)
 	while (1)
 	{
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-		//printf("%s\n", line);
+		test = ft_split(line, ' ');
 		exec_blt(test, env);
 		add_history(line);	
 	}
