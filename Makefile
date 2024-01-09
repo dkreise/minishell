@@ -7,13 +7,13 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
 #########
 
 #########
-FILES += parser lst_functions add_token errors_parser
+FILES += parser lst_functions add_token errors_parser executor init_cmd
 
 # FILES += executor
 
 SRC = $(addsuffix .c, $(FILES))
 
-vpath %.c srcs srcs/parser
+vpath %.c srcs srcs/parser srcs/executor
 #########
 
 #########
