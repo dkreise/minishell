@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/05 14:56:12 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/09 17:45:29 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,9 @@ int		add_specchar(char *line, t_token **tok_first, int i);
 int		add_str(char *line, t_token **tok_first, int i);
 int		is_specchar(char c);
 void	parser_error(char *msg, t_token **tok);
+
+//~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
+void	ft_env(t_env *env);
+void	ft_export(char **line, t_env **env);
 
 #endif

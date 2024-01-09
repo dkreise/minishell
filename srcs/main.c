@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/04 16:55:43 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/09 18:50:26 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,6 @@ void	print_header(void)
 	printf("%s|_| |_| |_|_|_| |_|_|___/_| |_||___|_|_|\n\n\n", F);
 }
 
-void	ft_export(char *line, t_env **env)
-{
-	t_env *new;
-	int	i;
-
-	i = 0;
-	new = malloc(sizeof(t_env));
-	while (*line != ' ')
-		line++;
-	line++;
-	new->data = ft_strdup(line);
-	new->next = NULL;
-	if (*env == NULL) {
-        *env = new;
-	}
-	// while (*line != '\0')
-	// {
-	// }	
-}
-
-void	check_cmd(char *line, t_env *env)
-{
-		if (ft_strncmp(line, "env", 3) == 0)
-		{
-			while (env)
-			{
-				printf("%s\n", env->data);
-				env = env->next;
-			}
-		}
-		if (ft_strncmp(line, "export", 6) == 0)
-		{
-			ft_export(line, &env);
-		}
-}
 t_env	*dup_env(char **env_array)
 {
 	t_env *first;
@@ -84,11 +49,36 @@ t_env	*dup_env(char **env_array)
 	return (first);
 }
 
+int	check_blt(char *cmd, t_env *env)
+{
+	(void)env;
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (0);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (0);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (0);
+	return (1);
+}
+
+void	exec_blt(char **cmd, t_env *env)
+{
+	if (ft_strncmp(cmd[0], "env", 4) == 0)
+		ft_env(env);
+	if (ft_strncmp(cmd[0], "export", 6) == 0)
+		ft_export(cmd, &env);
+}
+
 int main(int ac, char **av , char **enviroment)
 {
 	char *line;
 	t_env *env;
-
+	char *test[] = {
+        "export",
+        "mini==concha",
+		"333333333",
+        NULL
+	};
 	(void)ac;
 	(void)av;
 	print_header();
@@ -96,9 +86,9 @@ int main(int ac, char **av , char **enviroment)
 	while (1)
 	{
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-		check_cmd(line, env);
 		//printf("%s\n", line);
-		add_history(line);
+		exec_blt(test, env);
+		add_history(line);	
 	}
 	return (0);
 }
