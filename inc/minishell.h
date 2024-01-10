@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/09 17:45:29 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/10 10:50:37 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ void	parser_error(char *msg, t_token **tok);
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
 void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
+void	ft_unset(char **cmd, t_env **env);
 
 #endif

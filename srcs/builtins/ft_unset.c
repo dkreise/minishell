@@ -6,7 +6,13 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 21:29:31 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/09 21:29:32 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/10 10:50:51 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
+// void	ft_unset(char **cmd, t_env **env)
+// {
+	
+// }
