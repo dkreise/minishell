@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/09 19:33:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:56:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
@@ -57,7 +58,6 @@ typedef struct s_tokens
 	int		tok_cnt;
 	char	**env;
 	char	**paths;
-
 } t_tokens;
 /*
 types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
@@ -67,7 +67,13 @@ example: ls -la | cat | cat >> file1   -->   ls:0 -la:0 cat:5 cat:5 file1:4
 
 typedef struct s_cmd
 {
-	char	**args;
+	struct s_cmd	*prev;
+	char			**args;
+	int				pipefd[2];
+	int				redir_in_flg;
+	int				redir_out_flg;
+	int				pipe_done_flg;
+	//int			last_ind;
 	//char	*
 	//struct s_cmd	*next;
 } t_cmd;
@@ -87,6 +93,10 @@ void	parser_error(char *msg, t_token **tok, int exit_code);
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);
 int		args_cnt(t_tokens *tokens, int i);
-t_cmd	init_cmd(t_tokens *tokens, int i);
+t_cmd	*init_cmd(t_tokens *tokens, int i);
+void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 19:14:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:55:21 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ int	args_cnt(t_tokens *tokens, int i)
 	return (cnt);
 }
 
-t_cmd	init_cmd(t_tokens *tokens, int i)
+t_cmd	*init_cmd(t_tokens *tokens, int i)
 {
-	t_cmd	cmd;
+	t_cmd	*cmd;
 	int		j;
 
-	cmd.args = ft_calloc(args_cnt(tokens, i) + 1, sizeof(char *));
+	cmd = malloc(sizeof(t_cmd));
+	// set flags to zero
+	cmd->args = ft_calloc(args_cnt(tokens, i) + 1, sizeof(char *));
+	// malloc protection
 	j = 0;
 	if (tokens->toks[i]->type >= 5)
 		tokens->toks[i]->type -= 5;
@@ -41,13 +44,14 @@ t_cmd	init_cmd(t_tokens *tokens, int i)
 	{
 		if (tokens->toks[i]->type == 0)
 		{
-			cmd.args[j] = ft_strdup(tokens->toks[i]->value);
+			cmd->args[j] = ft_strdup(tokens->toks[i]->value);
 			// malloc protection
 			j ++;
 		}
 		else if (tokens->toks[i]->type >= 5)
 			break ;
-		// else     init_pipe
+		else if (tokens->toks[i]->type > 0 && tokens->toks[i]->type < 5)
+			do_redir(tokens, cmd, i);
 		i ++;
 	}
 	return (cmd);

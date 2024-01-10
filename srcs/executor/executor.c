@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 19:40:06 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:50:12 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tokens test_struct(void)
 
 	t1 = new_token("ls", 0);
 	t2 = new_token("-la", 0);
-	t3 = new_token("cat", 5);
+	t3 = new_token("ls", 5);
 	t4 = new_token("cat", 5);
 	t5 = new_token("file1", 4);
 	t1->next = t2;
@@ -76,6 +76,8 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 		{
 			path = ft_strjoin(ft_strjoin(tokens->paths[i], "/", NONE),
 					cmd->args[0], FIRST);
+			//printf("path: %s\n", path);
+			//printf("cmd: %s\n", cmd->args[0]);
 			//if (!path) --> exit_error(NULL, "memory allocation error\n", c_struct, 1);
 			execve(path, cmd->args, tokens->env);
 			free(path);
@@ -89,16 +91,25 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 void	executor(t_tokens *tokens, char **env)
 {
 	int	i;
-	t_cmd	cmd;
+	int pid;
+	t_cmd	*cmd;
+	t_cmd	*new_cmd;
 
 	i = 0;
 	tokens->paths = get_paths(env);
+	// get_paths can return NULL
+	tokens->env = env;
+	cmd = NULL;
 	while (i < tokens->tok_cnt)
 	{
-		cmd = init_cmd(tokens, i);
-		//printf("%s\n", cmd.args[0]);
-		do_execve(tokens, &cmd);
+		new_cmd = init_cmd(tokens, i);
+		new_cmd->prev = cmd;
+		cmd = new_cmd;
 		i += args_cnt(tokens, i);
+		pipe_redir(tokens, cmd, i);
+		pid = fork();
+		if (pid == 0)
+			do_execve(tokens, cmd);
 	}
 }
 
