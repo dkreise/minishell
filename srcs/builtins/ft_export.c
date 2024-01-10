@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/10 12:14:27 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:44:00 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	replace_value(char *cmd, t_env *env)
 			// temp->data++;
 			printf("data---->%s\n", temp->data);
 			temp->data = ft_strdup(cmd);
+			printf("data---->%s\n", temp->data);
 		}
 		temp = temp->next;
 	}

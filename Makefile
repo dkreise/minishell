@@ -3,7 +3,7 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
 #########
 
 #########
@@ -42,7 +42,7 @@ all:
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(READLINE_FLAGS) $(LIBFT_FLAGS) -o $(NAME)
-	@echo "EVERYTHING DONE  "
+	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
 	#$(MAKE) clean -C $(READLINE) --no-print-directory

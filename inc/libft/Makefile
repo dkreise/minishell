@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dkreise <dkreise@student.42barcelo>        +#+  +:+       +#+         #
+#    By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/08 16:57:18 by dkreise           #+#    #+#              #
-#    Updated: 2023/10/21 15:53:11 by dkreise          ###   ########.fr        #
+#    Updated: 2024/01/10 14:54:33 by rpliego          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OBJSBONUS = ${SRCSBONUS:.c=.o}
 NAME = libft.a
 HEADER = libft.h
 
-CC = gcc
+CC = cc
 RM = rm -f
 CFLAGS = -Wall -Werror -Wextra
 
