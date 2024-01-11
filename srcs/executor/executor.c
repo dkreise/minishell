@@ -6,12 +6,13 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/10 19:50:12 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/11 17:43:38 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// ls -la | cat | < in cat
 t_tokens test_struct(void)
 {
 	t_token *t1;
@@ -23,9 +24,9 @@ t_tokens test_struct(void)
 
 	t1 = new_token("ls", 0);
 	t2 = new_token("-la", 0);
-	t3 = new_token("ls", 5);
-	t4 = new_token("cat", 5);
-	t5 = new_token("file1", 4);
+	t3 = new_token("cat", 5);
+	t4 = new_token("in", 6);
+	t5 = new_token("cat", 5);
 	t1->next = t2;
 	t2->next = t3;
 	t3->next = t4;
@@ -42,8 +43,6 @@ char	**get_paths(char **env)
 	char	**dup_env;
 
 	dup_env = env;
-	if (!*env)
-		*dup_env = NOENV;
 	while (*dup_env)
 	{
 		if (ft_strncmp(*dup_env, "PATH", 4) != 0)
@@ -60,6 +59,8 @@ char	**get_paths(char **env)
 			return (NULL);
 		return (paths);
 	}
+	//if (!env_start && path dont exists)
+	//	*dup_env = NOENV;
 	return (NULL);
 }
 
@@ -97,8 +98,11 @@ void	executor(t_tokens *tokens, char **env)
 
 	i = 0;
 	tokens->paths = get_paths(env);
+	printf("path1: %s\n", tokens->paths[0]);
 	// get_paths can return NULL
 	tokens->env = env;
+	tokens->initfd[0] = dup(STDIN_FILENO);
+	tokens->initfd[1] = dup(STDOUT_FILENO);
 	cmd = NULL;
 	while (i < tokens->tok_cnt)
 	{

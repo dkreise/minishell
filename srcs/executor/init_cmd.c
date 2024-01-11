@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/10 19:55:21 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/11 14:19:43 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ t_cmd	*init_cmd(t_tokens *tokens, int i)
 
 	cmd = malloc(sizeof(t_cmd));
 	// set flags to zero
+	cmd->redir_in_flg = 0;
+	cmd->redir_out_flg = 0;
+	cmd->pipe_done_flg = 0;
 	cmd->args = ft_calloc(args_cnt(tokens, i) + 1, sizeof(char *));
 	// malloc protection
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/10 19:57:01 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/11 16:53:52 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	do_redir(t_tokens *tokens, t_cmd *cmd, int i)
 
 void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i) 
 {
+	//dprintf(2, "cmd: %s\n", cmd->args[0]);
 	if (!cmd->redir_in_flg && cmd->prev != NULL)
 	{
 		if (!cmd->prev->pipe_done_flg)
@@ -69,6 +70,7 @@ void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i)
 		{
 			dup2(cmd->prev->pipefd[0], STDIN_FILENO);
 			close(cmd->prev->pipefd[0]);
+			//dprintf(2, "in->pipe\n");
 		}
 	}
 	else if (cmd->redir_in_flg && cmd->prev != NULL)
@@ -82,6 +84,12 @@ void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i)
 		cmd->pipe_done_flg = 1;
 		dup2(cmd->pipefd[1], STDOUT_FILENO);
 		close(cmd->pipefd[1]);
+		//dprintf(2, "out->pipe\n");
+	}
+	else if (i == tokens->tok_cnt && !cmd->redir_out_flg)
+	{
+		dup2(tokens->initfd[1], STDOUT_FILENO);
+		//dprintf(2, "1->out\n");
 	}
 
 }
