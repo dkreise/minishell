@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/10 13:44:00 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 12:28:05 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,23 @@ void	special_export(t_env *env)
 	{
 		i = 0;
 		flag = 0;
-		printf("declare -x ");
-		while (env->data[i])
+		if (env->unset_flag == 0)
 		{
-			printf("%c", env->data[i]);
-			if (env->data[i] == '=')
+			printf("declare -x ");
+			while (env->data[i])
 			{
-				flag = 1;
-				printf("\"");
+				printf("%c", env->data[i]);
+				if (env->data[i] == '=')
+				{
+					flag = 1;
+					printf("\"");
+				}
+				i++;
 			}
-			i++;
+			if (flag == 1)
+				printf("\"");
+			printf("\n");
 		}
-		if (flag == 1)
-			printf("\"");
-		printf("\n");
 		env = env->next;
 	}
 	
@@ -100,6 +103,7 @@ void	normal_export(char *cmd, t_env **env)
 	temp = *env;
 	new = malloc(sizeof(t_env));
 	new->data = ft_strdup(cmd);
+	new->unset_flag = 0;
 	new->next = NULL;
 	if (temp == NULL)
 		*env = new;

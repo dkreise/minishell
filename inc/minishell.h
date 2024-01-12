@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/10 20:09:48 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 15:26:58 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_token
 typedef struct s_env
 {
 	char			*data;
+	int				unset_flag;
 	struct s_env	*next; 
 } t_env;
 
@@ -63,5 +64,6 @@ void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
+void	ft_pwd(void);
 
 #endif

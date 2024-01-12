@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 22:11:05 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 11:44:37 by rpliego          ###   ########.fr       */
+/*   Created: 2024/01/12 15:24:48 by rpliego           #+#    #+#             */
+/*   Updated: 2024/01/12 16:00:26 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	is_correct(char *str)
+void	ft_pwd(void)
 {
-	int	i;
+	char buffer[1024];
 
-	i = 0;
-	while (str[i] != '\0')
+	if (getcwd(buffer, sizeof(buffer)) != NULL)
+        printf("%s\n", buffer);
+    else //cambiar
 	{
-		if (str[i] == '=' )//&& str[i + 1] != '\0')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	ft_env(t_env *env)
-{
-	while (env)
-	{
-		if (is_correct(env->data) == 1 && env->unset_flag == 0)
-		{
-			//printf("unset flag ---->%i\n", env->unset_flag);
-			printf("%s\n", env->data);
-		}
-		env = env->next;
+		printf("ERROR AL HACER PWD\n");
+        exit(0);
 	}
 }

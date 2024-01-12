@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 21:29:31 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/10 20:16:19 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 13:13:57 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,33 @@
 void	ft_unset(char **cmd, t_env **env)
 {
 	t_env	*aux;
-	t_env	*remove;
+	t_env	*first;
+	int		i;
 
+	i = 1;
 	if (*env == NULL)
 		return ;
-	if (mod_strcmp(cmd[1], (*env)->data) == 1)
-	{
-		remove = *env;
-		*env = (*env)->next;
-		free(remove->data);
-		free(remove);
-		//printf("%s", (*env)->data);
-		return ;
-	}
 	aux = *env;
-	while (aux->next != NULL)
+	first = *env;
+	while (cmd[i])
 	{
-		if (mod_strcmp(cmd[1], aux->next->data) == 1)
+		while (aux != NULL)
 		{
-			remove = aux->next;
-			aux->next = aux->next->next;
-			free(remove);
+			if (mod_strcmp(cmd[i], aux->data) == 1)
+				aux->unset_flag = 1;
+			aux = aux->next;
 		}
-		aux = aux->next;
+		aux = first;
+		i++;
 	}
 }
+
+	// if (mod_strcmp(cmd[1], (*env)->data) == 1)
+	// {
+	// 	remove = *env;
+	// 	*env = (*env)->next;
+	// 	free(remove->data);
+	// 	free(remove);
+	// 	//printf("%s", (*env)->data);
+	// 	return ;
+	// }
