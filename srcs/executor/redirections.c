@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/11 16:53:52 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/12 13:56:09 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	do_redir(t_tokens *tokens, t_cmd *cmd, int i)
 
 	type = tokens->toks[i]->type;
 	if (type == 1 || type == 3)
-		in_redir(tokens, cmd, type);
+		in_redir(tokens, cmd, i);
 	else if (type == 2 || type == 4)
-		out_redir(tokens, cmd, type);
+		out_redir(tokens, cmd, i);
 }
 
 void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i) 

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/11 16:53:17 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/12 12:18:59 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int		add_specchar(char *line, t_token **tok_first, int i);
 int		add_str(char *line, t_token **tok_first, int i);
 int		is_specchar(char c);
 void	parser_error(char *msg, t_token **tok, int exit_code);
+t_token	*parser(char *line);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);
