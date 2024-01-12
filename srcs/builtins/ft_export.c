@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 12:28:05 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:59:51 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int	mod_strcmp(char *cmd, char *env)
 	while (cmd[i] && env[i])
 	{
 		if (cmd[i] == '=' && env[i] == '=')
-			return (1);
+			return (TRUE);
 		if (cmd[i] != env[i])
-			return (0);
+			return (FALSE);
 		i++;
 	}
-	return(1);
+	return(TRUE);
 }
 
 void	replace_value(char *cmd, t_env *env)
@@ -35,7 +35,7 @@ void	replace_value(char *cmd, t_env *env)
 	temp = env;
 	while(temp != NULL)
 	{
-		if (mod_strcmp(cmd, temp->data) == 1)
+		if (mod_strcmp(cmd, temp->data) == TRUE)
 		{
 			// while (*temp->data != '=')
 			// 	temp->data++;
@@ -55,11 +55,11 @@ int	var_exist(char *cmd, t_env *env)
 	temp = env;
 	while(temp != NULL)
 	{
-		if (mod_strcmp(cmd, temp->data) == 1)
-			return (1);
+		if (mod_strcmp(cmd, temp->data) == TRUE)
+			return (TRUE);
 		temp = temp->next;
 	}
-	return (0);
+	return (FALSE);
 }
 
 void	special_export(t_env *env)

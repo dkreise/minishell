@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 15:26:58 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:54:13 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
+
+# define TRUE 1
+# define FALSE 0
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -65,5 +68,6 @@ void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
 void	ft_pwd(void);
+void	ft_cd(char **cmd, t_env *env);
 
 #endif

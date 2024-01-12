@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 15:24:38 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:53:41 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,14 @@ void	exec_blt(char **cmd, t_env *env)
 {
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
-	if (ft_strncmp(cmd[0], "export", 7) == 0)
+	else if (ft_strncmp(cmd[0], "export", 7) == 0)
 		ft_export(cmd, &env);
-	if (ft_strncmp(cmd[0], "unset", 6) == 0)
+	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
 		ft_unset(cmd, &env);
-	if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
 		ft_pwd();
+	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+		ft_cd(cmd, env);
 }
 
 int main(int ac, char **av , char **enviroment)
