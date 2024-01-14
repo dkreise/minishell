@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 18:49:07 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/14 19:08:04 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
+
+# define TRUE 1
+# define FALSE 0
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -48,6 +51,7 @@ typedef struct s_token
 	int 			type;
 	struct s_token	*next;
 } t_token;
+
 
 //struct I need for executor:
 
@@ -76,11 +80,18 @@ typedef struct s_cmd
 	int				pipe_done_flg;
 	int				error;
 	int				exit_code;
-	long long long long bobby;
 	//int			last_ind;
 	//char	*
 	//struct s_cmd	*next;
 } t_cmd;
+
+typedef struct s_env
+{
+	char			*data;
+	int				unset_flag;
+	struct s_env	*next; 
+} t_env;
+
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
 t_token	*new_token(char *value, int type);
@@ -104,5 +115,14 @@ void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
 void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
+
+//~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
+void	ft_env(t_env *env);
+void	ft_export(char **line, t_env **env);
+void	ft_unset(char **cmd, t_env **env);
+int		mod_strcmp(char *cmd, char *env);
+void	ft_pwd(void);
+void	ft_cd(char **cmd, t_env *env);
+void	ft_exit(char **cmd, t_env *env, int exit_code);
 
 #endif

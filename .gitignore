@@ -7,4 +7,7 @@ minishell
 *
 !srcs/*
 !Makefile
-!inc/*
+!inc/*.h
+!inc/libft/*.c
+!inc/libft/*.h
+!inc/libft/Makefile
