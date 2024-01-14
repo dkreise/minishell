@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 16:54:13 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/14 17:44:58 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env);
+void	ft_exit(char **cmd, t_env *env, int exit_code);
 
 #endif

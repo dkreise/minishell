@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 16:59:51 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/14 17:35:04 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	mod_strcmp(char *cmd, char *env)
 			return (FALSE);
 		i++;
 	}
-	return(TRUE);
+	if (cmd[i] == '\0' && (env[i] == '\0' || env[i] == '='))
+		return (TRUE);
+	return(FALSE);
 }
 
 void	replace_value(char *cmd, t_env *env)
@@ -42,6 +44,7 @@ void	replace_value(char *cmd, t_env *env)
 			// temp->data++;
 			printf("data---->%s\n", temp->data);
 			temp->data = ft_strdup(cmd);
+			temp->unset_flag = 0;
 			printf("data---->%s\n", temp->data);
 		}
 		temp = temp->next;
@@ -128,7 +131,7 @@ void	ft_export(char **cmd, t_env **env) // "export" "a=b" "c=g"
 		{
 			if (var_exist(cmd[i], *env) == 1)
 			{
-				//printf("entrooooo\n");
+				printf("entrooooo\n");
 				replace_value(cmd[i], *env);
 			}
 			else

@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:21:27 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 17:15:25 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/14 18:10:01 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	cd_no_arg(t_env *env)
 void	cd_relative(char **cmd)
 {
 	
+	if (chdir(cmd[1]) == -1)
+		printf("No such file or directory\n");
 }
 
 void	ft_cd(char **cmd, t_env *env)

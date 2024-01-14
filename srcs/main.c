@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 16:53:41 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/14 17:45:04 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	check_blt(char *cmd, t_env *env)
 	return (1);
 }
 
-void	exec_blt(char **cmd, t_env *env)
+void	exec_blt(char **cmd, t_env *env, int exit_code)
 {
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
@@ -75,6 +75,8 @@ void	exec_blt(char **cmd, t_env *env)
 		ft_pwd();
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		ft_cd(cmd, env);
+	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
+		ft_exit(cmd, env, exit_code);
 }
 
 int main(int ac, char **av , char **enviroment)
@@ -82,16 +84,18 @@ int main(int ac, char **av , char **enviroment)
 	char *line;
 	t_env *env;
 	char **test;
+	int		exit_code;
 
 	(void)ac;
 	(void)av;
+	exit_code = 0;
 	print_header();
 	env = dup_env(enviroment);
 	while (1)
 	{
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		test = ft_split(line, ' ');
-		exec_blt(test, env);
+		exec_blt(test, env, exit_code);
 		add_history(line);	
 	}
 	return (0);
