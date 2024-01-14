@@ -2,5 +2,9 @@ readline
 readline/*
 objs
 minishell
-.o
+*.o
 */*.o
+*
+!srcs/*
+!Makefile
+!inc/*

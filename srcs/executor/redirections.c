@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/12 13:56:09 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/14 18:21:46 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	if (type == 1)
 		file = open(tokens->toks[i]->value, O_RDONLY);
 	// open file protection
+	if (file == -1)
+	{
+		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
+		cmd->error = 1;
+	}
 	dup2(file, STDIN_FILENO);
 	close(file);
 	cmd->redir_in_flg = 1;
@@ -39,6 +44,11 @@ void	out_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	else if (type == 4)
 		file = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	// open file protection
+	if (file == -1)
+	{
+		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
+		cmd->error = 1;
+	}
 	dup2(file, STDOUT_FILENO);
 	close(file);
 	cmd->redir_out_flg = 1;

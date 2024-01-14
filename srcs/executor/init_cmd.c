@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/12 16:01:51 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/14 18:21:31 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,24 @@ int	args_cnt(t_tokens *tokens, int i)
 	return (cnt);
 }
 
+void	init_flgs_cmd(t_cmd *cmd)
+{
+	cmd->redir_in_flg = 0;
+	cmd->redir_out_flg = 0;
+	cmd->pipe_done_flg = 0;
+	cmd->error = 0;
+	cmd->exit_code = 0;
+}
+
 t_cmd	*init_cmd(t_tokens *tokens, int i)
 {
 	t_cmd	*cmd;
 	int		j;
 
 	cmd = malloc(sizeof(t_cmd));
+	// malloc protection
 	// set flags to zero
-	cmd->redir_in_flg = 0;
-	cmd->redir_out_flg = 0;
-	cmd->pipe_done_flg = 0;
+	init_flgs_cmd(cmd);
 	if (tokens->toks[i]->type >= 5)
 		tokens->toks[i]->type -= 5;
 	cmd->args = ft_calloc(args_cnt(tokens, i) + 1, sizeof(char *));

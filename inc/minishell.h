@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 12:18:59 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/14 18:49:07 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ typedef struct s_cmd
 	int				redir_in_flg;
 	int				redir_out_flg;
 	int				pipe_done_flg;
+	int				error;
+	int				exit_code;
+	long long long long bobby;
 	//int			last_ind;
 	//char	*
 	//struct s_cmd	*next;
@@ -100,5 +103,6 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
+void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
 
 #endif
