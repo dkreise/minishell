@@ -2,5 +2,12 @@ readline
 readline/*
 objs
 minishell
-.o
+*.o
 */*.o
+*
+!srcs/*
+!Makefile
+!inc/*.h
+!inc/libft/*.c
+!inc/libft/*.h
+!inc/libft/Makefile

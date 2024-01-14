@@ -7,13 +7,14 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
 #########
 
 #########
-FILES += parser lst_functions
+FILES += parser lst_functions add_token errors_parser executor init_cmd redirections errors_exec
 
-# FILES += executor
+# FILES = main ft_env ft_export ft_unset ft_pwd ft_cd ft_exit
 
 SRC = $(addsuffix .c, $(FILES))
 
-vpath %.c srcs srcs/parser
+
+vpath %.c srcs srcs/parser srcs/executor srcs/builtins
 #########
 
 #########
@@ -41,8 +42,8 @@ all:
 	$(MAKE) $(NAME) --no-print-directory
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(READLINE_FLAGS) $(LIBFT_FLAGS) -g -fsanitize=address -o $(NAME)
-	@echo "EVERYTHING DONE  "
+	$(CC) $(CFLAGS) $(OBJ) $(READLINE_FLAGS) $(LIBFT_FLAGS) -o $(NAME)
+	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
 	#$(MAKE) clean -C $(READLINE) --no-print-directory
