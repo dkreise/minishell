@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/14 18:25:34 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/15 15:40:14 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	executor(t_tokens *tokens, char **env)
 			exit(0);
 	}
 }
-
+/*
 int main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -130,4 +130,4 @@ int main(int argc, char **argv, char **env)
 	t_tokens test_s = test_struct();
 	executor(&test_s, env);
 	return (0);
-}
+}*/

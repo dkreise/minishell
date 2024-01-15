@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 19:08:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:11:40 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,21 @@
 # define NOENV "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applicat\
 ions/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki"
 
-// TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:>,<,|,$
+# define SPACE 1
+# define SNGL_Q 2
+# define DBL_Q 3
+# define DOLLAR 4
+# define IN 5
+# define OUT 6
+# define HEREDOC 7
+# define APPEND_OUT 8
+# define PIPE 9
+# define PIPE_IN 14
+# define PIPE_OUT 15
+# define PIPE_HEREDOC 16
+# define PIPE_APPEND_OUT 17
+
+// TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:$, 5:<, 6:>, 7:| (((4:>,<,|,$)))
 typedef struct s_token
 {
 	char			*value;
@@ -94,17 +108,24 @@ typedef struct s_env
 
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
-t_token	*new_token(char *value, int type);
-t_token	*token_last(t_token *tok);
-void	addback_token(t_token **tok, char *value, int type);
-int		add_space(char *line, t_token **tok_first, int i);
-int		add_singquote(char *line, t_token **tok_first, int i);
-int		add_dblquote(char *line, t_token **tok_first, int i);
-int		add_specchar(char *line, t_token **tok_first, int i);
-int		add_str(char *line, t_token **tok_first, int i);
-int		is_specchar(char c);
-void	parser_error(char *msg, t_token **tok, int exit_code);
-t_token	*parser(char *line);
+t_token		*new_token(char *value, int type);
+t_token		*token_last(t_token *tok);
+void		addback_token(t_token **tok, char *value, int type);
+int			add_space(char *line, t_token **tok_first, int i);
+int			add_singquote(char *line, t_token **tok_first, int i);
+int			add_dblquote(char *line, t_token **tok_first, int i);
+int			add_specchar(char *line, t_token **tok_first, int i);
+int			add_str(char *line, t_token **tok_first, int i);
+int			is_specchar(char c);
+void		parser_error(char *msg, t_token **tok, int exit_code);
+t_tokens	init_tokens(t_token *tok_first, char **new_env);
+t_token		*parser(char *line);
+
+//~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
+void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
+void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i);
+void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
+t_token	*expander(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);

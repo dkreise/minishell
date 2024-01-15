@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/08 12:13:52 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/15 14:38:13 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	add_space(char *line, t_token **tok_first, int i)
 	//malloc protection
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
-	addback_token(tok_first, str, 1);
+	addback_token(tok_first, str, SPACE);
 	j = 0;
 	while (line[i] == ' ' && line[i] != '\0')
 	{
@@ -51,7 +51,7 @@ int	add_singquote(char *line, t_token **tok_first, int i)
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
 		parser_error("syntax error (unclosed quote error)\n", tok_first, 1);
-	addback_token(tok_first, str, 2);
+	addback_token(tok_first, str, SNGL_Q);
 	return (i - start + 1);
 }
 
@@ -75,7 +75,7 @@ int	add_dblquote(char *line, t_token **tok_first, int i)
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
 		parser_error("syntax error (unclosed quote error)\n", tok_first, 1);
-	addback_token(tok_first, str, 2);
+	addback_token(tok_first, str, DBL_Q);
 	return (i - start + 1);
 }
 
@@ -87,7 +87,7 @@ int add_specchar(char *line, t_token **tok_first, int i)
 	//malloc protection
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
-	addback_token(tok_first, str, 4);
+	addback_token(tok_first, str, is_specchar(line[i]));
 	return (1);
 }
 
@@ -105,6 +105,6 @@ int	add_str(char *line, t_token **tok_first, int i)
 	//malloc protection
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
-	addback_token(tok_first, str, 0);
+	addback_token(tok_first, str, NONE);
 	return (i - start);
 }

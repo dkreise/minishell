@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 17:45:04 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/14 19:25:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int main(int ac, char **av , char **enviroment)
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		test = ft_split(line, ' ');
 		exec_blt(test, env, exit_code);
-		add_history(line);	
+		add_history(line);
+		// free line
 	}
 	return (0);
 }

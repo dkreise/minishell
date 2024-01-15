@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 15:43:35 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/15 16:43:46 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 int	is_specchar(char c)
 {
-	if (c == '$' || c == '>' || c == '<' || c == '|')
-		return (1);
+	//if (c == '$' || c == '>' || c == '<' || c == '|')
+	//	return (1);
+	if (c == '$')
+		return (DOLLAR);
+	else if (c == '<')
+		return (IN);
+	else if (c == '>')
+		return (OUT);
+	else if (c == '|')
+		return (PIPE);
 	return (0);
 }
 
@@ -45,18 +53,29 @@ t_token	*parser(char *line)
 	// (???) if line[i-1] == '$' -> error: no such file or directory (???)
 	return(tok_first); 
 }
-/*
-int	main(void)
+
+int main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	char	*line;
 	t_token	*tok_first;
 
 	line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 	tok_first = parser(line);
+	t_tokens tokens = init_tokens(tok_first, env);
+	printf("PARSER:\n");
 	while (tok_first != NULL)
 	{
 		printf("type: %i value: %s.\n", tok_first->type, tok_first->value);
 		tok_first = tok_first->next;
 	}
+	t_token *new_tok = expander(&tokens);
+	printf("EXPANDER:\n");
+	while (new_tok != NULL)
+	{
+		printf("type: %i value: %s.\n", new_tok->type, new_tok->value);
+		new_tok = new_tok->next;
+	}
 	return (0);
-}*/
+}
