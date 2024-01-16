@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/14 19:02:24 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:04:09 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 	if (cmd->exit_code > 0)
 	{
 		//free tokens and cmd
-		free(cmd);
+		//free(cmd);
 		exit(cmd->exit_code);
 	}
 }

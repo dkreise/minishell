@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/15 16:43:46 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:19:50 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_token	*parser(char *line)
 	// (???) if line[i-1] == '$' -> error: no such file or directory (???)
 	return(tok_first); 
 }
-
+/*
 int main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -78,4 +78,4 @@ int main(int argc, char **argv, char **env)
 		new_tok = new_tok->next;
 	}
 	return (0);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 19:25:30 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:38:25 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_env	*dup_env(char **env_array)
 	}
 	return (first);
 }
-
+/*
 int	check_blt(char *cmd, t_env *env)
 {
 	(void)env;
@@ -77,27 +77,48 @@ void	exec_blt(char **cmd, t_env *env, int exit_code)
 		ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
 		ft_exit(cmd, env, exit_code);
+}*/
+
+void	print_toklst(char *header, t_token *tok_first)
+{
+	dprintf(2, "%s\n", header);
+	while (tok_first != NULL)
+	{
+		printf("type: %i value: %s.\n", tok_first->type, tok_first->value);
+		tok_first = tok_first->next;
+	}
 }
 
 int main(int ac, char **av , char **enviroment)
 {
 	char *line;
 	t_env *env;
-	char **test;
-	int		exit_code;
+	///char **test;
+	//int		exit_code;
+	t_token	*tok_first;
+	t_tokens tokens;
+	t_token *new_tok;
+	t_tokens exp_tokens;
 
 	(void)ac;
 	(void)av;
-	exit_code = 0;
+	//exit_code = 0;
 	print_header();
 	env = dup_env(enviroment);
 	while (1)
 	{
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-		test = ft_split(line, ' ');
-		exec_blt(test, env, exit_code);
+		//test = ft_split(line, ' ');
+		//exec_blt(test, env, exit_code);
+		tok_first = parser(line);
+		//print_toklst("PARSER", tok_first);
+		tokens = init_tokens(tok_first, enviroment);
+		new_tok = expander(&tokens);
+		//print_toklst("EXPANDER", new_tok);
+		exp_tokens = init_tokens(new_tok, enviroment);
+		executor(&exp_tokens);
 		add_history(line);
-		// free line
+		free(line);
 	}
 	return (0);
 }

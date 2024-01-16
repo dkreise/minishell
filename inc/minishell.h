@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/15 17:11:40 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:18:07 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include <libft.h>
 
 # define TRUE 1
@@ -77,6 +78,7 @@ typedef struct s_tokens
 	char	**env;
 	char	**paths;
 	int		initfd[2];
+	int		cmd_cnt;
 } t_tokens;
 /*
 types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
@@ -123,7 +125,8 @@ t_token		*parser(char *line);
 
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
 void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
-void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i);
+void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
+void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
 void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
 t_token	*expander(t_tokens *tokens);
 
@@ -136,6 +139,10 @@ void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
 void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
+char	**get_paths(char **env);
+void	do_execve(t_tokens *tokens, t_cmd *cmd);
+void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
+void	executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
 void	ft_env(t_env *env);

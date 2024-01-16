@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/15 15:41:40 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:39:09 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,12 @@ t_tokens	init_tokens(t_token *tok_first, char **new_env)
 	tokens.tok_cnt = cnt;
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
 	tokens.env = new_env;
+	tokens.paths = get_paths(new_env);
+	if (!tokens.paths)
+		dprintf(2, "paths are null\n");
+	// get_paths can return NULL
+	tokens.initfd[0] = dup(STDIN_FILENO);
+	tokens.initfd[1] = dup(STDOUT_FILENO);
+	tokens.cmd_cnt = 0;
 	return (tokens);
 }
