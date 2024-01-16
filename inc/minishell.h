@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 19:08:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 20:52:22 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@
 # define NOENV "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applicat\
 ions/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki"
 
+# define SPACE 1
+# define SNGL_Q 2
+# define DBL_Q 3
+# define DOLLAR 4
+# define IN 5
+# define OUT 6
+# define HEREDOC 7
+# define APPEND_OUT 8
+# define PIPE 9
+# define PIPE_IN 14
+# define PIPE_OUT 15
+# define PIPE_HEREDOC 16
+# define PIPE_APPEND_OUT 17
+
 // TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:>,<,|,$
 typedef struct s_token
 {
@@ -52,17 +66,16 @@ typedef struct s_token
 	struct s_token	*next;
 } t_token;
 
-
 //struct I need for executor:
 
 typedef struct s_tokens
 {
-	t_token *first_tok;
-	t_token	**toks;
-	int		tok_cnt;
-	char	**env;
-	char	**paths;
-	int		initfd[2];
+	// t_token *first_tok;
+	t_token	*toks[4];
+	// int		tok_cnt;
+	// char	**env;
+	// char	**paths;
+	// int		initfd[2];
 } t_tokens;
 /*
 types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
@@ -104,7 +117,15 @@ int		add_specchar(char *line, t_token **tok_first, int i);
 int		add_str(char *line, t_token **tok_first, int i);
 int		is_specchar(char c);
 void	parser_error(char *msg, t_token **tok, int exit_code);
+t_tokens	init_tokens(t_token *tok_first, char **new_env);
 t_token	*parser(char *line);
+
+//~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
+void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
+void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i);
+void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
+t_token	*expander(t_tokens *tokens);
+char	*dollar_exp(t_tokens *tokens, int *i, t_env *env);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);
@@ -124,5 +145,6 @@ int		mod_strcmp(char *cmd, char *env);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env);
 void	ft_exit(char **cmd, t_env *env, int exit_code);
+void	ft_echo(char **cmd);
 
 #endif

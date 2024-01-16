@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 15:46:32 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:34:46 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,22 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 		i ++;
 	}
 	return (toks);
+}
+
+t_tokens	init_tokens(t_token *tok_first, char **new_env)
+{
+	t_tokens	tokens;
+	int			cnt;
+
+	tokens.first_tok = tok_first;
+	cnt = 0;
+	while (tok_first)
+	{
+		cnt ++;
+		tok_first = tok_first->next;
+	}
+	tokens.tok_cnt = cnt;
+	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
+	tokens.env = new_env;
+	return (tokens);
 }

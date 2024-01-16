@@ -7,9 +7,9 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
 #########
 
 #########
-FILES += parser lst_functions add_token errors_parser executor init_cmd redirections errors_exec
+#FILES += parser lst_functions add_token errors_parser executor init_cmd redirections errors_exec
 
-# FILES = main ft_env ft_export ft_unset ft_pwd ft_cd ft_exit
+FILES = main ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo
 
 SRC = $(addsuffix .c, $(FILES))
 

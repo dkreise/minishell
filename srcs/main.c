@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 17:45:04 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:16:05 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	exec_blt(char **cmd, t_env *env, int exit_code)
 		ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
 		ft_exit(cmd, env, exit_code);
+	else if (ft_strncmp(cmd[0], "echo", 5) == 0)
+		ft_echo(cmd);
 }
 
 int main(int ac, char **av , char **enviroment)
