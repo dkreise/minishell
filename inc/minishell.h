@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/16 17:18:07 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/17 18:49:57 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,20 @@ ions/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki"
 # define PIPE_HEREDOC 16
 # define PIPE_APPEND_OUT 17
 
+typedef struct s_env
+{
+	char			*data;
+	int				unset_flag;
+	struct s_env	*next; 
+} t_env;
+
 // TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:$, 5:<, 6:>, 7:| (((4:>,<,|,$)))
 typedef struct s_token
 {
 	char			*value;
 	int 			type;
 	struct s_token	*next;
+	int				hd_file;
 } t_token;
 
 
@@ -75,7 +83,7 @@ typedef struct s_tokens
 	t_token *first_tok;
 	t_token	**toks;
 	int		tok_cnt;
-	char	**env;
+	t_env	*env;
 	char	**paths;
 	int		initfd[2];
 	int		cmd_cnt;
@@ -101,14 +109,6 @@ typedef struct s_cmd
 	//struct s_cmd	*next;
 } t_cmd;
 
-typedef struct s_env
-{
-	char			*data;
-	int				unset_flag;
-	struct s_env	*next; 
-} t_env;
-
-
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
@@ -120,15 +120,17 @@ int			add_specchar(char *line, t_token **tok_first, int i);
 int			add_str(char *line, t_token **tok_first, int i);
 int			is_specchar(char c);
 void		parser_error(char *msg, t_token **tok, int exit_code);
-t_tokens	init_tokens(t_token *tok_first, char **new_env);
+t_tokens	init_tokens(t_token *tok_first);
+char		**lst_to_arr(t_env *env);
 t_token		*parser(char *line);
 
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
-void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
-void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
-void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
-void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
-t_token	*expander(t_tokens *tokens);
+void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
+void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
+void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
+void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
+t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env);
+t_token		*expander(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);
@@ -142,6 +144,7 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
 char	**get_paths(char **env);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
+void	check_hd(t_tokens *tokens);
 void	executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//

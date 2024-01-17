@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/16 17:39:09 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:51:37 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,33 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 	return (toks);
 }
 
-t_tokens	init_tokens(t_token *tok_first, char **new_env)
+char	**lst_to_arr(t_env *env)
 {
-	t_tokens	tokens;
-	int			cnt;
+	int		cnt;
+	int		i;
+	char	**env_arr;
+	t_env	*env_first;
 
-	tokens.first_tok = tok_first;
 	cnt = 0;
-	while (tok_first)
+	i = 0;
+	env_first = env;
+	while (env)
 	{
-		cnt ++;
-		tok_first = tok_first->next;
+		if (env->unset_flag == 0)
+			cnt ++;
+		env = env->next;
 	}
-	tokens.tok_cnt = cnt;
-	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
-	tokens.env = new_env;
-	tokens.paths = get_paths(new_env);
-	if (!tokens.paths)
-		dprintf(2, "paths are null\n");
-	// get_paths can return NULL
-	tokens.initfd[0] = dup(STDIN_FILENO);
-	tokens.initfd[1] = dup(STDOUT_FILENO);
-	tokens.cmd_cnt = 0;
-	return (tokens);
+	env_arr = ft_calloc(sizeof(char *), cnt + 1);
+	// malloc protection
+	while (env_first)
+	{
+		if (env_first->unset_flag == 0)
+		{
+			env_arr[i] = ft_strdup(env_first->data);
+			// malloc protection
+			i ++;
+		}
+		env_first = env_first->next;
+	}
+	return(env_arr);
 }

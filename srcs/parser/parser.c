@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/16 15:19:50 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:08:13 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,31 @@ int	is_specchar(char c)
 	else if (c == '|')
 		return (PIPE);
 	return (0);
+}
+t_tokens	init_tokens(t_token *tok_first)
+{
+	t_tokens	tokens;
+	int			cnt;
+
+	tokens.first_tok = tok_first;
+	cnt = 0;
+	while (tok_first)
+	{
+		cnt ++;
+		tok_first = tok_first->next;
+	}
+	tokens.tok_cnt = cnt;
+	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
+	/*tokens.env = new_env;
+	tokens.paths = get_paths(generate_arr(linked list)); //instead of getpaths, pass as an
+	 // argument a function that creates a double array from a linked list
+	if (!tokens.paths)
+		dprintf(2, "paths are null\n");
+	// get_paths can return NULL
+	tokens.initfd[0] = dup(STDIN_FILENO);
+	tokens.initfd[1] = dup(STDOUT_FILENO);
+	tokens.cmd_cnt = 0;*/
+	return (tokens);
 }
 
 t_token	*parser(char *line)

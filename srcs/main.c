@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/16 17:38:25 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:24:03 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	print_toklst(char *header, t_token *tok_first)
 	}
 }
 
-int main(int ac, char **av , char **enviroment)
+int main(int ac, char **av , char **environment)
 {
 	char *line;
 	t_env *env;
@@ -104,20 +104,28 @@ int main(int ac, char **av , char **enviroment)
 	(void)av;
 	//exit_code = 0;
 	print_header();
-	env = dup_env(enviroment);
+	env = dup_env(environment);
+	//int fdstart[2];
 	while (1)
 	{
+		//dprintf(2, "NEW LOOP\n");
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
+		if (!line)
+			return(1); // some error ????
+		//dprintf(2, "line: %s\n", line);
 		//test = ft_split(line, ' ');
 		//exec_blt(test, env, exit_code);
-		tok_first = parser(line);
-		//print_toklst("PARSER", tok_first);
-		tokens = init_tokens(tok_first, enviroment);
-		new_tok = expander(&tokens);
-		//print_toklst("EXPANDER", new_tok);
-		exp_tokens = init_tokens(new_tok, enviroment);
-		executor(&exp_tokens);
-		add_history(line);
+		if (ft_strlen(line) != 0)
+		{
+			tok_first = parser(line);
+			//print_toklst("PARSER", tok_first);
+			tokens = init_tokens(tok_first);
+			new_tok = expander(&tokens);
+			//print_toklst("EXPANDER", new_tok);
+			exp_tokens = init_exp_tokens(new_tok, env);
+			executor(&exp_tokens);
+			add_history(line);
+		}
 		free(line);
 	}
 	return (0);

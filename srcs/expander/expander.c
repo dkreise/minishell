@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/16 13:33:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/17 18:31:16 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,22 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 	else if (tok_type == PIPE)
 		exp_pipe(tokens, exp_tok, i);
 	// else if (tok_type == DOLLAR)
+}
+
+t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env)
+{
+	t_tokens	tokens;
+
+	tokens = init_tokens(exp_tok);
+	tokens.env = new_env;
+	tokens.paths = get_paths(lst_to_arr(tokens.env)); 
+	if (!tokens.paths)
+		dprintf(2, "paths are null\n");
+	// protect get_paths (can return NULL)
+	tokens.initfd[0] = dup(STDIN_FILENO);
+	tokens.initfd[1] = dup(STDOUT_FILENO);
+	tokens.cmd_cnt = 0;
+	return (tokens);
 }
 
 t_token	*expander(t_tokens *tokens)

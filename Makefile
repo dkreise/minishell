@@ -7,7 +7,7 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
 #########
 
 #########
-FILES = main parser lst_functions add_token errors_parser executor init_cmd redirections errors_exec expander
+FILES = main parser lst_functions add_token errors_parser executor init_cmd redirections errors_exec heredoc expander
 
 # FILES = main ft_env ft_export ft_unset ft_pwd ft_cd ft_exit
 
