@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/15 15:00:37 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:58:34 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	file = 0;
 	if (type == IN)
 		file = open(tokens->toks[i]->value, O_RDONLY);
+	else if (type == HEREDOC)
+		file = tokens->toks[i]->hd_file;
 	// open file protection
 	if (file == -1)
 	{

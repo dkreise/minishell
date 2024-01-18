@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/17 19:08:25 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:49:32 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	check_hd(t_tokens *tokens)
 	{
 		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
 		{
-			dprintf(2, "i: %i\n", i);
 			pipe(hdfd);
 			//protect pipe??
 			limiter = tokens->toks[i]->value;
@@ -37,6 +36,7 @@ void	check_hd(t_tokens *tokens)
 			while (ft_strncmp(line, limiter, ft_strlen(limiter)) != 0 || line[ft_strlen(limiter)] != '\0')
 			{
 				ft_putstr_fd(line, hdfd[1]);
+				ft_putstr_fd("\n", hdfd[1]);
 				free(line);
 				line = readline("\033[1;33m>\033[m ");
 				if (!line)
@@ -45,7 +45,7 @@ void	check_hd(t_tokens *tokens)
 			free(line);
 			close(hdfd[1]);
 			tokens->toks[i]->hd_file = hdfd[0];
-			close(hdfd[0]); //remove
+			//close(hdfd[0]); //remove
 		}
 		i ++;
 	}
