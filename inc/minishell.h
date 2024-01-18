@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/18 11:02:10 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/18 12:26:19 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	check_hd(t_tokens *tokens);
 void	executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
+int		check_blt(char *cmd);
 void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
@@ -155,5 +156,6 @@ int		mod_strcmp(char *cmd, char *env);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env);
 void	ft_exit(char **cmd, t_env *env, int exit_code);
+void	exec_blt(char **cmd, t_env *env, int exit_code);
 
 #endif

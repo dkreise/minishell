@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/18 10:20:49 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/18 12:30:56 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,10 @@ void	executor(t_tokens *tokens)
 	pid_t	pid;
 	t_cmd	*cmd;
 	t_cmd	*new_cmd;
+	int		is_first;
 
 	i = 0;
-
+	is_first = 1;
 	cmd = NULL;
 	check_hd(tokens);
 	while (i < tokens->tok_cnt)
@@ -149,6 +150,12 @@ void	executor(t_tokens *tokens)
 		new_cmd->prev = cmd;
 		cmd = new_cmd;
 		i += args_cnt(tokens, i);
+		if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+		{
+			is_first = 0;
+			exec_blt(cmd->args, tokens->env, 0);
+			break ; //or exit ????
+		}
 		tokens->cmd_cnt ++;
 		pipe_redir(tokens, cmd, i);
 		if (cmd->error != 0)

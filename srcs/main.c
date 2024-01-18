@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/17 17:24:03 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/18 12:26:17 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,22 @@ t_env	*dup_env(char **env_array)
 	}
 	return (first);
 }
-/*
-int	check_blt(char *cmd, t_env *env)
+
+int	check_blt(char *cmd)
 {
-	(void)env;
 	if (ft_strncmp(cmd, "env", 4) == 0)
-		return (0);
+		return (1);
 	if (ft_strncmp(cmd, "export", 7) == 0)
-		return (0);
+		return (1);
 	if (ft_strncmp(cmd, "unset", 6) == 0)
-		return (0);
-	return (1);
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "exit", 6) == 0)
+		return (1);
+	return (0);
 }
 
 void	exec_blt(char **cmd, t_env *env, int exit_code)
@@ -77,7 +82,7 @@ void	exec_blt(char **cmd, t_env *env, int exit_code)
 		ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
 		ft_exit(cmd, env, exit_code);
-}*/
+}
 
 void	print_toklst(char *header, t_token *tok_first)
 {
