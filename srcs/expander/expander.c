@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/17 18:31:16 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:10:16 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 	// else if (tok_type == DOLLAR)
 }
 
-t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env)
+t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
 
-	tokens = init_tokens(exp_tok);
+	tokens = init_tokens(exp_tok, exit_code);
 	tokens.env = new_env;
 	tokens.paths = get_paths(lst_to_arr(tokens.env)); 
 	if (!tokens.paths)

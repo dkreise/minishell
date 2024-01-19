@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/18 10:17:55 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 12:37:39 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token	*new_token(char *value, int type)
 	new->type = type;
 	new->next = NULL;
 	new->hd_file = -1;
+	new->error = 0;
 	return (new);
 }
 

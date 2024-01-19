@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/18 12:26:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:20:05 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_token
 	int 			type;
 	struct s_token	*next;
 	int				hd_file;
+	int				error;
 } t_token;
 
 
@@ -87,6 +88,7 @@ typedef struct s_tokens
 	char	**paths;
 	int		initfd[2];
 	int		cmd_cnt;
+	int		prev_exit;
 } t_tokens;
 /*
 types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
@@ -120,7 +122,7 @@ int			add_specchar(char *line, t_token **tok_first, int i);
 int			add_str(char *line, t_token **tok_first, int i);
 int			is_specchar(char c);
 void		parser_error(char *msg, t_token **tok, int exit_code);
-t_tokens	init_tokens(t_token *tok_first);
+t_tokens	init_tokens(t_token *tok_first, int exit_code);
 char		**lst_to_arr(t_env *env);
 t_token		*parser(char *line);
 
@@ -129,7 +131,7 @@ void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
 void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
-t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env);
+t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code);
 t_token		*expander(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
@@ -145,7 +147,7 @@ char	**get_paths(char **env);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
 void	check_hd(t_tokens *tokens);
-void	executor(t_tokens *tokens);
+int		executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
 int		check_blt(char *cmd);

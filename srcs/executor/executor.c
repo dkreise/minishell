@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/18 12:30:56 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:35:59 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt)
 	}
 }
 
-void	executor(t_tokens *tokens)
+int	executor(t_tokens *tokens)
 {
 	int		i;
 	pid_t	pid;
@@ -154,7 +154,7 @@ void	executor(t_tokens *tokens)
 		{
 			is_first = 0;
 			exec_blt(cmd->args, tokens->env, 0);
-			break ; //or exit ????
+			break ;
 		}
 		tokens->cmd_cnt ++;
 		pipe_redir(tokens, cmd, i);
@@ -171,6 +171,7 @@ void	executor(t_tokens *tokens)
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
 	close(tokens->initfd[1]);
+	return (cmd->exit_code);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/15 14:38:13 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 13:11:20 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	add_space(char *line, t_token **tok_first, int i)
 	int	j;
 
 	str = ft_substr(line, i, 1);
-	//malloc protection
+	//malloc protection - not parser error????????
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
 	addback_token(tok_first, str, SPACE);
@@ -44,7 +44,7 @@ int	add_singquote(char *line, t_token **tok_first, int i)
 	if (line[i] == '\'')
 	{
 		str = ft_substr(line, start, i - start + 1);
-		//malloc protection
+		//malloc protection - not parser error????????
 		if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
 	}
@@ -68,7 +68,7 @@ int	add_dblquote(char *line, t_token **tok_first, int i)
 	if (line[i] == '\"')
 	{
 		str = ft_substr(line, start, i - start + 1);
-		//malloc protection
+		//malloc protection - not parser error????????
 		if (str == NULL)
 			parser_error("memory allocation error\n", tok_first, 1);
 	}
@@ -84,7 +84,7 @@ int add_specchar(char *line, t_token **tok_first, int i)
 	char	*str;
 
 	str = ft_substr(line, i, 1);
-	//malloc protection
+	//malloc protection - not parser error????????
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
 	addback_token(tok_first, str, is_specchar(line[i]));
@@ -102,7 +102,7 @@ int	add_str(char *line, t_token **tok_first, int i)
 		&& line[i] != ' ' && line[i] != '\0')
 		i ++;
 	str = ft_substr(line, start, i - start);
-	//malloc protection
+	//malloc protection - not parser error????????
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
 	addback_token(tok_first, str, NONE);

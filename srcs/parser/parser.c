@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/17 14:08:13 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:07:10 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_specchar(char c)
 		return (PIPE);
 	return (0);
 }
-t_tokens	init_tokens(t_token *tok_first)
+t_tokens	init_tokens(t_token *tok_first, int exit_code)
 {
 	t_tokens	tokens;
 	int			cnt;
@@ -40,6 +40,7 @@ t_tokens	init_tokens(t_token *tok_first)
 	}
 	tokens.tok_cnt = cnt;
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
+	tokens.prev_exit = exit_code;
 	/*tokens.env = new_env;
 	tokens.paths = get_paths(generate_arr(linked list)); //instead of getpaths, pass as an
 	 // argument a function that creates a double array from a linked list
@@ -71,6 +72,8 @@ t_token	*parser(char *line)
 			i += add_specchar(line, &tok_first, i);
 		else
 			i += add_str(line, &tok_first, i);
+		if (tok_first->error != 0)
+			break ;
 	}
 	// if line[i-1] == '|' syntax error 
 	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')

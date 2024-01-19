@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/18 12:26:17 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 14:28:47 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,43 +94,66 @@ void	print_toklst(char *header, t_token *tok_first)
 	}
 }
 
+int	new_exit(char *line, t_env *env, int prev_exit)
+{
+	t_token		*tok_first;
+	t_tokens	tokens;
+	t_token		*new_tok;
+	t_tokens	exp_tokens;
+	//int			new_exit;
+
+	tok_first = parser(line);
+	//print_toklst("PARSER", tok_first);
+	if (tok_first->error != 0)
+		return (tok_first->error);
+	tokens = init_tokens(tok_first, prev_exit);
+	dprintf(2, "prev exit in struct: %i\n", tokens.prev_exit);
+	new_tok = expander(&tokens);
+	//print_toklst("EXPANDER", new_tok);
+	if (new_tok->error != 0)
+		return (new_tok->error);
+	exp_tokens = init_exp_tokens(new_tok, env, prev_exit);
+	return(executor(&exp_tokens)); //???	
+}
+
 int main(int ac, char **av , char **environment)
 {
-	char *line;
-	t_env *env;
+	char	*line;
+	t_env	*env;
 	///char **test;
 	//int		exit_code;
-	t_token	*tok_first;
-	t_tokens tokens;
-	t_token *new_tok;
-	t_tokens exp_tokens;
+	int			err_exit[2];
 
 	(void)ac;
 	(void)av;
 	//exit_code = 0;
 	print_header();
 	env = dup_env(environment);
+	err_exit[0] = 0;
 	//int fdstart[2];
 	while (1)
 	{
-		//dprintf(2, "NEW LOOP\n");
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		if (!line)
 			return(1); // some error ????
-		//dprintf(2, "line: %s\n", line);
-		//test = ft_split(line, ' ');
-		//exec_blt(test, env, exit_code);
 		if (ft_strlen(line) != 0)
 		{
+			err_exit[1] = new_exit(line, env, err_exit[0]);
+			dprintf(2, "new exit: %i\n", err_exit[1]);
+			/*
 			tok_first = parser(line);
 			//print_toklst("PARSER", tok_first);
+			if (tok_first->error == 0)
+
 			tokens = init_tokens(tok_first);
 			new_tok = expander(&tokens);
 			//print_toklst("EXPANDER", new_tok);
 			exp_tokens = init_exp_tokens(new_tok, env);
-			executor(&exp_tokens);
+			executor(&exp_tokens);*/
 			add_history(line);
+			err_exit[0] = err_exit[1];
 		}
+		// free everything??
 		free(line);
 	}
 	return (0);
