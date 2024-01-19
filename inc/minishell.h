@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/19 14:20:05 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 19:36:01 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ typedef struct s_cmd
 	int				redir_in_flg;
 	int				redir_out_flg;
 	int				pipe_done_flg;
-	int				error;
+	//int				error;
 	int				exit_code;
 	//int			last_ind;
 	//char	*
@@ -142,11 +142,16 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
-void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
 char	**get_paths(char **env);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
 void	check_hd(t_tokens *tokens);
+void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
+void	free_cmd(t_cmd **cmd);
+void	free_tok(t_token **tok);
+void	free_env(t_env **env);
+void	free_paths(t_tokens *tokens);
+void	free_tokens(t_tokens *pars_tokens, t_tokens *exp_tokens);
 int		executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//

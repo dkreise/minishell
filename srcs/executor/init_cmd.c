@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/18 10:58:40 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 15:55:24 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	init_flgs_cmd(t_cmd *cmd)
 	cmd->redir_in_flg = 0;
 	cmd->redir_out_flg = 0;
 	cmd->pipe_done_flg = 0;
-	cmd->error = 0;
+	//cmd->error = 0;
 	cmd->exit_code = 0;
 }
 

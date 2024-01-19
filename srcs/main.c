@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/19 14:28:47 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 19:43:27 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,23 +97,28 @@ void	print_toklst(char *header, t_token *tok_first)
 int	new_exit(char *line, t_env *env, int prev_exit)
 {
 	t_token		*tok_first;
-	t_tokens	tokens;
+	t_tokens	pars_tokens;
 	t_token		*new_tok;
 	t_tokens	exp_tokens;
-	//int			new_exit;
+	int			new_exit;
 
 	tok_first = parser(line);
-	//print_toklst("PARSER", tok_first);
 	if (tok_first->error != 0)
-		return (tok_first->error);
-	tokens = init_tokens(tok_first, prev_exit);
-	dprintf(2, "prev exit in struct: %i\n", tokens.prev_exit);
-	new_tok = expander(&tokens);
-	//print_toklst("EXPANDER", new_tok);
-	if (new_tok->error != 0)
-		return (new_tok->error);
-	exp_tokens = init_exp_tokens(new_tok, env, prev_exit);
-	return(executor(&exp_tokens)); //???	
+		new_exit = tok_first->error; //free here
+	else
+	{
+		pars_tokens = init_tokens(tok_first, prev_exit);
+		new_tok = expander(&pars_tokens);
+		if (new_tok->error != 0)
+			new_exit = new_tok->error;
+		else
+		{
+			exp_tokens = init_exp_tokens(new_tok, env, prev_exit);
+			new_exit = executor(&exp_tokens);
+		}
+	}
+	//free_tokens(&pars_tokens, &exp_tokens);
+	return(new_exit); //???	
 }
 
 int main(int ac, char **av , char **environment)
@@ -139,7 +144,7 @@ int main(int ac, char **av , char **environment)
 		if (ft_strlen(line) != 0)
 		{
 			err_exit[1] = new_exit(line, env, err_exit[0]);
-			dprintf(2, "new exit: %i\n", err_exit[1]);
+			//dprintf(2, "new exit: %i\n", err_exit[1]);
 			/*
 			tok_first = parser(line);
 			//print_toklst("PARSER", tok_first);

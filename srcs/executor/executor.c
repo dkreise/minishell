@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/19 14:35:59 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 19:13:01 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	if (cmd->exit_code != 0)
+		exit(cmd->exit_code);
+	if (check_blt(cmd->args[0]))
+	{
+		// change arg of exec_blt to whole cmd to be able to set exit in err case
+		exec_blt(cmd->args, tokens->env, 0);
+		exit(cmd->exit_code); 
+	}
 	execve(cmd->args[0], cmd->args, lst_to_arr(tokens->env));
 	if (!tokens->paths)
 		dprintf(2, "paths are null\n");
@@ -158,8 +166,10 @@ int	executor(t_tokens *tokens)
 		}
 		tokens->cmd_cnt ++;
 		pipe_redir(tokens, cmd, i);
-		if (cmd->error != 0)
-			continue;
+		// if (cmd->exit_code != 0)
+		// 	continue;
+		free_tok(&(tokens->first_tok));
+		free(tokens->toks);
 		pid = fork();
 		if (pid == 0 && cmd->args[0])
 			do_execve(tokens, cmd);
