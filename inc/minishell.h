@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/19 19:36:01 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:51:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int			add_specchar(char *line, t_token **tok_first, int i);
 int			add_str(char *line, t_token **tok_first, int i);
 int			is_specchar(char c);
 void		parser_error(char *msg, t_token **tok, int exit_code);
-t_tokens	init_tokens(t_token *tok_first, int exit_code);
+t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code);
 char		**lst_to_arr(t_env *env);
 t_token		*parser(char *line);
 
@@ -132,6 +132,8 @@ void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
 void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
 t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code);
+char		*find_env(char *str, int *j, t_tokens *tokens);
+char		*exp_dollar(t_tokens *tokens, t_token **exp_tok, int *i);
 t_token		*expander(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//

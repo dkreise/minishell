@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/19 19:13:01 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/20 17:43:56 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ int	executor(t_tokens *tokens)
 		pipe_redir(tokens, cmd, i);
 		// if (cmd->exit_code != 0)
 		// 	continue;
-		free_tok(&(tokens->first_tok));
-		free(tokens->toks);
+		//free_tok(&(tokens->first_tok));
+		//free(tokens->toks);
 		pid = fork();
 		if (pid == 0 && cmd->args[0])
 			do_execve(tokens, cmd);

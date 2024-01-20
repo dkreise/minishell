@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/19 14:10:16 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/20 20:13:02 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,59 +36,10 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 	addback_token(exp_tok, val, exp_type);
 }
 
-void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe)
-{
-	//char	*val;
-	t_token	*tnext;
-	int		exp_type;
-
-	tnext = tokens->toks[*i]->next;
-	exp_type = tokens->toks[*i]->type + is_pipe;
-	if (tnext->type == tokens->toks[*i]->type) // '<<'
-	{
-		*i = *i + 1;
-		exp_type += 2;
-		tnext = tnext->next;
-	}
-	if (tnext->type == SPACE) // '<< ' or '< '
-	{
-		*i = *i + 1;
-		tnext = tnext->next;
-	}
-	if (tnext->type == NONE) // or <= DOLLAR ???   '<< str' or '< str' or '<<str' or '<str'
-	{
-		*i = *i + 1;
-		//printf("i before exp_str in exp_in: %i\n", *i);
-		exp_str(tokens, exp_tok, i, exp_type);
-	}
-	else
-	{
-		dprintf(2, "syntax error");
-		exit(258);
-	}
-}
-
-void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i)
-{
-	t_token	*tnext;
-
-	tnext = tokens->toks[*i]->next;
-	if (tnext->type == SPACE)
-	{
-		*i = *i + 1;
-		tnext = tnext->next;
-	}
-	if (tnext->type == IN || tnext->type == OUT)
-	{
-		*i = *i + 1;
-		exp_in_out(tokens, exp_tok, i, PIPE);
-	}
-	else if (tnext->type == NONE)
-	{
-		*i = *i + 1;
-		exp_str(tokens, exp_tok, i, PIPE);
-	}
-}
+// void	exp_sngl_q(t_tokens *tokens, t_token **exp_tok, int *i)
+// {
+	
+// }
 
 void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i) 
 {
@@ -99,15 +50,15 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 		exp_in_out(tokens, exp_tok, i, 0);
 	else if (tok_type == PIPE)
 		exp_pipe(tokens, exp_tok, i);
-	// else if (tok_type == DOLLAR)
+	else if (tok_type == DOLLAR)
+		exp_dollar(tokens, exp_tok, i);
 }
 
 t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
 
-	tokens = init_tokens(exp_tok, exit_code);
-	tokens.env = new_env;
+	tokens = init_tokens(exp_tok, new_env, exit_code);
 	tokens.paths = get_paths(lst_to_arr(tokens.env)); 
 	if (!tokens.paths)
 		dprintf(2, "paths are null\n");
