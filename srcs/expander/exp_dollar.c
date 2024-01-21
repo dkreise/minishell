@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/20 19:51:58 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 12:29:51 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*find_env(char *str, int *j, t_tokens *tokens)
 	return(val);
 }
 
-char	*exp_dollar(t_tokens *tokens, t_token **exp_tok, int *i)
+char	*exp_dollar(t_tokens *tokens, int *i)
 {
 	t_token	*tnext;
 	int		j;
@@ -63,7 +63,10 @@ char	*exp_dollar(t_tokens *tokens, t_token **exp_tok, int *i)
 	j = 0;
 	strlen = ft_strlen(tnext->value);
 	if (tnext->type == SNGL_Q || tnext->type == DBL_Q)
+	{
 		*i = *i + 1;
+		return(ft_strdup(""));
+	}
 	else if (tnext->type == NONE)
 	{
 		*i = *i + 2;
@@ -77,7 +80,7 @@ char	*exp_dollar(t_tokens *tokens, t_token **exp_tok, int *i)
 		{
 			temp_val = find_env(tnext->value, &j, tokens);
 			if (temp_val == 0 && j == strlen)
-				return ;
+				return(ft_strdup(""));
 		}
 		if (j == strlen)
 			val = temp_val;

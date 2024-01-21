@@ -6,12 +6,44 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/20 20:13:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 12:36:06 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
+{
+	char	*temp_val;
+	char	*val;
+	t_token	*tcur;
+
+	tcur = tokens->toks[*i];
+	val = ft_strdup("");
+	temp_val = NULL;
+	while (tcur->type <= DOLLAR && tcur->type != SPACE)
+	{
+		if (tcur->type == NONE)
+		{
+			temp_val = ft_strdup(tcur->value);
+			*i = *i + 1;
+		}
+		// else if (tcur->type == SNGL_Q)
+		// 	...
+		// else if (tcur->type == DBL_Q)
+		// 	...
+		else if (tcur->type == DOLLAR)
+			temp_val = exp_dollar(tokens, i);
+		val = ft_strjoin(val, temp_val, BOTH);
+		if (*i >= tokens->tok_cnt)
+			break ;
+		tcur = tokens->toks[*i];
+		if (!tcur)
+			break ;
+	}
+	addback_token(exp_tok, val, exp_type);
+}
+/*
 void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 {
 	char	*val;
@@ -34,7 +66,7 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 	// else if SNGL_Q or DBL_Q   -->  exp_quotes
 	// else if DOLLAR  --> exp_dollar
 	addback_token(exp_tok, val, exp_type);
-}
+}*/
 
 // void	exp_sngl_q(t_tokens *tokens, t_token **exp_tok, int *i)
 // {
@@ -51,7 +83,8 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 	else if (tok_type == PIPE)
 		exp_pipe(tokens, exp_tok, i);
 	else if (tok_type == DOLLAR)
-		exp_dollar(tokens, exp_tok, i);
+		exp_str(tokens, exp_tok, i, NONE);
+		//exp_dollar(tokens, exp_tok, i);
 }
 
 t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
