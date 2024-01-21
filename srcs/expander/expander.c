@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 15:21:52 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:04:00 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	int			j;
 
 	first_dbl_tok = parser(tokens->toks[*i]->value);
-	print_toklst("DBL QUOTES PARSER", first_dbl_tok);
+	//print_toklst("DBL QUOTES PARSER", first_dbl_tok);
 	dbl_tokens = init_tokens(first_dbl_tok, tokens->env, tokens->prev_exit);
 	j = 0;
 	val = ft_strdup("");
@@ -133,6 +133,7 @@ t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
 	tokens.initfd[0] = dup(STDIN_FILENO);
 	tokens.initfd[1] = dup(STDOUT_FILENO);
 	tokens.cmd_cnt = 0;
+	tokens.error = 0;
 	return (tokens);
 }
 

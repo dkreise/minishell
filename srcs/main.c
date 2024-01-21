@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 16:41:27 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:06:06 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,10 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		pars_tokens = init_tokens(tok_first, env, prev_exit);
 		new_tok = expander(&pars_tokens);
 		//print_toklst("EXPANDER", new_tok);
-		if (new_tok->error != 0)
-			new_exit = new_tok->error;
+		if (!new_tok)
+			new_exit = prev_exit;
+		else if (pars_tokens.error != 0)
+			new_exit = 258; //print errors
 		else
 		{
 			exp_tokens = init_exp_tokens(new_tok, env, prev_exit);

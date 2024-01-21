@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 16:20:32 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 17:03:50 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	add_singquote(char *line, t_token **tok_first, int i)
 	}
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
-		(*tok_first)->error = 1;
+		(*tok_first)->error = 258;
 	addback_token(tok_first, str, SNGL_Q);
 	return (i - start + 1);
 }
@@ -74,7 +74,7 @@ int	add_dblquote(char *line, t_token **tok_first, int i)
 	}
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
-		(*tok_first)->error = 1;
+		(*tok_first)->error = 258;
 	addback_token(tok_first, str, DBL_Q);
 	return (i - start + 1);
 }

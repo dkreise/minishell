@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 16:33:33 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:07:33 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	is_specchar(char c)
 {
-	//if (c == '$' || c == '>' || c == '<' || c == '|')
-	//	return (1);
 	if (c == '$')
 		return (DOLLAR);
 	else if (c == '<')
@@ -42,15 +40,7 @@ t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code)
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
 	tokens.prev_exit = exit_code;
 	tokens.env = new_env;
-	/*tokens.env = new_env;
-	tokens.paths = get_paths(generate_arr(linked list)); //instead of getpaths, pass as an
-	 // argument a function that creates a double array from a linked list
-	if (!tokens.paths)
-		dprintf(2, "paths are null\n");
-	// get_paths can return NULL
-	tokens.initfd[0] = dup(STDIN_FILENO);
-	tokens.initfd[1] = dup(STDOUT_FILENO);
-	tokens.cmd_cnt = 0;*/
+	tokens.error = 0;
 	return (tokens);
 }
 
@@ -79,7 +69,6 @@ t_token	*parser(char *line)
 	// if line[i-1] == '|' syntax error 
 	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')
 		tok_first->error = 258;
-	// (???) if line[i-1] == '$' -> error: no such file or directory (???)
 	return(tok_first); 
 }
 /*
