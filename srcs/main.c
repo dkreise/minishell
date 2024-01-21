@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/20 17:40:25 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 16:41:27 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,19 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	t_tokens	exp_tokens;
 	int			new_exit;
 
+	new_exit = 0;
 	tok_first = parser(line);
+	//print_toklst("PARSER", tok_first);
 	if (tok_first->error != 0)
+	{
 		new_exit = tok_first->error; //free here
+		parser_error("syntax error near unexpected token `newline'\n", &tok_first, 1);
+	}
 	else
 	{
 		pars_tokens = init_tokens(tok_first, env, prev_exit);
 		new_tok = expander(&pars_tokens);
+		//print_toklst("EXPANDER", new_tok);
 		if (new_tok->error != 0)
 			new_exit = new_tok->error;
 		else

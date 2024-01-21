@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/19 13:11:20 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 16:20:32 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	add_singquote(char *line, t_token **tok_first, int i)
 	}
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
-		parser_error("syntax error (unclosed quote error)\n", tok_first, 1);
+		(*tok_first)->error = 1;
 	addback_token(tok_first, str, SNGL_Q);
 	return (i - start + 1);
 }
@@ -67,14 +67,14 @@ int	add_dblquote(char *line, t_token **tok_first, int i)
 		i ++;
 	if (line[i] == '\"')
 	{
-		str = ft_substr(line, start, i - start + 1);
+		str = ft_substr(line, start + 1, i - start - 1);
 		//malloc protection - not parser error????????
 		if (str == NULL)
 			parser_error("memory allocation error\n", tok_first, 1);
 	}
 	// else if (line[i] == '\0') error of unclosed quote (exit code 258?)
 	else
-		parser_error("syntax error (unclosed quote error)\n", tok_first, 1);
+		(*tok_first)->error = 1;
 	addback_token(tok_first, str, DBL_Q);
 	return (i - start + 1);
 }

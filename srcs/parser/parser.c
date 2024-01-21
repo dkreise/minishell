@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/20 15:35:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 16:33:33 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_token	*parser(char *line)
 	}
 	// if line[i-1] == '|' syntax error 
 	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')
-		parser_error("syntax error near unexpected token `newline'\n", &tok_first, 258);
+		tok_first->error = 258;
 	// (???) if line[i-1] == '$' -> error: no such file or directory (???)
 	return(tok_first); 
 }

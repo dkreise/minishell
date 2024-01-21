@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 12:28:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 16:33:00 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code);
 char		*find_env(char *str, int *j, t_tokens *tokens);
 char		*exp_dollar(t_tokens *tokens, int *i);
 t_token		*expander(t_tokens *tokens);
+
+void	print_toklst(char *header, t_token *tok_first);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
 t_token	**tok_to_lst(t_token *tok, int tok_cnt);
