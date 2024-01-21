@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 18:03:46 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 19:03:37 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_token
 	int				error;
 } t_token;
 
-
 //struct I need for executor:
 
 typedef struct s_tokens
@@ -113,6 +112,7 @@ typedef struct s_cmd
 } t_cmd;
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
+
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
 void		addback_token(t_token **tok, char *value, int type);
@@ -169,5 +169,6 @@ void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env);
 void	ft_exit(char **cmd, t_env *env, int exit_code);
 void	exec_blt(char **cmd, t_env *env, int exit_code);
+void	ft_echo(char **cmd);
 
 #endif

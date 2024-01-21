@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 18:06:06 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 19:01:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	exec_blt(char **cmd, t_env *env, int exit_code)
 		ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
 		ft_exit(cmd, env, exit_code);
+	else if (ft_strncmp(cmd[0], "echo", 5) == 0)
+		ft_echo(cmd);
 }
 
 void	print_toklst(char *header, t_token *tok_first)
@@ -133,8 +135,6 @@ int main(int ac, char **av , char **environment)
 {
 	char	*line;
 	t_env	*env;
-	///char **test;
-	//int		exit_code;
 	int			err_exit[2];
 
 	(void)ac;
@@ -146,9 +146,13 @@ int main(int ac, char **av , char **environment)
 	//int fdstart[2];
 	while (1)
 	{
+		do_signals();
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		if (!line)
-			return(1); // some error ????
+			{
+			printf("exit\n");
+			exit (0);
+		}
 		if (ft_strlen(line) != 0)
 		{
 			err_exit[1] = new_exit(line, env, err_exit[0]);

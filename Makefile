@@ -13,7 +13,7 @@ FILES += expander exp_redir exp_dollar
 
 FILES += executor init_cmd redirections errors_exec heredoc
 
-FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit
+FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo
 
 SRC = $(addsuffix .c, $(FILES))
 
