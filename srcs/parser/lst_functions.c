@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 15:46:32 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:59:09 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_token	*new_token(char *value, int type)
 	new->value = value;
 	new->type = type;
 	new->next = NULL;
+	new->hd_file = -1;
+	new->error = 0;
 	return (new);
 }
 
@@ -67,3 +69,36 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 	}
 	return (toks);
 }
+
+
+char	**lst_to_arr(t_env *env)
+{
+	int		cnt;
+	int		i;
+	char	**env_arr;
+	t_env	*env_first;
+
+	cnt = 0;
+	i = 0;
+	env_first = env;
+	while (env)
+	{
+		if (env->unset_flag == 0)
+			cnt ++;
+		env = env->next;
+	}
+	env_arr = ft_calloc(sizeof(char *), cnt + 1);
+	// malloc protection
+	while (env_first)
+	{
+		if (env_first->unset_flag == 0)
+		{
+			env_arr[i] = ft_strdup(env_first->data);
+			// malloc protection
+			i ++;
+		}
+		env_first = env_first->next;
+	}
+	return(env_arr);
+}
+
