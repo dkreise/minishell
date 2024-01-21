@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/20 01:51:17 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:53:16 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ t_env	*dup_env(char **env_array)
 	first->unset_flag = 0;
 	first->next = NULL;
 	env = first;
-	i = 1;
-	while (env_array[i] != NULL)
+	i = 0;
+	while (env_array[++i] != NULL)
 	{
 		new = malloc(sizeof(t_env));
 		if (!new)
@@ -46,7 +46,6 @@ t_env	*dup_env(char **env_array)
 		new->next = NULL;
 		env->next = new;
 		env = new;
-		i++;
 	}
 	return (first);
 }
@@ -85,7 +84,7 @@ int main(int ac, char **av , char **enviroment)
 {
 	char *line;
 	t_env *env;
-	//char **test;
+	char **test;
 	int		exit_code;
 
 	(void)ac;
@@ -102,8 +101,8 @@ int main(int ac, char **av , char **enviroment)
 			printf("exit\n");
 			exit (0);
 		}
-		//test = ft_split(line, ' ');
-		//exec_blt(test, env, exit_code);
+		test = ft_split(line, ' ');
+		exec_blt(test, env, exit_code);
 		add_history(line);
 	}
 	return (0);

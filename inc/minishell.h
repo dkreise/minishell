@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/16 20:52:22 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:13:22 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <termios.h>
 # include <libft.h>
 
 # define TRUE 1
@@ -146,5 +148,8 @@ void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env);
 void	ft_exit(char **cmd, t_env *env, int exit_code);
 void	ft_echo(char **cmd);
+
+//~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
+void	do_signals(void);
 
 #endif
