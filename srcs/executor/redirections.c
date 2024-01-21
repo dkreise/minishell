@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/14 18:21:46 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/19 18:06:01 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 
 	type = tokens->toks[i]->type;
 	file = 0;
-	if (type == 1)
+	if (type == IN)
 		file = open(tokens->toks[i]->value, O_RDONLY);
+	else if (type == HEREDOC)
+		file = tokens->toks[i]->hd_file;
 	// open file protection
 	if (file == -1)
 	{
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
-		cmd->error = 1;
+		cmd->exit_code = 1;
 	}
 	dup2(file, STDIN_FILENO);
 	close(file);
@@ -39,15 +41,15 @@ void	out_redir(t_tokens *tokens, t_cmd *cmd, int i)
 
 	type = tokens->toks[i]->type;
 	file = 0;
-	if (type == 2)
+	if (type == OUT)
 		file = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (type == 4)
+	else if (type == APPEND_OUT)
 		file = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	// open file protection
 	if (file == -1)
 	{
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
-		cmd->error = 1;
+		cmd->exit_code = 1;
 	}
 	dup2(file, STDOUT_FILENO);
 	close(file);
@@ -59,9 +61,9 @@ void	do_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	int	type;
 
 	type = tokens->toks[i]->type;
-	if (type == 1 || type == 3)
+	if (type == IN || type == HEREDOC)
 		in_redir(tokens, cmd, i);
-	else if (type == 2 || type == 4)
+	else if (type == OUT || type == APPEND_OUT)
 		out_redir(tokens, cmd, i);
 }
 

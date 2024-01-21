@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/16 15:34:46 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/21 18:59:09 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_token	*new_token(char *value, int type)
 	new->value = value;
 	new->type = type;
 	new->next = NULL;
+	new->hd_file = -1;
+	new->error = 0;
 	return (new);
 }
 
@@ -68,20 +70,35 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 	return (toks);
 }
 
-t_tokens	init_tokens(t_token *tok_first, char **new_env)
-{
-	t_tokens	tokens;
-	int			cnt;
 
-	tokens.first_tok = tok_first;
+char	**lst_to_arr(t_env *env)
+{
+	int		cnt;
+	int		i;
+	char	**env_arr;
+	t_env	*env_first;
+
 	cnt = 0;
-	while (tok_first)
+	i = 0;
+	env_first = env;
+	while (env)
 	{
-		cnt ++;
-		tok_first = tok_first->next;
+		if (env->unset_flag == 0)
+			cnt ++;
+		env = env->next;
 	}
-	tokens.tok_cnt = cnt;
-	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
-	tokens.env = new_env;
-	return (tokens);
+	env_arr = ft_calloc(sizeof(char *), cnt + 1);
+	// malloc protection
+	while (env_first)
+	{
+		if (env_first->unset_flag == 0)
+		{
+			env_arr[i] = ft_strdup(env_first->data);
+			// malloc protection
+			i ++;
+		}
+		env_first = env_first->next;
+	}
+	return(env_arr);
 }
+

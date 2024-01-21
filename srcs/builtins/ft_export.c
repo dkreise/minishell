@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/01/20 19:44:51 by rpliego          ###   ########.fr       */
+=======
+/*   Updated: 2024/01/18 13:20:23 by dkreise          ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +46,10 @@ void	replace_value(char *cmd, t_env *env)
 			// while (*temp->data != '=')
 			// 	temp->data++;
 			// temp->data++;
-			printf("data---->%s\n", temp->data);
+			//printf("data---->%s\n", temp->data);
 			temp->data = ft_strdup(cmd);
 			temp->unset_flag = 0;
-			printf("data---->%s\n", temp->data);
+			//printf("data---->%s\n", temp->data);
 		}
 		temp = temp->next;
 	}
