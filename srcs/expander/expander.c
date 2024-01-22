@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 12:33:47 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:44:01 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 		{
 			temp_val = ft_strdup(tcur->value);
 			// malloc protection
+			if (!temp_val)
+			{
+				malloc_error(NULL, tokens);
+				return ;
+			}
 			*i = *i + 1;
 		}
 		else if (tcur->type == SNGL_Q)
@@ -82,30 +87,6 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 	}
 	addback_token(exp_tok, val, exp_type);
 }
-/*
-void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
-{
-	char	*val;
-	//t_token	*tnext;
-	int		next_type;
-
-	//tnext = tokens->toks[*i]->next
-	val = NULL;
-	//printf("i in exp_str: %i\n", *i);
-	if (tokens->toks[*i]->next)
-		next_type = tokens->toks[*i]->next->type;
-	else
-		next_type = SPACE;
-	if (next_type == SPACE || next_type == IN || next_type == OUT || next_type == PIPE)
-	{
-		val = ft_strdup(tokens->toks[*i]->value);
-		//malloc protection
-		*i = *i + 1;
-	}
-	// else if SNGL_Q or DBL_Q   -->  exp_quotes
-	// else if DOLLAR  --> exp_dollar
-	addback_token(exp_tok, val, exp_type);
-}*/
 
 void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i) 
 {
@@ -118,14 +99,13 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 		exp_pipe(tokens, exp_tok, i);
 	else if (tok_type == DOLLAR)
 		exp_str(tokens, exp_tok, i, NONE);
-		//exp_dollar(tokens, exp_tok, i);
 }
 
 t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
 
-	tokens = init_tokens(exp_tok, new_env, exit_code);
+	tokens = init_tokens(exp_tok, new_env, exit_code); //protect it
 	tokens.paths = get_paths(lst_to_arr(tokens.env)); //how to free lst??
 	if (!tokens.paths)
 		dprintf(2, "paths are null\n");

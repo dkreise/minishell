@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 13:51:16 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:28:11 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	add_space(char *line, t_token **tok_first, int i)
 	str = ft_substr(line, i, 1);
 	if (str == NULL)
 	{
-		malloc_error(tok_first);
+		malloc_error(tok_first, NULL);
 		return (1);
 	}
 	addback_token(tok_first, str, SPACE);
@@ -48,7 +48,7 @@ int	add_singquote(char *line, t_token **tok_first, int i)
 		str = ft_substr(line, start, i - start + 1);
 		if (str == NULL)
 		{
-			malloc_error(tok_first);
+			malloc_error(tok_first, NULL);
 			return (1);
 		}
 	}
@@ -73,7 +73,7 @@ int	add_dblquote(char *line, t_token **tok_first, int i)
 		str = ft_substr(line, start + 1, i - start - 1);
 		if (str == NULL)
 		{
-			malloc_error(tok_first);
+			malloc_error(tok_first, NULL);
 			return (1);
 		}
 	}
@@ -90,7 +90,7 @@ int add_specchar(char *line, t_token **tok_first, int i)
 	str = ft_substr(line, i, 1);
 	if (str == NULL)
 	{
-		malloc_error(tok_first);
+		malloc_error(tok_first, NULL);
 		return (1);
 	}
 	addback_token(tok_first, str, is_specchar(line[i]));
@@ -110,7 +110,7 @@ int	add_str(char *line, t_token **tok_first, int i)
 	str = ft_substr(line, start, i - start);
 	if (str == NULL)
 	{
-		malloc_error(tok_first);
+		malloc_error(tok_first, NULL);
 		return (1);
 	}
 	addback_token(tok_first, str, NONE);

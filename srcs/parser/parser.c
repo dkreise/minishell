@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 15:43:23 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:28:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code)
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
 	if (!tokens.toks)
 	{
-		malloc_error(&tok_first);
+		malloc_error(&tok_first, NULL);
 		return (tokens);
 	}
 	tokens.prev_exit = exit_code;

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/22 15:41:22 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:44:03 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 
 	new_exit = 0;
 	tok_first = parser(line);
-	//print_toklst("PARSER", tok_first);
 	if (tok_first->error == MALLOC_ERROR)
 	{
 		free_tok(&tok_first);
@@ -129,7 +128,6 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
-		//print_toklst("EXPANDER", new_tok);
 		if (!new_tok && pars_tokens.error == 0)
 			new_exit = prev_exit;
 		else if (pars_tokens.error != 0)
