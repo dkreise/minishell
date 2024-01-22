@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:59:09 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:29:08 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 
 	i = 0;
 	toks = malloc(sizeof(t_token *) * tok_cnt);
+	if (!toks)
+		return (NULL);
 	while (i < tok_cnt)
 	{
 		toks[i] = tok;

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:04:00 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 12:33:47 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code)
 	t_tokens	tokens;
 
 	tokens = init_tokens(exp_tok, new_env, exit_code);
-	tokens.paths = get_paths(lst_to_arr(tokens.env)); 
+	tokens.paths = get_paths(lst_to_arr(tokens.env)); //how to free lst??
 	if (!tokens.paths)
 		dprintf(2, "paths are null\n");
 	// protect get_paths (can return NULL)
@@ -158,6 +158,8 @@ t_token	*expander(t_tokens *tokens)
 			exp_str(tokens, &exp_tok, &i, NONE);
 		else if (tokens->toks[i]->type >= DOLLAR)
 			exp_spec_char(tokens, &exp_tok, &i);
+		if (tokens->error != 0)
+			break ;
 	}
 	return (exp_tok);
 }

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 19:01:30 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 15:41:22 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,21 @@ t_env	*dup_env(char **env_array)
 
 int	check_blt(char *cmd)
 {
-	if (ft_strncmp(cmd, "env", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "pwd", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "exit", 6) == 0)
-		return (1);
+	if (cmd)
+	{
+		if (ft_strncmp(cmd, "env", 4) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "export", 7) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "unset", 6) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "pwd", 4) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "cd", 3) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "exit", 6) == 0)
+			return (1);
+	}
 	return (0);
 }
 
@@ -107,27 +110,40 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	new_exit = 0;
 	tok_first = parser(line);
 	//print_toklst("PARSER", tok_first);
-	if (tok_first->error != 0)
+	if (tok_first->error == MALLOC_ERROR)
 	{
-		new_exit = tok_first->error; //free here
-		parser_error("syntax error near unexpected token `newline'\n", &tok_first, 1);
+		free_tok(&tok_first);
+		exit(1);
+	}
+	else if (tok_first->error != 0)
+	{
+		new_exit = tok_first->error; //free here or not
+		print_error(tok_first->error);
 	}
 	else
 	{
 		pars_tokens = init_tokens(tok_first, env, prev_exit);
+		if (tok_first->error == MALLOC_ERROR)
+		{
+			free_tok(&tok_first);
+			exit(1);
+		}
 		new_tok = expander(&pars_tokens);
 		//print_toklst("EXPANDER", new_tok);
-		if (!new_tok)
+		if (!new_tok && pars_tokens.error == 0)
 			new_exit = prev_exit;
 		else if (pars_tokens.error != 0)
+		{
 			new_exit = 258; //print errors
+			print_error(pars_tokens.error);
+		}
 		else
 		{
 			exp_tokens = init_exp_tokens(new_tok, env, prev_exit);
 			new_exit = executor(&exp_tokens);
 		}
 	}
-	//free_tokens(&pars_tokens, &exp_tokens);
+	//free everything if exists
 	return(new_exit); //???	
 }
 
@@ -146,7 +162,7 @@ int main(int ac, char **av , char **environment)
 	//int fdstart[2];
 	while (1)
 	{
-		do_signals();
+		//do_signals();
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		if (!line)
 			{

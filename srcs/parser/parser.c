@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:07:33 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 15:43:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code)
 	}
 	tokens.tok_cnt = cnt;
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
+	if (!tokens.toks)
+	{
+		malloc_error(&tok_first);
+		return (tokens);
+	}
 	tokens.prev_exit = exit_code;
 	tokens.env = new_env;
 	tokens.error = 0;
@@ -64,36 +69,9 @@ t_token	*parser(char *line)
 		else
 			i += add_str(line, &tok_first, i);
 		if (tok_first->error != 0)
-			break ;
+			return (tok_first);
 	}
-	// if line[i-1] == '|' syntax error 
-	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')
+	if (i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
 	return(tok_first); 
 }
-/*
-int main(int argc, char **argv, char **env)
-{
-	(void)argc;
-	(void)argv;
-	char	*line;
-	t_token	*tok_first;
-
-	line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-	tok_first = parser(line);
-	t_tokens tokens = init_tokens(tok_first, env);
-	printf("PARSER:\n");
-	while (tok_first != NULL)
-	{
-		printf("type: %i value: %s.\n", tok_first->type, tok_first->value);
-		tok_first = tok_first->next;
-	}
-	t_token *new_tok = expander(&tokens);
-	printf("EXPANDER:\n");
-	while (new_tok != NULL)
-	{
-		printf("type: %i value: %s.\n", new_tok->type, new_tok->value);
-		new_tok = new_tok->next;
-	}
-	return (0);
-}*/

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:39:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:04:25 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 11:13:55 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i)
 		exp_str(tokens, exp_tok, i, PIPE);
 	}
 	else
+	{
+		*i = *i + 1;
 		tokens->error = PIPE;
+	}
 }
