@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 16:28:30 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 13:41:42 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,25 @@ int	is_specchar(char c)
 		return (PIPE);
 	return (0);
 }
-t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code)
+t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
+	t_token		*tok;
 	int			cnt;
 
-	tokens.first_tok = tok_first;
+	tok = *tok_first;
+	tokens.first_tok = tok;
 	cnt = 0;
-	while (tok_first)
+	while (tok)
 	{
 		cnt ++;
-		tok_first = tok_first->next;
+		tok = tok->next;
 	}
 	tokens.tok_cnt = cnt;
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
 	if (!tokens.toks)
 	{
-		malloc_error(&tok_first, NULL);
+		malloc_error(tok_first, NULL);
 		return (tokens);
 	}
 	tokens.prev_exit = exit_code;

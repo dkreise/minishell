@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 17:41:31 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 14:43:03 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ char	*find_env(char *str, int *j, t_tokens *tokens)
 		i ++;
 	*j = i;
 	if (i == 0)
-		return (ft_strdup("$"));
+	{
+		val = ft_strdup("$");
+		if (!val)
+			malloc_error(NULL, tokens);
+		return(val);
+	}
 	var = ft_substr(str, 0, i);
 	if (!var)
 	{
@@ -39,9 +44,9 @@ char	*find_env(char *str, int *j, t_tokens *tokens)
 		temp_env = temp_env->next;
 	}
 	free(var);
-	i = 0;
 	if (!temp_env)
 		return(0);
+	i = 0;
 	while (temp_env->data[i] != '=')
 		i ++;
 	val = ft_substr(temp_env->data, i + 1, ft_strlen(temp_env->data) - i - 1);
@@ -65,8 +70,7 @@ char	*exp_dollar(t_tokens *tokens, int *i)
 	if (!tnext)
 	{
 		*i = *i + 1;
-		val = ft_strdup("$")
-		// malloc protection
+		val = ft_strdup("$");
 		if (!val)
 			malloc_error(NULL, tokens);
 		return(val);
@@ -98,7 +102,7 @@ char	*exp_dollar(t_tokens *tokens, int *i)
 				return (NULL);
 			if (temp_val == 0 && j == strlen)
 			{
-				val = ft_strdup("")
+				val = ft_strdup("");
 				if (!val)
 				{
 					malloc_error(NULL, tokens);

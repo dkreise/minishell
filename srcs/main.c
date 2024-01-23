@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/22 16:44:03 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 14:50:56 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,21 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	}
 	else
 	{
-		pars_tokens = init_tokens(tok_first, env, prev_exit);
+		pars_tokens = init_tokens(&tok_first, env, prev_exit);
 		if (tok_first->error == MALLOC_ERROR)
 		{
+			//free tokens also
 			free_tok(&tok_first);
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
 		if (!new_tok && pars_tokens.error == 0)
 			new_exit = prev_exit;
+		else if (pars_tokens.error == MALLOC_ERROR)
+		{
+			// free smth
+			exit(1);
+		}
 		else if (pars_tokens.error != 0)
 		{
 			new_exit = 258; //print errors
@@ -137,7 +143,13 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		}
 		else
 		{
-			exp_tokens = init_exp_tokens(new_tok, env, prev_exit);
+			exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
+			// protect
+			if (new_tok->error == MALLOC_ERROR)
+			{
+				// free smth
+				exit(1);
+			}
 			new_exit = executor(&exp_tokens);
 		}
 	}

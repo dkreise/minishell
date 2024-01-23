@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 17:04:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 16:27:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 14:40:26 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 void	malloc_error(t_token **tok_first, t_tokens *tokens)
 {
 	ft_putstr_fd("minishell: memory allocation error\n", 2);
-	if (*tok_first)
+	if (tok_first)
 		(*tok_first)->error = MALLOC_ERROR;
 	else if (tokens)
 		tokens->error = MALLOC_ERROR;
