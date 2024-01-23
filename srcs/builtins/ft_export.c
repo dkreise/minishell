@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/01/20 19:44:51 by rpliego          ###   ########.fr       */
-=======
-/*   Updated: 2024/01/18 13:20:23 by dkreise          ###   ########.fr       */
->>>>>>> master
+/*   Updated: 2024/01/23 21:55:46 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +131,7 @@ void	ft_export(char **cmd, t_env **env) // "export" "a=b" "c=g"
 		{
 			if (var_exist(cmd[i], *env) == 1)
 			{
-				printf("entrooooo\n");
+				// printf("entrooooo\n");
 				replace_value(cmd[i], *env);
 			}
 			else

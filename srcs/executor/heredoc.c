@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/18 10:49:32 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 22:17:24 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void	check_hd(t_tokens *tokens)
 	char	*limiter;
 
 	i = 0;
+	do_signals(HEREDOC);
 	while (i < tokens->tok_cnt)
 	{
 		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
 		{
+			stop_signals();
 			pipe(hdfd);
 			//protect pipe??
 			limiter = tokens->toks[i]->value;
@@ -45,8 +47,8 @@ void	check_hd(t_tokens *tokens)
 			free(line);
 			close(hdfd[1]);
 			tokens->toks[i]->hd_file = hdfd[0];
-			//close(hdfd[0]); //remove
 		}
 		i ++;
 	}
+	do_signals(INTERACTIVE);
 }

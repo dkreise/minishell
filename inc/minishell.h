@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 19:13:41 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/23 22:13:26 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@
 # include <readline/history.h>
 # include <termios.h>
 # include <sys/wait.h>
-# include <libft.h>
-
-# define TRUE 1
-# define FALSE 0
+# include "../inc/libft/libft.h"
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -40,6 +37,14 @@
 # define O "\033[38;5;208m"	//orange
 # define F "\033[38;5;128m" //purple
 
+//~~~~~~~~~~~~~~~~SIGNALS DEFINES~~~~~~~~~~~~~~//
+# define INTERACTIVE 1
+# define NON_STANDAR 2
+# define HERDOC 3
+
+# define TRUE 1
+# define FALSE 0
+
 # define NONE 0
 # define FIRST 1
 # define SECOND 2
@@ -47,7 +52,7 @@
 # define NOENV "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applicat\
 ions/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki"
 
-# define SPACE 1
+# define SPACET 1
 # define SNGL_Q 2
 # define DBL_Q 3
 # define DOLLAR 4
@@ -167,13 +172,16 @@ void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
-void	ft_pwd(void);
-void	ft_cd(char **cmd, t_env *env);
-void	ft_exit(char **cmd, t_env *env, int exit_code);
-void	exec_blt(char **cmd, t_env *env, int exit_code);
+int		ft_pwd(void);
+int		ft_cd(char **cmd, t_env *env);
+void	ft_exit(char **cmd);
+void	exec_blt(char **cmd, t_env *env);
 void	ft_echo(char **cmd);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
-void	do_signals(void);
+void	do_signals(int	mode);
+void	heredoc_handle(int sig);
+void	handle_sigint(int sig);
+void	stop_signals(void);
 
 #endif

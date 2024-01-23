@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 17:03:50 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 21:58:36 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	add_space(char *line, t_token **tok_first, int i)
 	//malloc protection - not parser error????????
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);
-	addback_token(tok_first, str, SPACE);
+	addback_token(tok_first, str, SPACET);
 	j = 0;
 	while (line[i] == ' ' && line[i] != '\0')
 	{
@@ -84,6 +84,11 @@ int add_specchar(char *line, t_token **tok_first, int i)
 	char	*str;
 
 	str = ft_substr(line, i, 1);
+	// if (line[i] == '>' && line[i + 1] == '>')
+	// {
+	// 	str = ft_substr(line, i, 2);
+	// 	i ++;
+	// }
 	//malloc protection - not parser error????????
 	if (str == NULL)
 		parser_error("memory allocation error\n", tok_first, 1);

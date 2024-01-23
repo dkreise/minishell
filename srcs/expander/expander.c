@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:04:00 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:22:42 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 	tcur = tokens->toks[*i];
 	val = ft_strdup("");
 	temp_val = NULL;
-	while (tcur->type <= DOLLAR && tcur->type != SPACE)
+	while (tcur->type <= DOLLAR && tcur->type != SPACET)
 	{
 		if (tcur->type == NONE)// || tcur->type == SNGL_Q)
 		{
@@ -150,7 +150,7 @@ t_token	*expander(t_tokens *tokens)
 		//printf("i in loop: %i\n", i);
 		if (tokens->toks[i]->type == NONE)
 			exp_str(tokens, &exp_tok, &i, NONE);
-		else if (tokens->toks[i]->type == SPACE)
+		else if (tokens->toks[i]->type == SPACET)
 			i ++;
 		else if (tokens->toks[i]->type == SNGL_Q)
 			exp_str(tokens, &exp_tok, &i, NONE);

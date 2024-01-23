@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:07:33 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/22 19:12:19 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ t_token	*parser(char *line)
 		if (tok_first->error != 0)
 			break ;
 	}
-	// if line[i-1] == '|' syntax error 
-	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')
+	if (i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
 	return(tok_first); 
 }

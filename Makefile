@@ -40,7 +40,7 @@ LIBFT_FLAGS = -L$(LIBFT) -lft
 #########
 $(OBJ_DIR)/%.o: %.c	
 	@mkdir -p $(@D)
-	${CC} -MMD $(CFLAGS) -c -I inc/readline -I inc/libft $< -o $@
+	${CC} -MMD $(CFLAGS) -c -I inc -I inc/readline -I inc/libft -DREADLINE_LIBRARY $< -o $@
 
 all: conf
 	@$(MAKE) -C $(READLINE) --no-print-directory
@@ -54,7 +54,7 @@ conf:
 	fi
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(READLINE_FLAGS) $(LIBFT_FLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(READLINE_FLAGS) -DREADLINE_LIBRARY $(LIBFT_FLAGS)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:

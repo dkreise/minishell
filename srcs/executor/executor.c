@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/20 17:43:56 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 16:26:51 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	if (check_blt(cmd->args[0]))
 	{
 		// change arg of exec_blt to whole cmd to be able to set exit in err case
-		exec_blt(cmd->args, tokens->env, 0);
+		exec_blt(cmd->args, tokens->env);
 		exit(cmd->exit_code); 
 	}
 	execve(cmd->args[0], cmd->args, lst_to_arr(tokens->env));
@@ -126,16 +126,16 @@ void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt)
 		{
 			if (WIFEXITED(status))
 				cmd->exit_code = WEXITSTATUS(status);
-			/*else if (WIFSIGNALED(status))
+			else if (WIFSIGNALED(status))
 			{
 				if (WTERMSIG(status) == SIGINT)
-					cmd->err = 130;
+					cmd->exit_code = 130;
 				else if (WTERMSIG(status) == SIGQUIT)
 				{
-					cmd->err = 131;
+					cmd->exit_code = 131;
 					printf("Quit: 3\n");
 				}
-			}*/
+			}
 		}
 	}
 }
@@ -161,7 +161,7 @@ int	executor(t_tokens *tokens)
 		if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
 		{
 			is_first = 0;
-			exec_blt(cmd->args, tokens->env, 0);
+			exec_blt(cmd->args, tokens->env);
 			break ;
 		}
 		tokens->cmd_cnt ++;
@@ -186,7 +186,29 @@ int	executor(t_tokens *tokens)
 
 /*
 int main(int argc, char **argv, char **env)
-{
+{if (dup2(tokens->initfd[0], STDIN_FILENO) == -1) {
+    perror("dup2 STDIN_FILENO");
+}
+if (dup2(tokens->initfd[1], STDOUT_FILENO) == -1) {
+    perror("dup2 STDOUT_FILENO");
+}
+if (close(tokens->initfd[0]) == -1) {
+    perror("close tokens->initfd[0]");
+}
+if (close(tokens->initfd[1]) == -1) {
+    perror("close tokens->initfd[1]");
+}if (dup2(tokens->initfd[0], STDIN_FILENO) == -1) {
+    perror("dup2 STDIN_FILENO");
+}
+if (dup2(tokens->initfd[1], STDOUT_FILENO) == -1) {
+    perror("dup2 STDOUT_FILENO");
+}
+if (close(tokens->initfd[0]) == -1) {
+    perror("close tokens->initfd[0]");
+}
+if (close(tokens->initfd[1]) == -1) {
+    perror("close tokens->initfd[1]");
+}
 	(void)argc;
 	(void)argv;
 	//(void)env;

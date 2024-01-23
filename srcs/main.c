@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 19:12:53 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/23 21:57:19 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_env	*dup_env(char **env_array)
 	t_env *first;
 	t_env *env;
 	t_env *new;
+	t_env *temp;
 	int	i;
 
 	first = malloc(sizeof(t_env));
@@ -34,6 +35,7 @@ t_env	*dup_env(char **env_array)
 	first->data = ft_strdup(env_array[0]);
 	first->unset_flag = 0;
 	first->next = NULL;
+	temp = first;
 	env = first;
 	i = 0;
 	while (env_array[++i] != NULL)
@@ -52,22 +54,27 @@ t_env	*dup_env(char **env_array)
 
 int	check_blt(char *cmd)
 {
-	if (ft_strncmp(cmd, "env", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "pwd", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "exit", 6) == 0)
-		return (1);
+	if (cmd)
+	{
+		if (ft_strncmp(cmd, "env", 4) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "export", 7) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "unset", 6) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "pwd", 4) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "cd", 3) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "exit", 6) == 0)
+			return (1);
+		if (ft_strncmp(cmd, "echo", 5) == 0)
+			return (1);
+	}
 	return (0);
 }
 
-void	exec_blt(char **cmd, t_env *env, int exit_code)
+void	exec_blt(char **cmd, t_env *env)
 {
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
@@ -80,7 +87,7 @@ void	exec_blt(char **cmd, t_env *env, int exit_code)
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
-		ft_exit(cmd, env, exit_code);
+		ft_exit(cmd);
 	else if (ft_strncmp(cmd[0], "echo", 5) == 0)
 		ft_echo(cmd);
 }
@@ -138,19 +145,19 @@ int main(int ac, char **av , char **environment)
 
 	(void)ac;
 	(void)av;
-	//exit_code = 0;
 	print_header();
 	env = dup_env(environment);
 	err_exit[0] = 0;
 	//int fdstart[2];
+	do_signals(INTERACTIVE);
 	while (1)
 	{
-		do_signals();
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		if (!line)
-			{
-			printf("exit\n");
-			exit (0);
+		{
+    		if (isatty(STDIN_FILENO))
+			write(2, "exit\n", 6);
+    		exit (0);
 		}
 		if (ft_strlen(line) != 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:05:32 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/20 19:52:28 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/21 20:07:14 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	ft_echo(char **cmd)
 			i += 1;
 			n_flag = 1;
 		}
+		if (!cmd[i])
+			break ;
 		printf("%s", cmd[i]);
 		i++;
 		if (cmd[i])
