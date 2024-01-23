@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 17:04:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 14:40:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 16:42:48 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,4 @@ void	print_error(int tok_char)
 		ft_putstr_fd("`>'\n", 2);
 	else
 		ft_putstr_fd("`newline'\n", 2);
-}
-
-void	parser_error(char *msg, t_token **tok, int exit_code)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(msg, 2);
-	(*tok)->error = exit_code;
-	//free_toklst(tok);
-	//exit(exit_code);
 }

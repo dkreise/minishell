@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 13:36:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 16:42:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ int			add_str(char *line, t_token **tok_first, int i);
 int			is_specchar(char c);
 void		print_error(int tok_char);
 void		malloc_error(t_token **first_tok, t_tokens *tokens);
-void		parser_error(char *msg, t_token **tok, int exit_code);
 t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code);
 char		**lst_to_arr(t_env *env);
 t_token		*parser(char *line);

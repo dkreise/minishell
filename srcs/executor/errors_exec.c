@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/22 13:03:59 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 17:16:21 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,6 @@ void	free_tokens(t_tokens *tokens, int type)
 	}
 }
 
-// void	free_tokens(t_tokens *pars_tokens, t_tokens *exp_tokens)
-// {
-// 	free_tok(&(pars_tokens->first_tok));
-// 	free(pars_tokens->toks);
-// 	free_tok(&(exp_tokens->first_tok));
-// 	free(exp_tokens->toks);
-// 	free_env(&(exp_tokens->env));
-// 	free_paths(exp_tokens);
-// }
-
 void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 {
 	int	exit_code;
@@ -122,8 +112,6 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 		perror(arg);
 	if (exit_code > 0)
 	{
-		//free tokens and cmd
-		//free_tokens(tokens);
 		free_env(&(tokens->env));
 		free_paths(tokens);
 		free_cmd(&cmd);

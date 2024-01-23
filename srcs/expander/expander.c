@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 14:50:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:36:18 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	int			j;
 
 	first_dbl_tok = parser(tokens->toks[*i]->value);
-	if (first_dbl_tok->error == MALLOC_ERROR)
+	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
 	{
 		tokens->error = MALLOC_ERROR;
 		free_tok(&first_dbl_tok);
 		return (NULL);
 	}
 	dbl_tokens = init_tokens(&first_dbl_tok, tokens->env, tokens->prev_exit);
-	if (first_dbl_tok->error == MALLOC_ERROR)
+	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
 	{
 		tokens->error = MALLOC_ERROR;
 		// free dbl tokens also (or just dbl tokens.....)

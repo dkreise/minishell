@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 14:50:56 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:18:03 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ int main(int ac, char **av , char **environment)
 	(void)ac;
 	(void)av;
 	//exit_code = 0;
-	print_header();
+	//print_header();
 	env = dup_env(environment);
 	err_exit[0] = 0;
 	//int fdstart[2];
@@ -175,9 +175,10 @@ int main(int ac, char **av , char **environment)
 		//do_signals();
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		if (!line)
-			{
-			printf("exit\n");
-			exit (0);
+		{
+		    if (isatty(STDIN_FILENO))
+				write(2, "exit\n", 6);
+		    exit (0);
 		}
 		if (ft_strlen(line) != 0)
 		{
