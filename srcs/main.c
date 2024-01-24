@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 21:57:19 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/24 21:42:39 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_env	*dup_env(char **env_array)
 	t_env *temp;
 	int	i;
 
+	if (!env_array)
+		return (NULL);
 	first = malloc(sizeof(t_env));
 	if (!first)
 		return (NULL);
@@ -137,7 +139,20 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	return(new_exit); //???	
 }
 
-int main(int ac, char **av , char **environment)
+t_env	*our_env(void)
+{
+	t_env	*env;
+
+	env = malloc(sizeof(t_env));
+	if (!env)
+		return (NULL);
+	env->data = ft_strdup("SHLVL=1");
+	env->unset_flag = 0;
+	env->next = NULL;
+	return (env);
+}
+
+int main(int ac, char **av, char **environment)
 {
 	char	*line;
 	t_env	*env;
@@ -145,8 +160,11 @@ int main(int ac, char **av , char **environment)
 
 	(void)ac;
 	(void)av;
-	print_header();
-	env = dup_env(environment);
+	//print_header();
+	if (*environment == NULL)
+		env = our_env();
+	else
+		env = dup_env(environment);
 	err_exit[0] = 0;
 	//int fdstart[2];
 	do_signals(INTERACTIVE);
@@ -181,3 +199,8 @@ int main(int ac, char **av , char **environment)
 	}
 	return (0);
 }
+
+
+// a ^= b;
+// b ^= a;
+// a ^= b;
