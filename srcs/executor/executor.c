@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 12:25:54 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:40:49 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,11 +149,14 @@ int	executor(t_tokens *tokens)
 	t_cmd	*cmd;
 	t_cmd	*new_cmd;
 	int		is_first;
+	int		exit_hd;
 
 	i = 0;
 	is_first = 1;
 	cmd = NULL;
-	check_hd(tokens);
+	exit_hd = check_hd(tokens);
+	if (exit_hd)
+		return (exit_hd);
 	while (i < tokens->tok_cnt)
 	{
 		new_cmd = init_cmd(tokens, i);

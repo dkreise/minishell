@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 16:42:30 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:41:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,12 @@ typedef struct s_cmd
 
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
-void		addback_token(t_token **tok, char *value, int type);
-int			add_space(char *line, t_token **tok_first, int i);
-int			add_singquote(char *line, t_token **tok_first, int i);
-int			add_dblquote(char *line, t_token **tok_first, int i);
-int			add_specchar(char *line, t_token **tok_first, int i);
-int			add_str(char *line, t_token **tok_first, int i);
+int			addback_token(t_token **tok, char *value, int type);
+int			add_space(char *line, t_token **tok_first, int *i);
+int			add_singquote(char *line, t_token **tok_first, int *i);
+int			add_dblquote(char *line, t_token **tok_first, int *i);
+int			add_specchar(char *line, t_token **tok_first, int *i);
+int			add_str(char *line, t_token **tok_first, int *i);
 int			is_specchar(char c);
 void		print_error(int tok_char);
 void		malloc_error(t_token **first_tok, t_tokens *tokens);
@@ -154,7 +154,7 @@ void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
 char	**get_paths(char **env);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
-void	check_hd(t_tokens *tokens);
+int		check_hd(t_tokens *tokens);
 void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
 void	free_cmd(t_cmd **cmd);
 void	free_tok(t_token **tok);

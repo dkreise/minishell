@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 17:16:21 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:37:13 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	free_tokens(t_tokens *tokens, int type)
 {
 	free_tok(&(tokens->first_tok));
 	free(tokens->toks);
-	//free_env(&(tokens->env));
 	if (type == EXP)
 	{
 		free_paths(tokens);

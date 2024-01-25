@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/25 12:23:15 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:13:29 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,10 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 
 	new_exit = 0;
 	tok_first = parser(line);
-	if (tok_first->error == MALLOC_ERROR)
+	if (!tok_first || tok_first->error == MALLOC_ERROR)
 	{
 		free_tok(&tok_first);
+		free_env(&env);
 		exit(1);
 	}
 	else if (tok_first->error != 0)
@@ -126,6 +127,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		if (tok_first->error == MALLOC_ERROR)
 		{
 			free_tok(&tok_first);
+			free_env(&env);
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
@@ -138,11 +140,12 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		{
 			free_tokens(&pars_tokens, PARS);
 			free_tok(&new_tok);
+			free_env(&env);
 			exit(1);
 		}
 		else if (pars_tokens.error != 0)
 		{
-			new_exit = 258; //print errors
+			new_exit = 258;
 			print_error(pars_tokens.error);
 			free_tokens(&pars_tokens, PARS);
 			free_tok(&new_tok);
@@ -155,6 +158,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 				// free smth
 				free_tokens(&pars_tokens, PARS);
 				free_tokens(&exp_tokens, EXP);
+				free_env(&env);
 				exit(1);
 			}
 			new_exit = executor(&exp_tokens);
@@ -186,7 +190,8 @@ int main(int ac, char **av , char **environment)
 		{
 		    if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
-		    exit (0);
+			free_env(&env);
+		    exit(0);
 		}
 		if (ft_strlen(line) != 0)
 		{
@@ -194,7 +199,6 @@ int main(int ac, char **av , char **environment)
 			add_history(line);
 			err_exit[0] = err_exit[1];
 		}
-		// free everything??
 		free(line);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 13:41:42 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:09:10 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	is_specchar(char c)
 		return (PIPE);
 	return (0);
 }
+
 t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
@@ -55,25 +56,30 @@ t_token	*parser(char *line)
 {
 	int		i;
 	t_token	*tok_first;
+	int		err;
 
 	i = 0;
 	tok_first = NULL;
 	while (line[i] != '\0')
 	{
 		if (line[i] == ' ')
-			i += add_space(line, &tok_first, i);
+			err = add_space(line, &tok_first, &i);
 		else if (line[i] == '\'')
-			i += add_singquote(line, &tok_first, i);
+			err = add_singquote(line, &tok_first, &i);
 		else if (line[i] == '\"')
-			i += add_dblquote(line, &tok_first, i);
+			err = add_dblquote(line, &tok_first, &i);
 		else if (is_specchar(line[i]))
-			i += add_specchar(line, &tok_first, i);
+			err = add_specchar(line, &tok_first, &i);
 		else
-			i += add_str(line, &tok_first, i);
-		if (tok_first->error != 0)
+			err = add_str(line, &tok_first, &i);
+		if (err != 0)
+		{
+			if (tok_first)
+				tok_first->error = err;
 			return (tok_first);
+		}
 	}
-	if (i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
+	if (tok_first && i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
-	return(tok_first); 
+	return(tok_first);
 }
