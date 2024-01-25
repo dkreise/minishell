@@ -6,21 +6,22 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:24:48 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/12 16:00:26 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/24 22:05:00 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_pwd(void)
+int	ft_pwd(void)
 {
-	char buffer[1024];
+	char buffer[1024]; //look this
 
 	if (getcwd(buffer, sizeof(buffer)) != NULL)
         printf("%s\n", buffer);
-    else //cambiar
+    else
 	{
 		printf("ERROR AL HACER PWD\n");
-        exit(0);
+		return (1);
 	}
+	return (0);
 }

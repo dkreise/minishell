@@ -6,39 +6,62 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:42:14 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/20 19:14:36 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:58:56 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include <stdio.h>
+#include "readline.h"
+#include "minishell.h"
 
-void	handle_sigquit(int sig)
+void	heredoc_handle(int sig)
 {
-	(void)sig;
-	exit(0);
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 void	handle_sigint(int sig)
 {
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	//rl_replace_line("Nuevo texto", 0);
-	rl_redisplay();
+	if (sig == SIGINT)
+    {
+        printf("\n");
+		rl_replace_line("", 1);
+        rl_on_new_line();
+        rl_redisplay();
+    }
 }
 
-void	do_signals(void)
-{
-	struct sigaction sa_int;
-    sa_int.sa_handler = handle_sigint;
-    sigemptyset(&sa_int.sa_mask);
-    sa_int.sa_flags = 0;
-    sigaction(SIGINT, &sa_int, NULL);
+// void	stop_signals(void)
+// {
+// 	signal(SIGINT, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// }
 
-    struct sigaction sa_quit;
-    sa_quit.sa_handler = handle_sigquit;
-    sigemptyset(&sa_quit.sa_mask);
-    sa_quit.sa_flags = 0;
-    sigaction(SIGQUIT, &sa_quit, NULL);
+void	do_signals(int	mode)
+{
+	rl_catch_signals = 0;
+	struct sigaction sa;
+
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	if (mode == INTERACTIVE)
+	{
+		sa.sa_handler = handle_sigint;
+	}
+	else if (mode == HEREDOC)
+	{
+		sa.sa_handler = heredoc_handle;
+	}
+	else if (mode == NON_STANDAR)
+	{
+		sa.sa_handler = SIG_IGN;
+	}
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 16:57:21 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:20:33 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	check_hd(t_tokens *tokens)
 
 	i = 0;
 	pid = fork();
+	do_signals(HEREDOC);
 	if (pid == 0)
 	{
 		while (i < tokens->tok_cnt)
@@ -59,5 +60,6 @@ int	check_hd(t_tokens *tokens)
 	}
 	if (pid != 0)
 		waitpid(pid, &status, 0);
+	do_signals(INTERACTIVE);
 	return (0);
 }

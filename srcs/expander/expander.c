@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 12:22:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:21:04 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 		return ;
 	}
 	temp_val = NULL;
-	while (tcur->type <= DOLLAR && tcur->type != SPACE)
+	while (tcur->type <= DOLLAR && tcur->type != SPACET)
 	{
 		if (tcur->type == NONE)
 		{
@@ -180,7 +180,7 @@ t_token	*expander(t_tokens *tokens)
 	{
 		if (tokens->toks[i]->type == NONE)
 			exp_str(tokens, &exp_tok, &i, NONE);
-		else if (tokens->toks[i]->type == SPACE)
+		else if (tokens->toks[i]->type == SPACET)
 			i ++;
 		else if (tokens->toks[i]->type == SNGL_Q)
 			exp_str(tokens, &exp_tok, &i, NONE);
