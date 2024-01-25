@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 22:17:24 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:48:59 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	check_hd(t_tokens *tokens)
 	{
 		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
 		{
-			stop_signals();
 			pipe(hdfd);
 			//protect pipe??
 			limiter = tokens->toks[i]->value;

@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:24:48 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 21:56:58 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/24 22:05:00 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_pwd(void)
 {
-	char buffer[1024];
+	char buffer[1024]; //look this
 
 	if (getcwd(buffer, sizeof(buffer)) != NULL)
         printf("%s\n", buffer);

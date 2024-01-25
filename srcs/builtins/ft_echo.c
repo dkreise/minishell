@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:05:32 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 20:07:14 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/24 22:05:33 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_echo(char **cmd)
 	n_flag = 0;
 	while (cmd[i] != NULL)
 	{
-		if (has_n_flag(cmd[1]) == TRUE && n_flag == 0)
+		if (has_n_flag(cmd[1]) == TRUE && n_flag == 0) //need to fix echo -n -n -n "something"
 		{
 			i += 1;
 			n_flag = 1;
