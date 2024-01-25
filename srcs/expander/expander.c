@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 18:36:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:22:02 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*exp_dbl_q(t_tokens *tokens, int *i)
 {
-	//char		*line;
 	t_token		*first_dbl_tok;
 	t_tokens	dbl_tokens;
 	char		*temp_val;
@@ -32,7 +31,6 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
 	{
 		tokens->error = MALLOC_ERROR;
-		// free dbl tokens also (or just dbl tokens.....)
 		free_tok(&first_dbl_tok);
 		return (NULL);
 	}
@@ -41,6 +39,7 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	if (!val)
 	{
 		malloc_error(NULL, tokens);
+		free_tokens(&dbl_tokens, PARS);
 		return (NULL);
 	}
 	temp_val = NULL;
@@ -52,7 +51,7 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 			if (dbl_tokens.error == MALLOC_ERROR)
 			{
 				tokens->error = MALLOC_ERROR;
-				// free dbl tokens
+				free_tokens(&dbl_tokens, PARS);
 				return (NULL);
 			}
 		}
@@ -62,6 +61,7 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 			if (!temp_val)
 			{
 				malloc_error(NULL, tokens);
+				free_tokens(&dbl_tokens, PARS);
 				return (NULL);
 			}
 			j ++;
@@ -70,11 +70,12 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 		if (!val)
 		{
 			malloc_error(NULL, tokens);
+			free_tokens(&dbl_tokens, PARS);
 			return (NULL);
 		}
 	}
-	//free dbl_tokens
 	*i = *i + 1;
+	free_tokens(&dbl_tokens, PARS);
 	return(val);
 }
 

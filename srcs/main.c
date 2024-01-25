@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 18:18:03 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:23:15 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,45 +116,53 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	}
 	else if (tok_first->error != 0)
 	{
-		new_exit = tok_first->error; //free here or not
+		new_exit = tok_first->error;
 		print_error(tok_first->error);
+		free_tok(&tok_first);
 	}
 	else
 	{
 		pars_tokens = init_tokens(&tok_first, env, prev_exit);
 		if (tok_first->error == MALLOC_ERROR)
 		{
-			//free tokens also
 			free_tok(&tok_first);
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
 		if (!new_tok && pars_tokens.error == 0)
+		{
 			new_exit = prev_exit;
+			free_tokens(&pars_tokens, PARS);
+		}
 		else if (pars_tokens.error == MALLOC_ERROR)
 		{
-			// free smth
+			free_tokens(&pars_tokens, PARS);
+			free_tok(&new_tok);
 			exit(1);
 		}
 		else if (pars_tokens.error != 0)
 		{
 			new_exit = 258; //print errors
 			print_error(pars_tokens.error);
+			free_tokens(&pars_tokens, PARS);
+			free_tok(&new_tok);
 		}
 		else
 		{
 			exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
-			// protect
 			if (new_tok->error == MALLOC_ERROR)
 			{
 				// free smth
+				free_tokens(&pars_tokens, PARS);
+				free_tokens(&exp_tokens, EXP);
 				exit(1);
 			}
 			new_exit = executor(&exp_tokens);
+			free_tokens(&pars_tokens, PARS);
+			free_tokens(&exp_tokens, EXP);
 		}
 	}
-	//free everything if exists
-	return(new_exit); //???	
+	return(new_exit);
 }
 
 int main(int ac, char **av , char **environment)
@@ -183,17 +191,6 @@ int main(int ac, char **av , char **environment)
 		if (ft_strlen(line) != 0)
 		{
 			err_exit[1] = new_exit(line, env, err_exit[0]);
-			//dprintf(2, "new exit: %i\n", err_exit[1]);
-			/*
-			tok_first = parser(line);
-			//print_toklst("PARSER", tok_first);
-			if (tok_first->error == 0)
-
-			tokens = init_tokens(tok_first);
-			new_tok = expander(&tokens);
-			//print_toklst("EXPANDER", new_tok);
-			exp_tokens = init_exp_tokens(new_tok, env);
-			executor(&exp_tokens);*/
 			add_history(line);
 			err_exit[0] = err_exit[1];
 		}

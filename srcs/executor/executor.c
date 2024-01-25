@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 17:16:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:25:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	free_tok(&(tokens->first_tok));
+	free(tokens->toks);
 	if (cmd->exit_code != 0)
 		exit(cmd->exit_code);
 	if (check_blt(cmd->args[0]))
@@ -167,8 +169,6 @@ int	executor(t_tokens *tokens)
 		tokens->cmd_cnt ++;
 		pipe_redir(tokens, cmd, i);
 		pid = fork();
-		free_tok(&(tokens->first_tok));
-		free(tokens->toks);
 		if (pid == 0 && cmd->args[0])
 			do_execve(tokens, cmd);
 		else if (pid == 0 && !cmd->args[0])
