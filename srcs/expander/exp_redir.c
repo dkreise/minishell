@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:39:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:04:25 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:20:47 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe)
 		exp_type += 2;
 		tnext = tnext->next;
 	}
-	if (tnext->type == SPACE) // '<< ' or '< '
+	if (tnext->type == SPACET) // '<< ' or '< '
 	{
 		*i = *i + 1;
 		tnext = tnext->next;
@@ -39,7 +39,7 @@ void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe)
 	{
 		*i = *i + 1;
 		tnext = tnext->next;
-		if (tnext->type == SPACE)
+		if (tnext->type == SPACET)
 		{
 			*i = *i + 1;
 			tnext = tnext->next;
@@ -67,7 +67,7 @@ void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i)
 	t_token	*tnext;
 
 	tnext = tokens->toks[*i]->next;
-	if (tnext->type == SPACE)
+	if (tnext->type == SPACET)
 	{
 		*i = *i + 1;
 		tnext = tnext->next;
@@ -83,5 +83,8 @@ void	exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i)
 		exp_str(tokens, exp_tok, i, PIPE);
 	}
 	else
+	{
+		*i = *i + 1;
 		tokens->error = PIPE;
+	}
 }

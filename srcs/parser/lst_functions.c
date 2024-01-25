@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:59:09 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 13:51:19 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ t_token	*new_token(char *value, int type)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	//malloc protection 
-	new->value = value;
-	new->type = type;
-	new->next = NULL;
-	new->hd_file = -1;
-	new->error = 0;
+	if (new)
+	{
+		new->value = value;
+		new->type = type;
+		new->next = NULL;
+		new->hd_file = -1;
+		new->error = 0;
+	}
+	else
+		ft_putstr_fd("minishell: memory allocation error\n", 2);
 	return (new);
 }
 
@@ -41,17 +45,24 @@ t_token	*token_last(t_token *tok)
 	return (last);
 }
 
-void	addback_token(t_token **tok, char *value, int type)
+int	addback_token(t_token **tok, char *value, int type)
 {
 	t_token	*last;
 
 	if (*tok == NULL)
+	{
 		*tok = new_token(value, type);
+		if (!(*tok))
+			return (MALLOC_ERROR);
+	}
 	else
 	{
 		last = token_last(*tok);
 		last->next = new_token(value, type);
+		if (!last->next)
+			return (MALLOC_ERROR);
 	}
+	return (0);
 }
 
 t_token	**tok_to_lst(t_token *tok, int tok_cnt)
@@ -61,6 +72,8 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 
 	i = 0;
 	toks = malloc(sizeof(t_token *) * tok_cnt);
+	if (!toks)
+		return (NULL);
 	while (i < tok_cnt)
 	{
 		toks[i] = tok;

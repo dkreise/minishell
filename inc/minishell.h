@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 19:03:37 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:17:20 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,20 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <termios.h>
 # include <sys/wait.h>
 # include <libft.h>
 
 # define TRUE 1
 # define FALSE 0
+# define PARS 1
+# define EXP 2
+# define MALLOC_ERROR 42
+//# include "../inc/libft/libft.h"
+
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -38,6 +45,14 @@
 # define O "\033[38;5;208m"	//orange
 # define F "\033[38;5;128m" //purple
 
+//~~~~~~~~~~~~~~~~SIGNALS DEFINES~~~~~~~~~~~~~~//
+# define INTERACTIVE 1
+# define NON_STANDAR 2
+# define HERDOC 3
+
+# define TRUE 1
+# define FALSE 0
+
 # define NONE 0
 # define FIRST 1
 # define SECOND 2
@@ -45,7 +60,7 @@
 # define NOENV "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applicat\
 ions/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki"
 
-# define SPACE 1
+# define SPACET 1
 # define SNGL_Q 2
 # define DBL_Q 3
 # define DOLLAR 4
@@ -115,15 +130,16 @@ typedef struct s_cmd
 
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
-void		addback_token(t_token **tok, char *value, int type);
-int			add_space(char *line, t_token **tok_first, int i);
-int			add_singquote(char *line, t_token **tok_first, int i);
-int			add_dblquote(char *line, t_token **tok_first, int i);
-int			add_specchar(char *line, t_token **tok_first, int i);
-int			add_str(char *line, t_token **tok_first, int i);
+int			addback_token(t_token **tok, char *value, int type);
+int			add_space(char *line, t_token **tok_first, int *i);
+int			add_singquote(char *line, t_token **tok_first, int *i);
+int			add_dblquote(char *line, t_token **tok_first, int *i);
+int			add_specchar(char *line, t_token **tok_first, int *i);
+int			add_str(char *line, t_token **tok_first, int *i);
 int			is_specchar(char c);
-void		parser_error(char *msg, t_token **tok, int exit_code);
-t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code);
+void		print_error(int tok_char);
+void		malloc_error(t_token **first_tok, t_tokens *tokens);
+t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code);
 char		**lst_to_arr(t_env *env);
 t_token		*parser(char *line);
 
@@ -132,7 +148,7 @@ void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
 void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
-t_tokens	init_exp_tokens(t_token *exp_tok, t_env *new_env, int exit_code);
+t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code);
 char		*find_env(char *str, int *j, t_tokens *tokens);
 char		*exp_dollar(t_tokens *tokens, int *i);
 t_token		*expander(t_tokens *tokens);
@@ -150,13 +166,13 @@ void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
 char	**get_paths(char **env);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
-void	check_hd(t_tokens *tokens);
+int		check_hd(t_tokens *tokens);
 void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
 void	free_cmd(t_cmd **cmd);
 void	free_tok(t_token **tok);
 void	free_env(t_env **env);
 void	free_paths(t_tokens *tokens);
-void	free_tokens(t_tokens *pars_tokens, t_tokens *exp_tokens);
+void	free_tokens(t_tokens *tokens, int type);
 int		executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
@@ -165,10 +181,16 @@ void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
-void	ft_pwd(void);
-void	ft_cd(char **cmd, t_env *env);
-void	ft_exit(char **cmd, t_env *env, int exit_code);
-void	exec_blt(char **cmd, t_env *env, int exit_code);
+int		ft_pwd(void);
+int		ft_cd(char **cmd, t_env *env);
+void	ft_exit(char **cmd);
+void	exec_blt(char **cmd, t_env *env);
 void	ft_echo(char **cmd);
+
+//~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
+void	do_signals(int	mode);
+void	heredoc_handle(int sig);
+void	handle_sigint(int sig);
+void	stop_signals(void);
 
 #endif

@@ -3,26 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:57:38 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/21 18:58:31 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/23 21:54:18 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_exit(char **cmd, t_env *env, int exit_code)//NOT OK
+int	is_numeric(char **str)
 {
-	t_env *aux;
+	int	i;
+	int	j;
 
-	aux = env;
-	if (cmd[1][0] == '$')
+	i = 0;
+	j = 0;
+	while (str[1][i])
+	{
+		if (str[1][i] >= '0' && str[1][i] <= '9')
+			j++;
+		i++;
+	}
+	if (i == j)
+		return (TRUE);
+	return (FALSE);
+}
+
+void	ft_exit(char **cmd)
+{
+	if (cmd[1] == NULL)
 	{
 		printf("exit\n");
-
-		exit_code = ft_atoi(env->data);
-		printf("exit code -------> %i\n", exit_code);
+		exit(0);
 	}
-	printf("HOLAAAA\n");
+	else if (cmd[2])
+	{
+		printf("exit: too many arguments\n");
+		exit(1);
+	}	
+	else if (is_numeric(cmd) == FALSE)
+	{
+		printf("exit: numeric argument required\n");
+		exit(255);
+	}
+	else
+	{
+		printf("exit\n");
+		exit(ft_atoi(cmd[1]));
+	}
 }

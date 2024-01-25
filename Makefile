@@ -3,7 +3,7 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
 #########
 
 #########
@@ -13,12 +13,14 @@ FILES += expander exp_redir exp_dollar
 
 FILES += executor init_cmd redirections errors_exec heredoc
 
-FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo
+FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals
+
 
 SRC = $(addsuffix .c, $(FILES))
 
 
-vpath %.c srcs srcs/parser srcs/executor srcs/builtins srcs/expander
+vpath %.c srcs srcs/parser srcs/executor srcs/builtins srcs/expander srcs/signals
+
 #########
 
 #########
@@ -29,7 +31,7 @@ DEP = $(addsuffix .d, $(basename $(OBJ)))
 
 ########
 READLINE = inc/readline
-READLINE_FLAGS = -lreadline -ltermcap #-lhistory -lft
+READLINE_FLAGS = -L$(READLINE) -lreadline -ltermcap -lft
 LIBFT = inc/libft
 LIBFT_FLAGS = -L$(LIBFT) -lft
 ########
@@ -38,15 +40,21 @@ LIBFT_FLAGS = -L$(LIBFT) -lft
 #########
 $(OBJ_DIR)/%.o: %.c	
 	@mkdir -p $(@D)
-	${CC} $(CFLAGS) -Iinc/libft -MMD -c $< -o $@
+	${CC} -MMD $(CFLAGS) -c -I inc -I inc/readline -I inc/libft -DREADLINE_LIBRARY $< -o $@
 
-all:
-#	@$(MAKE) -C $(READLINE) --no-print-directory
+all: conf
+	@$(MAKE) -C $(READLINE) --no-print-directory
 	@$(MAKE) -C $(LIBFT) --no-print-directory
 	$(MAKE) $(NAME) --no-print-directory
 
+conf:
+	@if [ ! -f $(READL)config.status ]; then\
+		cd $(READL) && ./configure &> /dev/null; \
+		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
+	fi
+
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(READLINE_FLAGS) $(LIBFT_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(READLINE_FLAGS) -DREADLINE_LIBRARY $(LIBFT_FLAGS)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
@@ -66,5 +74,3 @@ re:	fclean all
 .PHONY: all clean fclean re
 
 -include $(DEP)
-
-#########

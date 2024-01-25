@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/21 18:07:33 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:23:04 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,28 @@ int	is_specchar(char c)
 		return (PIPE);
 	return (0);
 }
-t_tokens	init_tokens(t_token *tok_first, t_env *new_env, int exit_code)
+
+t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
+	t_token		*tok;
 	int			cnt;
 
-	tokens.first_tok = tok_first;
+	tok = *tok_first;
+	tokens.first_tok = tok;
 	cnt = 0;
-	while (tok_first)
+	while (tok)
 	{
 		cnt ++;
-		tok_first = tok_first->next;
+		tok = tok->next;
 	}
 	tokens.tok_cnt = cnt;
 	tokens.toks = tok_to_lst(tokens.first_tok, tokens.tok_cnt);
+	if (!tokens.toks)
+	{
+		malloc_error(tok_first, NULL);
+		return (tokens);
+	}
 	tokens.prev_exit = exit_code;
 	tokens.env = new_env;
 	tokens.error = 0;
@@ -48,52 +56,30 @@ t_token	*parser(char *line)
 {
 	int		i;
 	t_token	*tok_first;
+	int		err;
 
 	i = 0;
 	tok_first = NULL;
 	while (line[i] != '\0')
 	{
 		if (line[i] == ' ')
-			i += add_space(line, &tok_first, i);
+			err = add_space(line, &tok_first, &i);
 		else if (line[i] == '\'')
-			i += add_singquote(line, &tok_first, i);
+			err = add_singquote(line, &tok_first, &i);
 		else if (line[i] == '\"')
-			i += add_dblquote(line, &tok_first, i);
+			err = add_dblquote(line, &tok_first, &i);
 		else if (is_specchar(line[i]))
-			i += add_specchar(line, &tok_first, i);
+			err = add_specchar(line, &tok_first, &i);
 		else
-			i += add_str(line, &tok_first, i);
-		if (tok_first->error != 0)
-			break ;
+			err = add_str(line, &tok_first, &i);
+		if (err != 0)
+		{
+			if (tok_first)
+				tok_first->error = err;
+			return (tok_first);
+		}
 	}
-	// if line[i-1] == '|' syntax error 
-	if (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<')
+	if (tok_first && i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
-	return(tok_first); 
+	return(tok_first);
 }
-/*
-int main(int argc, char **argv, char **env)
-{
-	(void)argc;
-	(void)argv;
-	char	*line;
-	t_token	*tok_first;
-
-	line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-	tok_first = parser(line);
-	t_tokens tokens = init_tokens(tok_first, env);
-	printf("PARSER:\n");
-	while (tok_first != NULL)
-	{
-		printf("type: %i value: %s.\n", tok_first->type, tok_first->value);
-		tok_first = tok_first->next;
-	}
-	t_token *new_tok = expander(&tokens);
-	printf("EXPANDER:\n");
-	while (new_tok != NULL)
-	{
-		printf("type: %i value: %s.\n", new_tok->type, new_tok->value);
-		new_tok = new_tok->next;
-	}
-	return (0);
-}*/
