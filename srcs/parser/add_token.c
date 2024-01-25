@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:22:37 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:32:25 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int	add_dblquote(char *line, t_token **tok_first, int *ind)
 	char	*str;
 	int		start;
 	int		i;
+	int		err;
 
 	i = *ind;
+	err = 0;
 	start = i;
 	i ++;
 	str = NULL;
@@ -89,7 +91,10 @@ int	add_dblquote(char *line, t_token **tok_first, int *ind)
 		}
 	}
 	else
+	{
+		err = addback_token(tok_first, str, DBL_Q);
 		return (258);
+	}
 	*ind = *ind + (i - start + 1);
 	return (addback_token(tok_first, str, DBL_Q));
 }
