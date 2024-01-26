@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:25:42 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:44:08 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	executor(t_tokens *tokens)
 	is_first = 1;
 	cmd = NULL;
 	exit_hd = check_hd(tokens);
-	if (exit_hd)
+	if (exit_hd) //close hd file
 		return (exit_hd);
 	while (i < tokens->tok_cnt)
 	{
