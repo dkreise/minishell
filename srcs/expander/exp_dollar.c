@@ -6,15 +6,58 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 14:43:03 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 16:27:19 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*find_env(char *str, int *j, t_tokens *tokens)
+char	*dol_malloc_err(t_tokens *tokens)
 {
-	int		i;
+	malloc_error(NULL, tokens);
+	return (NULL);
+}
+
+char	*exp_tok_dol_aux(t_tokens *tokens)
+{
+	char	*val;
+
+	val = ft_strdup("");
+	if (val == NULL)
+		return (dol_malloc_err(tokens));
+	return(val);
+}
+
+char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
+{
+	char	*temp_val;
+	size_t	j;
+
+	j = 0;
+	if (tnext->value[0] == '?')
+	{
+		temp_val = ft_itoa(tokens->prev_exit);
+		if (!temp_val)
+			return (dol_malloc_err(tokens));
+		j ++;
+	}
+	else
+	{
+		temp_val = find_env(tnext->value, &j, tokens);
+		if (tokens->error == MALLOC_ERROR)
+			return (NULL);
+		if (temp_val == 0 && j == ft_strlen(tnext->value))
+			return (exp_tok_dol_aux(tokens));
+	}
+	if (j == ft_strlen(tnext->value))
+		return (temp_val);
+	else //if (j < strlen)
+		return (ft_strjoin(temp_val, ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
+}
+
+char	*find_env(char *str, size_t *j, t_tokens *tokens)
+{
+	size_t	i;
 	char	*var;
 	char	*val;
 	t_env	*temp_env;
@@ -32,10 +75,7 @@ char	*find_env(char *str, int *j, t_tokens *tokens)
 	}
 	var = ft_substr(str, 0, i);
 	if (!var)
-	{
-		malloc_error(NULL, tokens);
-		return (NULL);
-	}
+		return (dol_malloc_err(tokens));
 	temp_env = tokens->env;
 	while(temp_env != NULL)
 	{
@@ -51,76 +91,33 @@ char	*find_env(char *str, int *j, t_tokens *tokens)
 		i ++;
 	val = ft_substr(temp_env->data, i + 1, ft_strlen(temp_env->data) - i - 1);
 	if (!val)
-	{
-		malloc_error(NULL, tokens);
-		return (NULL);
-	}
+		return (dol_malloc_err(tokens));
 	return(val);
 }
 
 char	*exp_dollar(t_tokens *tokens, int *i)
 {
 	t_token	*tnext;
-	int		j;
-	int		strlen;
-	char	*temp_val;
 	char	*val;
 
 	tnext = tokens->toks[*i]->next;
+	*i = *i + 1;
 	if (!tnext)
 	{
-		*i = *i + 1;
 		val = ft_strdup("$");
 		if (!val)
 			malloc_error(NULL, tokens);
 		return(val);
 	}
-	j = 0;
-	strlen = ft_strlen(tnext->value);
 	if (tnext->type == SNGL_Q || tnext->type == DBL_Q)
-	{
-		*i = *i + 1;
 		val = ft_strdup("");
-	}
 	else if (tnext->type == NONE)
 	{
-		*i = *i + 2;
-		if (tnext->value[0] == '?')
-		{
-			temp_val = ft_itoa(tokens->prev_exit);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				return (NULL);
-			}
-			j ++;
-		}
-		else
-		{
-			temp_val = find_env(tnext->value, &j, tokens);
-			if (tokens->error == MALLOC_ERROR)
-				return (NULL);
-			if (temp_val == 0 && j == strlen)
-			{
-				val = ft_strdup("");
-				if (!val)
-				{
-					malloc_error(NULL, tokens);
-					return (NULL);
-				}
-				return(val);
-			}
-		}
-		if (j == strlen)
-			val = temp_val;
-		else //if (j < strlen)
-			val = ft_strjoin(temp_val, ft_substr(tnext->value, j, strlen - j), BOTH);
+		*i = *i + 1;
+		val = exp_tok_dol(tnext, tokens);
 	}
 	else
-	{
-		*i = *i + 1;
 		val = ft_strdup("$");
-	}
 	if (!val)
 		malloc_error(NULL, tokens);
 	return (val);
