@@ -6,70 +6,11 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 14:41:17 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 20:09:48 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
-{
-	char	*temp_val;
-	char	*val;
-	t_token	*tcur;
-
-	if (tokens->error == MALLOC_ERROR)
-		return ;
-	tcur = tokens->toks[*i];
-	val = ft_strdup("");
-	if (!val)
-	{
-		malloc_error(NULL, tokens);
-		return ;
-	}
-	temp_val = NULL;
-	while (tcur->type <= DOLLAR && tcur->type != SPACET)
-	{
-		if (tcur->type == NONE)
-		{
-			temp_val = ft_strdup(tcur->value);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				return ;
-			}
-			*i = *i + 1;
-		}
-		else if (tcur->type == SNGL_Q)
-		{
-			temp_val = ft_substr(tcur->value, 1, ft_strlen(tcur->value) - 2);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				return ;
-			}
-			*i = *i + 1;
-		}
-		else if (tcur->type == DBL_Q)
-			temp_val = exp_dbl_q(tokens, i);
-		else if (tcur->type == DOLLAR)
-			temp_val = exp_dollar(tokens, i);
-		if (tokens->error == MALLOC_ERROR)
-			return ;
-		val = ft_strjoin(val, temp_val, BOTH);
-		if (!val)
-		{
-			malloc_error(NULL, tokens);
-			return ;
-		}
-		if (*i >= tokens->tok_cnt)
-			break ;
-		tcur = tokens->toks[*i];
-		if (!tcur)
-			break ;
-	}
-	addback_token(exp_tok, val, exp_type);
-}
 
 void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i) 
 {
