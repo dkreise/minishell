@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 13:55:12 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:34:21 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,19 @@ int	add_space(char *line, t_token **tok_first, int *ind)
 	return (addback_token(tok_first, str, SPACET));
 }
 
-int	add_singquote(char *line, t_token **tok_first, int *ind)
+int	add_singquote(char *line, t_token **tok_first, int *i)
 {
 	char	*str;
 	int		start;
-	int		i;
-	int		err;
 
-	i = *ind;
-	err = 0;
-	start = i;
-	i ++;
+	start = *i;
 	str = NULL;
-	while (line[i] != '\'' && line[i] != '\0')
-		i ++;
-	if (line[i] == '\'')
+	*i = *i + 1;
+	while (line[*i] != '\'' && line[*i] != '\0')
+		*i = *i + 1;
+	if (line[*i] == '\'')
 	{
-		str = ft_substr(line, start, i - start + 1);
+		str = ft_substr(line, start, *i - start + 1);
 		if (str == NULL)
 		{
 			malloc_error(tok_first, NULL);
@@ -60,30 +56,26 @@ int	add_singquote(char *line, t_token **tok_first, int *ind)
 	}
 	else
 	{
-		err = addback_token(tok_first, str, SNGL_Q);
+		addback_token(tok_first, str, SNGL_Q);
 		return (258);
 	}
-	*ind = *ind + (i - start + 1);
+	*i = *i + 1;
 	return (addback_token(tok_first, str, SNGL_Q));
 }
 
-int	add_dblquote(char *line, t_token **tok_first, int *ind)
+int	add_dblquote(char *line, t_token **tok_first, int *i)
 {
 	char	*str;
 	int		start;
-	int		i;
-	int		err;
 
-	i = *ind;
-	err = 0;
-	start = i;
-	i ++;
+	start = *i;
+	*i = *i + 1;
 	str = NULL;
-	while (line[i] != '\"' && line[i] != '\0')
-		i ++;
-	if (line[i] == '\"')
+	while (line[*i] != '\"' && line[*i] != '\0')
+		*i = *i + 1;
+	if (line[*i] == '\"')
 	{
-		str = ft_substr(line, start + 1, i - start - 1);
+		str = ft_substr(line, start + 1, *i - start - 1);
 		if (str == NULL)
 		{
 			malloc_error(tok_first, NULL);
@@ -92,27 +84,25 @@ int	add_dblquote(char *line, t_token **tok_first, int *ind)
 	}
 	else
 	{
-		err = addback_token(tok_first, str, DBL_Q);
+		addback_token(tok_first, str, DBL_Q);
 		return (258);
 	}
-	*ind = *ind + (i - start + 1);
+	*i = *i + 1;
 	return (addback_token(tok_first, str, DBL_Q));
 }
 
-int add_specchar(char *line, t_token **tok_first, int *ind)
+int add_specchar(char *line, t_token **tok_first, int *i)
 {
 	char	*str;
-	int		i;
 
-	i = *ind;
-	str = ft_substr(line, i, 1);
+	str = ft_substr(line, *i, 1);
 	if (str == NULL)
 	{
 		malloc_error(tok_first, NULL);
 		return (MALLOC_ERROR);
 	}
-	*ind = *ind + 1;
-	return (addback_token(tok_first, str, is_specchar(line[i])));
+	*i = *i + 1;
+	return (addback_token(tok_first, str, is_specchar(line[*i - 1])));
 }
 
 int	add_str(char *line, t_token **tok_first, int *ind)

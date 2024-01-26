@@ -6,24 +6,11 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 17:04:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/23 16:42:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:35:10 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-// void	free_toklst(t_token **tok)
-// {
-// 	t_token	*prev;
-
-// 	while (*tok)
-// 	{
-// 		free((*tok)->value);
-// 		prev = *tok;
-// 		*tok = (*tok)->next;
-// 		free(prev);
-// 	}
-// }
 
 void	malloc_error(t_token **tok_first, t_tokens *tokens)
 {

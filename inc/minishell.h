@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/25 17:17:20 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:51:27 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
 void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
+char		*exp_dbl_q(t_tokens *tokens, int *i);
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code);
 char		*find_env(char *str, int *j, t_tokens *tokens);
 char		*exp_dollar(t_tokens *tokens, int *i);

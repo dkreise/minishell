@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 13:58:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:05:18 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	do_hd(t_tokens *tokens, int i)
 		}
 		free(line);
 		close(hdfd[1]);
-		tokens->toks[i]->hd_file = hdfd[0];
+		//tokens->toks[i]->hd_file = hdfd[0];
 		close(hdfd[0]);
 		exit (0);
 	}

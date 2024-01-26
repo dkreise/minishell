@@ -6,78 +6,11 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:21:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:41:17 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	*exp_dbl_q(t_tokens *tokens, int *i)
-{
-	t_token		*first_dbl_tok;
-	t_tokens	dbl_tokens;
-	char		*temp_val;
-	char		*val;
-	int			j;
-
-	first_dbl_tok = parser(tokens->toks[*i]->value);
-	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
-	{
-		tokens->error = MALLOC_ERROR;
-		free_tok(&first_dbl_tok);
-		return (NULL);
-	}
-	dbl_tokens = init_tokens(&first_dbl_tok, tokens->env, tokens->prev_exit);
-	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
-	{
-		tokens->error = MALLOC_ERROR;
-		free_tok(&first_dbl_tok);
-		return (NULL);
-	}
-	j = 0;
-	val = ft_strdup("");
-	if (!val)
-	{
-		malloc_error(NULL, tokens);
-		free_tokens(&dbl_tokens, PARS);
-		return (NULL);
-	}
-	temp_val = NULL;
-	while (j < dbl_tokens.tok_cnt)
-	{
-		if (dbl_tokens.toks[j]->type == DOLLAR)
-		{
-			temp_val = exp_dollar(&dbl_tokens, &j);
-			if (dbl_tokens.error == MALLOC_ERROR)
-			{
-				tokens->error = MALLOC_ERROR;
-				free_tokens(&dbl_tokens, PARS);
-				return (NULL);
-			}
-		}
-		else
-		{
-			temp_val = ft_strdup(dbl_tokens.toks[j]->value);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				free_tokens(&dbl_tokens, PARS);
-				return (NULL);
-			}
-			j ++;
-		}
-		val = ft_strjoin(val, temp_val, BOTH);
-		if (!val)
-		{
-			malloc_error(NULL, tokens);
-			free_tokens(&dbl_tokens, PARS);
-			return (NULL);
-		}
-	}
-	*i = *i + 1;
-	free_tokens(&dbl_tokens, PARS);
-	return(val);
-}
 
 void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 {
