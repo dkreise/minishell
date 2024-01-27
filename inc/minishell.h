@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/27 13:59:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 18:03:46 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ typedef struct s_env
 	struct s_env	*next; 
 } t_env;
 
-// TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:$, 5:<, 6:>, 7:| (((4:>,<,|,$)))
 typedef struct s_token
 {
 	char			*value;
@@ -90,8 +89,6 @@ typedef struct s_token
 	int				hd_file;
 	int				error;
 } t_token;
-
-//struct I need for executor:
 
 typedef struct s_tokens
 {
@@ -105,11 +102,6 @@ typedef struct s_tokens
 	int		prev_exit;
 	int		error;
 } t_tokens;
-/*
-types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
-	8:<<, 9:>> 
-example: ls -la | cat | cat >> file1   -->   ls:0 -la:0 cat:5 cat:5 file1:4 
-*/
 
 typedef struct s_cmd
 {
@@ -119,15 +111,10 @@ typedef struct s_cmd
 	int				redir_in_flg;
 	int				redir_out_flg;
 	int				pipe_done_flg;
-	//int				error;
 	int				exit_code;
-	//int			last_ind;
-	//char	*
-	//struct s_cmd	*next;
 } t_cmd;
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
-
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
 int			addback_token(t_token **tok, char *value, int type);
@@ -140,7 +127,7 @@ int			is_specchar(char c);
 void		print_error(int tok_char);
 void		malloc_error(t_token **first_tok, t_tokens *tokens);
 t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code);
-char		**lst_to_arr(t_env *env);
+char		**lst_to_arr(t_token **exp_tok, t_env *env);
 t_token		*parser(char *line);
 
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
@@ -165,7 +152,7 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
 void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
-char	**get_paths(char **env);
+char	**get_paths(t_token **tok_first, char **env, int i, int j);
 void	do_execve(t_tokens *tokens, t_cmd *cmd);
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
 int		check_hd(t_tokens *tokens);

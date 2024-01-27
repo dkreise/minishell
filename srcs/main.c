@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/27 13:19:15 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 18:29:49 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
-		print_toklst("EXPANDER", new_tok);
+		//print_toklst("EXPANDER", new_tok);
 		if (!new_tok && pars_tokens.error == 0)
 		{
 			new_exit = prev_exit;
@@ -162,7 +162,6 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
 			if (new_tok->error == MALLOC_ERROR)
 			{
-				// free smth
 				free_tokens(&pars_tokens, PARS);
 				free_tokens(&exp_tokens, EXP);
 				free_env(&env);
@@ -171,6 +170,8 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			new_exit = executor(&exp_tokens);
 			free_tokens(&pars_tokens, PARS);
 			free_tokens(&exp_tokens, EXP);
+			if (new_exit == MALLOC_ERROR)
+				exit (1);
 		}
 	}
 	return(new_exit);

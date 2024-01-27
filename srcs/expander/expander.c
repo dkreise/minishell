@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 13:46:30 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 14:39:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,25 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
+	char		**env_lst;
 
-	tokens = init_tokens(exp_tok, new_env, exit_code); //protect it
+	tokens = init_tokens(exp_tok, new_env, exit_code);
 	if ((*exp_tok)->error == MALLOC_ERROR)
 		return (tokens);
-	tokens.paths = get_paths(lst_to_arr(tokens.env)); //how to free lst??
-	if (!tokens.paths)
-		dprintf(2, "paths are null\n");
-	// protect get_paths (can return NULL)
+	env_lst = lst_to_arr(exp_tok, tokens.env);
+	if ((*exp_tok)->error == MALLOC_ERROR)
+		return (tokens);
+	tokens.paths = get_paths(exp_tok, env_lst, 0, 0);
+	if ((*exp_tok)->error == MALLOC_ERROR)
+	{
+		free(env_lst);
+		return (tokens);
+	}
 	tokens.initfd[0] = dup(STDIN_FILENO);
 	tokens.initfd[1] = dup(STDOUT_FILENO);
 	tokens.cmd_cnt = 0;
 	tokens.error = 0;
+	free(env_lst);
 	return (tokens);
 }
 

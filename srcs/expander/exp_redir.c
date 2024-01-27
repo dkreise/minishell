@@ -6,13 +6,13 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:39:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 13:59:00 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 14:01:05 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token	*exp_in_out_aux(t_token *tnext, t_tokens *tokens, int *i, int *exp_type)
+t_token	*exp_in_out_aux(t_token *tnext, t_tokens *tokens, int *i, int *exp_type)
 {
 	if (tnext->type == tokens->toks[*i]->type)
 	{
