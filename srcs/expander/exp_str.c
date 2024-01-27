@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 20:09:16 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 20:41:10 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:46:03 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*exp_none_or_snglq(t_token *tcur, int *i, t_tokens *tokens)
 	return (temp_val);
 }
 
-char	*exp_tok_str(t_token *tcur, t_tokens *tokens, int *i, char *val)
+static char	*exp_tok_str(t_token *tcur, t_tokens *tokens, int *i, char *val)
 {
 	char	*temp_val;
 
@@ -52,7 +52,7 @@ char	*exp_tok_str(t_token *tcur, t_tokens *tokens, int *i, char *val)
 	else if (tcur->type == DOLLAR)
 		temp_val = exp_dollar(tokens, i);
 	if (temp_val == NULL || tokens->error == MALLOC_ERROR)
-			return (NULL);
+		return (NULL);
 	val = ft_strjoin(val, temp_val, BOTH);
 	if (val == NULL)
 	{

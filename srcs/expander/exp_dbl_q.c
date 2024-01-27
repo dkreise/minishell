@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:40:36 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 20:08:27 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:43:00 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	val = exp_dblq_aux(dbl_tokens, tokens);
 	*i = *i + 1;
 	free_tokens(&dbl_tokens, PARS);
-	return(val);
+	return (val);
 }

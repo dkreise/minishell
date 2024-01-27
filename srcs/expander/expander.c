@@ -6,13 +6,13 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 20:09:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:46:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i) 
+void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 {
 	int	tok_type;
 

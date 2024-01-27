@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:44:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 20:08:14 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:44:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_env	*find_var(t_tokens *tokens, char *var)
 	t_env	*temp_env;
 
 	temp_env = tokens->env;
-	while(temp_env != NULL)
+	while (temp_env != NULL)
 	{
 		if (mod_strcmp(var, temp_env->data) == 1)
 			break ;
@@ -34,7 +34,7 @@ static char	*just_dollar(t_tokens *tokens)
 	val = ft_strdup("$");
 	if (!val)
 		malloc_error(NULL, tokens);
-	return(val);
+	return (val);
 }
 
 char	*find_env(char *str, size_t *j, t_tokens *tokens)
@@ -55,12 +55,12 @@ char	*find_env(char *str, size_t *j, t_tokens *tokens)
 		return (dol_malloc_err(tokens));
 	temp_env = find_var(tokens, var);
 	if (!temp_env)
-		return(0);
+		return (0);
 	i = 0;
 	while (temp_env->data[i] != '=')
 		i ++;
 	val = ft_substr(temp_env->data, i + 1, ft_strlen(temp_env->data) - i - 1);
 	if (!val)
 		return (dol_malloc_err(tokens));
-	return(val);
+	return (val);
 }

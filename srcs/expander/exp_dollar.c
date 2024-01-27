@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 20:07:32 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:43:56 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*exp_tok_dol_aux(t_tokens *tokens)
 	val = ft_strdup("");
 	if (val == NULL)
 		return (dol_malloc_err(tokens));
-	return(val);
+	return (val);
 }
 
 static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
@@ -51,7 +51,7 @@ static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 	}
 	if (j == ft_strlen(tnext->value))
 		return (temp_val);
-	else //if (j < strlen)
+	else
 		return (ft_strjoin(temp_val, ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
 }
 
@@ -67,7 +67,7 @@ char	*exp_dollar(t_tokens *tokens, int *i)
 		val = ft_strdup("$");
 		if (!val)
 			malloc_error(NULL, tokens);
-		return(val);
+		return (val);
 	}
 	if (tnext->type == SNGL_Q || tnext->type == DBL_Q)
 		val = ft_strdup("");

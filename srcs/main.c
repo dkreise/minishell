@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/26 14:50:34 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 13:19:15 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			exit(1);
 		}
 		new_tok = expander(&pars_tokens);
-		//print_toklst("EXPANDER", new_tok);
+		print_toklst("EXPANDER", new_tok);
 		if (!new_tok && pars_tokens.error == 0)
 		{
 			new_exit = prev_exit;
