@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/25 17:25:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 21:44:22 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,23 @@ void	print_header(void)
 	printf("%s|_| |_| |_|_|_| |_|_|___/_| |_||___|_|_|\n\n\n", F);
 }
 
+char *update_shlvl(char *str)
+{
+	int	ato;
+
+	while (*str != '=' && *str)
+		str++;
+	str++;
+	ato = ft_atoi(str);
+	ato += 1;
+	return (ft_strjoin("SHLVL=", ft_itoa(ato), 4));
+}
+
 t_env	*dup_env(char **env_array)
 {
 	t_env *first;
 	t_env *env;
 	t_env *new;
-	t_env *temp;
 	int	i;
 
 	if (!env_array)
@@ -37,7 +48,6 @@ t_env	*dup_env(char **env_array)
 	first->data = ft_strdup(env_array[0]);
 	first->unset_flag = 0;
 	first->next = NULL;
-	temp = first;
 	env = first;
 	i = 0;
 	while (env_array[++i] != NULL)
@@ -45,7 +55,14 @@ t_env	*dup_env(char **env_array)
 		new = malloc(sizeof(t_env));
 		if (!new)
 			return (NULL);
-		new->data = ft_strdup(env_array[i]);
+		if (ft_strncmp("SHLVL", env_array[i], 5) == 0)
+		{
+			//printf("entrooooo\n\n");
+			new->data = ft_strdup(update_shlvl(env_array[i]));
+			//printf("------%s------\n", new->data);
+		}
+		else
+			new->data = ft_strdup(env_array[i]);
 		new->unset_flag = 0;
 		new->next = NULL;
 		env->next = new;
@@ -187,6 +204,15 @@ t_env	*our_env(void)
 	return (env);
 }
 
+void update_global(int *err_exit)
+{
+	if (g_exit > 0)
+	{
+		g_exit = 0;
+		err_exit[0] = 1;
+	}
+}
+
 int main(int ac, char **av, char **environment)
 {
 	char	*line;
@@ -201,11 +227,14 @@ int main(int ac, char **av, char **environment)
 	else
 		env = dup_env(environment);
 	err_exit[0] = 0;
+	g_exit = 0;
 	//int fdstart[2];
-	do_signals(INTERACTIVE);
 	while (1)
 	{
+		do_signals(INTERACTIVE);
+		//do_sigign(SIGQUIT);;
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
+		//do_sigign(SIGINT);
 		if (!line)
 		{
 		    if (isatty(STDIN_FILENO))
@@ -219,6 +248,7 @@ int main(int ac, char **av, char **environment)
 			add_history(line);
 			err_exit[0] = err_exit[1];
 		}
+		update_global(err_exit);
 		free(line);
 	}
 	return (0);

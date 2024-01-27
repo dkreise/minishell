@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 21:55:46 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/27 18:02:09 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,23 @@ void	normal_export(char *cmd, t_env **env)
 	}
 }
 
+int	have_numb(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (ft_isdigit(cmd[i][0]) == TRUE)
+		{
+			printf("export: '%s': not a valid identifier\n", cmd[i]);
+			return (TRUE);
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
 void	ft_export(char **cmd, t_env **env) // "export" "a=b" "c=g"
 {
 	int	i;
@@ -125,7 +142,7 @@ void	ft_export(char **cmd, t_env **env) // "export" "a=b" "c=g"
 	i = 1;
 	if (!cmd[1])
 		special_export(*env);
-	else
+	else if (have_numb(cmd) == FALSE)
 	{
 		while (cmd[i] != NULL)
 		{

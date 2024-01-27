@@ -6,17 +6,19 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:05:32 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/24 22:05:33 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:52:55 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	has_n_flag(char *str)
+int	have_n_flag(char *str)
 {
 	int	i;
 
 	i = 1;
+	if (!str)
+		return (FALSE);
 	if (str[0] != '-')
 		return (FALSE);
 	while (str[i])
@@ -35,13 +37,13 @@ void	ft_echo(char **cmd)
 
 	i = 1;
 	n_flag = 0;
+	while (have_n_flag(cmd[i]) == TRUE && cmd[i]) //need to fix echo -n -n -n "something"
+	{
+		i++;
+		n_flag = 1;
+	}
 	while (cmd[i] != NULL)
 	{
-		if (has_n_flag(cmd[1]) == TRUE && n_flag == 0) //need to fix echo -n -n -n "something"
-		{
-			i += 1;
-			n_flag = 1;
-		}
 		if (!cmd[i])
 			break ;
 		printf("%s", cmd[i]);

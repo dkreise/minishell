@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:22:37 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:57:06 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	add_space(char *line, t_token **tok_first, int *ind)
 		j ++;
 	}
 	*ind = *ind + j;
-	return (addback_token(tok_first, str, SPACE));
+	return (addback_token(tok_first, str, SPACET));
 }
 
 int	add_singquote(char *line, t_token **tok_first, int *ind)

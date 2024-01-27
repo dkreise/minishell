@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:42:14 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/25 13:58:56 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/27 21:55:45 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ void	heredoc_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("\n");
+		g_exit = 1;
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		printf("\n");
+		//dprintf(2,"bobobbobobobobo\n");
+		exit(1);
 	}
 }
 
@@ -29,6 +32,7 @@ void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
     {
+		g_exit = 1;
         printf("\n");
 		rl_replace_line("", 1);
         rl_on_new_line();
@@ -36,15 +40,20 @@ void	handle_sigint(int sig)
     }
 }
 
-// void	stop_signals(void)
-// {
-// 	signal(SIGINT, SIG_IGN);
-// 	signal(SIGQUIT, SIG_IGN);
-// }
+void	do_sigign(int signum)
+{
+	struct sigaction	signal;
+
+	signal.sa_handler = SIG_IGN;
+	signal.sa_flags = SA_RESTART;
+	sigemptyset(&signal.sa_mask);
+	if (sigaction(signum, &signal, NULL) < 0)
+		exit (1);
+}
 
 void	do_signals(int	mode)
 {
-	rl_catch_signals = 0;
+	//rl_catch_signals = 0;
 	struct sigaction sa;
 
 	sa.sa_flags = SA_RESTART;

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:25:42 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 21:47:21 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	g_exit;
 
 // cat < tst.txt >> outptttt | ls
 t_tokens test_struct(void)
@@ -85,6 +87,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	do_signals(NON_STANDAR);
 	free_tok(&(tokens->first_tok));
 	free(tokens->toks);
 	if (cmd->exit_code != 0)
@@ -155,8 +158,12 @@ int	executor(t_tokens *tokens)
 	is_first = 1;
 	cmd = NULL;
 	exit_hd = check_hd(tokens);
-	if (exit_hd)
-		return (exit_hd);
+	// if (exit_hd == 1)
+	// {
+	// 	cmd->exit_code = 1;
+	// 	dprintf(2, "lalala %i\n", exit_hd);
+	// 	//return (exit_hd);
+	// }
 	while (i < tokens->tok_cnt)
 	{
 		new_cmd = init_cmd(tokens, i);
@@ -177,11 +184,14 @@ int	executor(t_tokens *tokens)
 		else if (pid == 0 && !cmd->args[0])
 			exit(0);
 	}
+	//dprintf(2, "i got here %i\n", exit_hd);
 	wait_process(cmd, pid, tokens->cmd_cnt);
 	dup2(tokens->initfd[0], STDIN_FILENO);
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
 	close(tokens->initfd[1]);
+	if (exit_hd == 1)
+		return 1;
 	return (cmd->exit_code);
 }
 
