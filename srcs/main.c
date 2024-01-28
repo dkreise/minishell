@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/25 17:25:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:04:43 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,23 @@ void	print_header(void)
 	printf("%s|_| |_| |_|_|_| |_|_|___/_| |_||___|_|_|\n\n\n", F);
 }
 
+char *update_shlvl(char *str)
+{
+	int	ato;
+
+	while (*str != '=' && *str)
+		str++;
+	str++;
+	ato = ft_atoi(str);
+	ato += 1;
+	return (ft_strjoin("SHLVL=", ft_itoa(ato), 4));
+}
+
 t_env	*dup_env(char **env_array)
 {
 	t_env *first;
 	t_env *env;
 	t_env *new;
-	t_env *temp;
 	int	i;
 
 	if (!env_array)
@@ -37,7 +48,6 @@ t_env	*dup_env(char **env_array)
 	first->data = ft_strdup(env_array[0]);
 	first->unset_flag = 0;
 	first->next = NULL;
-	temp = first;
 	env = first;
 	i = 0;
 	while (env_array[++i] != NULL)
@@ -45,7 +55,14 @@ t_env	*dup_env(char **env_array)
 		new = malloc(sizeof(t_env));
 		if (!new)
 			return (NULL);
-		new->data = ft_strdup(env_array[i]);
+		if (ft_strncmp("SHLVL", env_array[i], 5) == 0)
+		{
+			//printf("entrooooo\n\n");
+			new->data = ft_strdup(update_shlvl(env_array[i]));
+			//printf("------%s------\n", new->data);
+		}
+		else
+			new->data = ft_strdup(env_array[i]);
 		new->unset_flag = 0;
 		new->next = NULL;
 		env->next = new;
@@ -104,22 +121,81 @@ void	print_toklst(char *header, t_token *tok_first)
 	}
 }
 
+void	free_tok_env_exit(t_token **tok_first, t_env **env)
+{
+	free_tok(tok_first);
+	free_env(env);
+	exit(1);
+}
+
+int	exp_error(t_tokens *pars_tokens, t_token **new_tok)
+{
+	print_error(pars_tokens->error);
+	free_tokens(pars_tokens, PARS);
+	free_tok(new_tok);
+	return (258);
+}
+
+int	do_executor(t_env **env, int prev_exit, t_token **new_tok, t_tokens *pars_tokens)
+{
+	t_tokens	exp_tokens;
+	int			new_exit;
+
+	exp_tokens = init_exp_tokens(new_tok, *env, prev_exit);
+	if ((*new_tok)->error == MALLOC_ERROR)
+	{
+		free_tokens(pars_tokens, PARS);
+		free_tokens(&exp_tokens, EXP);
+		free_env(env);
+		exit(1);
+	}
+	new_exit = executor(&exp_tokens);
+	free_tokens(pars_tokens, PARS);
+	free_tokens(&exp_tokens, EXP);
+	if (new_exit == MALLOC_ERROR)
+		exit (1);
+	return (new_exit);
+}
+
+int	do_expander(t_env *env, int prev_exit, t_token *tok_first)
+{
+	t_tokens	pars_tokens;
+	t_token		*new_tok;
+	int			new_exit;
+
+	new_exit = 0;
+	pars_tokens = init_tokens(&tok_first, env, prev_exit);
+	if (tok_first->error == MALLOC_ERROR)
+		free_tok_env_exit(&tok_first, &env);
+	new_tok = expander(&pars_tokens);
+	//print_toklst("EXPANDER", new_tok);
+	if (!new_tok && pars_tokens.error == 0)
+	{
+		new_exit = prev_exit;
+		free_tokens(&pars_tokens, PARS);
+	}
+	else if (pars_tokens.error == MALLOC_ERROR)
+	{
+		free_tokens(&pars_tokens, PARS);
+		free_tok_env_exit(&new_tok, &env);
+	}
+	else if (pars_tokens.error != 0)
+		new_exit = exp_error(&pars_tokens, &new_tok);
+	else
+		new_exit = do_executor(&env, prev_exit, &new_tok, &pars_tokens);
+	return (new_exit);
+}
+
 int	new_exit(char *line, t_env *env, int prev_exit)
 {
 	t_token		*tok_first;
-	t_tokens	pars_tokens;
-	t_token		*new_tok;
-	t_tokens	exp_tokens;
 	int			new_exit;
 
 	new_exit = 0;
 	tok_first = parser(line);
+	//print_toklst("PARSER", tok_first);
 	if (!tok_first || tok_first->error == MALLOC_ERROR)
-	{
-		free_tok(&tok_first);
-		free_env(&env);
-		exit(1);
-	}
+		free_tok_env_exit(&tok_first, &env);
 	else if (tok_first->error != 0)
 	{
 		new_exit = tok_first->error;
@@ -127,51 +203,8 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		free_tok(&tok_first);
 	}
 	else
-	{
-		pars_tokens = init_tokens(&tok_first, env, prev_exit);
-		if (tok_first->error == MALLOC_ERROR)
-		{
-			free_tok(&tok_first);
-			free_env(&env);
-			exit(1);
-		}
-		new_tok = expander(&pars_tokens);
-		if (!new_tok && pars_tokens.error == 0)
-		{
-			new_exit = prev_exit;
-			free_tokens(&pars_tokens, PARS);
-		}
-		else if (pars_tokens.error == MALLOC_ERROR)
-		{
-			free_tokens(&pars_tokens, PARS);
-			free_tok(&new_tok);
-			free_env(&env);
-			exit(1);
-		}
-		else if (pars_tokens.error != 0)
-		{
-			new_exit = 258;
-			print_error(pars_tokens.error);
-			free_tokens(&pars_tokens, PARS);
-			free_tok(&new_tok);
-		}
-		else
-		{
-			exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
-			if (new_tok->error == MALLOC_ERROR)
-			{
-				// free smth
-				free_tokens(&pars_tokens, PARS);
-				free_tokens(&exp_tokens, EXP);
-				free_env(&env);
-				exit(1);
-			}
-			new_exit = executor(&exp_tokens);
-			free_tokens(&pars_tokens, PARS);
-			free_tokens(&exp_tokens, EXP);
-		}
-	}
-	return(new_exit);
+		new_exit = do_expander(env, prev_exit, tok_first);
+	return (new_exit);
 }
 
 t_env	*our_env(void)
@@ -185,6 +218,15 @@ t_env	*our_env(void)
 	env->unset_flag = 0;
 	env->next = NULL;
 	return (env);
+}
+
+void update_global(int *err_exit)
+{
+	if (g_exit > 0)
+	{
+		g_exit = 0;
+		err_exit[0] = 1;
+	}
 }
 
 int main(int ac, char **av, char **environment)
@@ -201,11 +243,13 @@ int main(int ac, char **av, char **environment)
 	else
 		env = dup_env(environment);
 	err_exit[0] = 0;
-	//int fdstart[2];
-	do_signals(INTERACTIVE);
+	g_exit = 0;
 	while (1)
 	{
+		do_signals(INTERACTIVE);
+		do_sigign(SIGQUIT);
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
+		do_sigign(SIGINT);
 		if (!line)
 		{
 		    if (isatty(STDIN_FILENO))
@@ -219,12 +263,77 @@ int main(int ac, char **av, char **environment)
 			add_history(line);
 			err_exit[0] = err_exit[1];
 		}
+		// dprintf(2, "exit: %i\n", err_exit[0]);
+		// dprintf(2, "gl: %i\n", g_exit);
+		//update_global(err_exit);
+		g_exit = 0;
+		// dprintf(2, "exit: %i\n", err_exit[0]);
+		// dprintf(2, "gl: %i\n", g_exit);
 		free(line);
 	}
 	return (0);
 }
 
+/*
+int	new_exit(char *line, t_env *env, int prev_exit)
+{
+	t_token		*tok_first;
+	int			new_exit;
 
-// a ^= b;
-// b ^= a;
-// a ^= b;
+	new_exit = 0;
+	tok_first = parser(line);
+	//print_toklst("PARSER", tok_first);
+	if (!tok_first || tok_first->error == MALLOC_ERROR)
+		free_tok_env_exit(&tok_first, &env);
+	else if (tok_first->error != 0)
+	{
+		new_exit = tok_first->error;
+		print_error(tok_first->error);
+		free_tok(&tok_first);
+	}
+	else
+	{
+		// pars_tokens = init_tokens(&tok_first, env, prev_exit);
+		// if (tok_first->error == MALLOC_ERROR)
+		// 	free_tok_env_exit(&tok_first, &env);
+		// new_tok = expander(&pars_tokens);
+		// //print_toklst("EXPANDER", new_tok);
+		// if (!new_tok && pars_tokens.error == 0)
+		// {
+		// 	new_exit = prev_exit;
+		// 	free_tokens(&pars_tokens, PARS);
+		// }
+		// else if (pars_tokens.error == MALLOC_ERROR)
+		// {
+		// 	free_tokens(&pars_tokens, PARS);
+		// 	free_tok_env_exit(&new_tok, &env);
+		// }
+		// else if (pars_tokens.error != 0)
+		// {
+		// 	new_exit = 258;
+		// 	print_error(pars_tokens.error);
+		// 	free_tokens(&pars_tokens, PARS);
+		// 	free_tok(&new_tok);
+		// }
+		// else
+		// {
+		// 	// exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
+		// 	// if (new_tok->error == MALLOC_ERROR)
+		// 	// {
+		// 	// 	free_tokens(&pars_tokens, PARS);
+		// 	// 	free_tokens(&exp_tokens, EXP);
+		// 	// 	free_env(&env);
+		// 	// 	exit(1);
+		// 	// }
+		// 	// new_exit = executor(&exp_tokens);
+		// 	// free_tokens(&pars_tokens, PARS);
+		// 	// free_tokens(&exp_tokens, EXP);
+		// 	// if (new_exit == MALLOC_ERROR)
+		// 	// 	exit (1);
+		// 	new_exit = do_executor(&env, prev_exit, &new_tok, &pars_tokens);
+		// }
+		new_exit = do_expander(env, prev_exit, tok_first);
+	}
+	return (new_exit);
+}
+*/

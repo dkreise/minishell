@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:25:42 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:41:22 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,31 +38,17 @@ t_tokens test_struct(void)
 	return (tokens);
 }
 
-char	**get_paths(char **env)
+char	**get_paths(t_token **tok_first, char **env, int i, int j)
 {
 	char	**paths;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	//dprintf(2, "*env: %s\n", env[i]);
 	while (env[i])
 	{
-		//dprintf(2, "*env: %s\n", env[i]);
-		//dprintf(2, "strncmp: %i\n", ft_strncmp(env[i], "PATH", 4));
 		if (ft_strncmp(env[i], "PATH", 4) != 0)
 			i ++;
 		else if (ft_strncmp(env[i], "PATH", 4) == 0)
-		{
-			//dprintf(2, "sillyyyyyy\n");
 			break ;
-		}
 	}
-	//dprintf(2, "*env: %s\n", *dup_env);
-
-	if (!(env[i]))
-		dprintf(2, "*dup_env is null\n");
 	if (env[i])
 	{
 		while (env[i][j] != '=' && env[i][j] != '\0')
@@ -70,12 +56,12 @@ char	**get_paths(char **env)
 		j ++;
 		paths = ft_split(*(env + i) + j, ':');
 		if (!paths)
+		{
+			malloc_error(tok_first, NULL);
 			return (NULL);
-		//ft_free(env); //function to release env. Use it before returns
+		}
 		return (paths);
 	}
-	//if (!env_start && path dont exists)
-	//	*dup_env = NOENV;
 	return (NULL);
 }
 
@@ -85,6 +71,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	do_signals(NON_STANDAR);
 	free_tok(&(tokens->first_tok));
 	free(tokens->toks);
 	if (cmd->exit_code != 0)
@@ -95,7 +82,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 		exec_blt(cmd->args, tokens->env);
 		exit(cmd->exit_code); 
 	}
-	execve(cmd->args[0], cmd->args, lst_to_arr(tokens->env));
+	execve(cmd->args[0], cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
 	if (!tokens->paths)
 		dprintf(2, "paths are null\n");
 	if (tokens->paths)
@@ -106,15 +93,13 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 					cmd->args[0], FIRST);
 			// malloc protection
 			//dprintf(2, "path: %s\n", path);
-			execve(path, cmd->args, lst_to_arr(tokens->env));
+			execve(path, cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
 			free(path);
 			i ++;
 		}
 	}
 	cmd->exit_code = 127;
 	exit_error(cmd->args[0], "command not found\n", tokens, cmd);
-	//dprintf(2, "%s: command not found\n", cmd->args[0]);
-	//exit(127);
 }
 
 void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt)
@@ -155,106 +140,37 @@ int	executor(t_tokens *tokens)
 	is_first = 1;
 	cmd = NULL;
 	exit_hd = check_hd(tokens);
-	if (exit_hd)
-		return (exit_hd);
-	while (i < tokens->tok_cnt)
+	if (exit_hd == 0)
 	{
-		new_cmd = init_cmd(tokens, i);
-		new_cmd->prev = cmd;
-		cmd = new_cmd;
-		i += args_cnt(tokens, i);
-		if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+		while (i < tokens->tok_cnt)
 		{
-			is_first = 0;
-			exec_blt(cmd->args, tokens->env);
-			break ;
+			new_cmd = init_cmd(tokens, i);
+			if (tokens->error == MALLOC_ERROR)
+				return (MALLOC_ERROR);
+			new_cmd->prev = cmd;
+			cmd = new_cmd;
+			i += args_cnt(tokens, i);
+			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+			{
+				is_first = 0;
+				exec_blt(cmd->args, tokens->env);
+				break ;
+			}
+			tokens->cmd_cnt ++;
+			pipe_redir(tokens, cmd, i);
+			pid = fork();
+			if (pid == 0 && cmd->args[0])
+				do_execve(tokens, cmd);
+			else if (pid == 0 && !cmd->args[0])
+				exit(0);
 		}
-		tokens->cmd_cnt ++;
-		pipe_redir(tokens, cmd, i);
-		pid = fork();
-		if (pid == 0 && cmd->args[0])
-			do_execve(tokens, cmd);
-		else if (pid == 0 && !cmd->args[0])
-			exit(0);
+		wait_process(cmd, pid, tokens->cmd_cnt);
 	}
-	wait_process(cmd, pid, tokens->cmd_cnt);
 	dup2(tokens->initfd[0], STDIN_FILENO);
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
 	close(tokens->initfd[1]);
+	if (exit_hd == 1)
+		return 1;
 	return (cmd->exit_code);
 }
-
-/*
-int main(int argc, char **argv, char **env)
-{if (dup2(tokens->initfd[0], STDIN_FILENO) == -1) {
-    perror("dup2 STDIN_FILENO");
-}
-if (dup2(tokens->initfd[1], STDOUT_FILENO) == -1) {
-    perror("dup2 STDOUT_FILENO");
-}
-if (close(tokens->initfd[0]) == -1) {
-    perror("close tokens->initfd[0]");
-}
-if (close(tokens->initfd[1]) == -1) {
-    perror("close tokens->initfd[1]");
-}if (dup2(tokens->initfd[0], STDIN_FILENO) == -1) {
-    perror("dup2 STDIN_FILENO");
-}
-if (dup2(tokens->initfd[1], STDOUT_FILENO) == -1) {
-    perror("dup2 STDOUT_FILENO");
-}
-if (close(tokens->initfd[0]) == -1) {
-    perror("close tokens->initfd[0]");
-}
-if (close(tokens->initfd[1]) == -1) {
-    perror("close tokens->initfd[1]");
-}
-	(void)argc;
-	(void)argv;
-	//(void)env;
-
-	t_tokens test_s = test_struct();
-	executor(&test_s, env);
-	return (0);
-}*/
-/*
-char	**get_paths(char **env)
-{
-	char	**paths;
-	int		i;
-	//char	**dup_env;
-	
-	//dup_env = env;
-	i = 0;
-	dprintf(2, "*env: %s\n", *dup_env);
-	while (*dup_env)
-	{
-		// dprintf(2, "*env: %s\n", *dup_env);
-		// dprintf(2, "strncmp: %i\n", ft_strncmp(*dup_env, "PATH", 4));
-		if (ft_strncmp(*dup_env, "PATH", 4) != 0)
-			dup_env ++;
-		else if (ft_strncmp(*dup_env, "PATH", 4) == 0)
-		{
-			dprintf(2, "sillyyyyyy\n");
-			break ;
-		}
-	}
-	//dprintf(2, "*env: %s\n", *dup_env);
-
-	if (!(*dup_env))
-		dprintf(2, "*dup_env is null\n");
-	if (*dup_env)
-	{
-		while (**dup_env != '=' && **dup_env != '\0')
-			(*dup_env)++;
-		paths = ft_split(*dup_env, ':');
-		if (!paths)
-			return (NULL);
-		//ft_free(env); //function to release env. Use it before returns
-		return (paths);
-	}
-	//if (!env_start && path dont exists)
-	//	*dup_env = NOENV;
-	return (NULL);
-}*/

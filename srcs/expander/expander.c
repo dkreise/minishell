@@ -6,139 +6,13 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:21:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/27 14:39:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*exp_dbl_q(t_tokens *tokens, int *i)
-{
-	t_token		*first_dbl_tok;
-	t_tokens	dbl_tokens;
-	char		*temp_val;
-	char		*val;
-	int			j;
-
-	first_dbl_tok = parser(tokens->toks[*i]->value);
-	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
-	{
-		tokens->error = MALLOC_ERROR;
-		free_tok(&first_dbl_tok);
-		return (NULL);
-	}
-	dbl_tokens = init_tokens(&first_dbl_tok, tokens->env, tokens->prev_exit);
-	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
-	{
-		tokens->error = MALLOC_ERROR;
-		free_tok(&first_dbl_tok);
-		return (NULL);
-	}
-	j = 0;
-	val = ft_strdup("");
-	if (!val)
-	{
-		malloc_error(NULL, tokens);
-		free_tokens(&dbl_tokens, PARS);
-		return (NULL);
-	}
-	temp_val = NULL;
-	while (j < dbl_tokens.tok_cnt)
-	{
-		if (dbl_tokens.toks[j]->type == DOLLAR)
-		{
-			temp_val = exp_dollar(&dbl_tokens, &j);
-			if (dbl_tokens.error == MALLOC_ERROR)
-			{
-				tokens->error = MALLOC_ERROR;
-				free_tokens(&dbl_tokens, PARS);
-				return (NULL);
-			}
-		}
-		else
-		{
-			temp_val = ft_strdup(dbl_tokens.toks[j]->value);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				free_tokens(&dbl_tokens, PARS);
-				return (NULL);
-			}
-			j ++;
-		}
-		val = ft_strjoin(val, temp_val, BOTH);
-		if (!val)
-		{
-			malloc_error(NULL, tokens);
-			free_tokens(&dbl_tokens, PARS);
-			return (NULL);
-		}
-	}
-	*i = *i + 1;
-	free_tokens(&dbl_tokens, PARS);
-	return(val);
-}
-
-void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
-{
-	char	*temp_val;
-	char	*val;
-	t_token	*tcur;
-
-	if (tokens->error == MALLOC_ERROR)
-		return ;
-	tcur = tokens->toks[*i];
-	val = ft_strdup("");
-	if (!val)
-	{
-		malloc_error(NULL, tokens);
-		return ;
-	}
-	temp_val = NULL;
-	while (tcur->type <= DOLLAR && tcur->type != SPACET)
-	{
-		if (tcur->type == NONE)
-		{
-			temp_val = ft_strdup(tcur->value);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				return ;
-			}
-			*i = *i + 1;
-		}
-		else if (tcur->type == SNGL_Q)
-		{
-			temp_val = ft_substr(tcur->value, 1, ft_strlen(tcur->value) - 2);
-			if (!temp_val)
-			{
-				malloc_error(NULL, tokens);
-				return ;
-			}
-			*i = *i + 1;
-		}
-		else if (tcur->type == DBL_Q)
-			temp_val = exp_dbl_q(tokens, i);
-		else if (tcur->type == DOLLAR)
-			temp_val = exp_dollar(tokens, i);
-		if (tokens->error == MALLOC_ERROR)
-			return ;
-		val = ft_strjoin(val, temp_val, BOTH);
-		if (!val)
-		{
-			malloc_error(NULL, tokens);
-			return ;
-		}
-		if (*i >= tokens->tok_cnt)
-			break ;
-		tcur = tokens->toks[*i];
-		if (!tcur)
-			break ;
-	}
-	addback_token(exp_tok, val, exp_type);
-}
-
-void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i) 
+void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 {
 	int	tok_type;
 
@@ -154,18 +28,25 @@ void	exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i)
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code)
 {
 	t_tokens	tokens;
+	char		**env_lst;
 
-	tokens = init_tokens(exp_tok, new_env, exit_code); //protect it
+	tokens = init_tokens(exp_tok, new_env, exit_code);
 	if ((*exp_tok)->error == MALLOC_ERROR)
 		return (tokens);
-	tokens.paths = get_paths(lst_to_arr(tokens.env)); //how to free lst??
-	if (!tokens.paths)
-		dprintf(2, "paths are null\n");
-	// protect get_paths (can return NULL)
+	env_lst = lst_to_arr(exp_tok, tokens.env);
+	if ((*exp_tok)->error == MALLOC_ERROR)
+		return (tokens);
+	tokens.paths = get_paths(exp_tok, env_lst, 0, 0);
+	if ((*exp_tok)->error == MALLOC_ERROR)
+	{
+		free(env_lst);
+		return (tokens);
+	}
 	tokens.initfd[0] = dup(STDIN_FILENO);
 	tokens.initfd[1] = dup(STDOUT_FILENO);
 	tokens.cmd_cnt = 0;
 	tokens.error = 0;
+	free(env_lst);
 	return (tokens);
 }
 
