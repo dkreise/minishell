@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 15:42:14 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 16:17:06 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 	}
 	else
 		perror(arg);
-	if (exit_code > 0)
+	if (exit_code == 127)
 	{
 		free_env(&(tokens->env));
 		free_paths(tokens);

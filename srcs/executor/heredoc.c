@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/26 14:05:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 13:19:07 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,13 @@ void	do_hd(t_tokens *tokens, int i)
 int	check_hd(t_tokens *tokens)
 {
 	int		i;
-	//pid_t	pid;
-	//int		status;
 
 	i = 0;
-	//pid = fork();
-	//do_signals(HEREDOC);
-	//if (pid == 0)
-	//{
-		while (i < tokens->tok_cnt)
-		{
-			if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
-				do_hd(tokens, i);
-			i ++;
-		}
-		//exit(0);
-	//}
-	//if (pid != 0)
-	//	waitpid(pid, &status, 0);
-	//do_signals(INTERACTIVE);
+	while (i < tokens->tok_cnt)
+	{
+		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
+			do_hd(tokens, i);
+		i ++;
+	}
 	return (0);
 }
