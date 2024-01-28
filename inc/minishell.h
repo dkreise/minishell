@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/27 18:03:46 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:39:26 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,10 @@ void	ft_echo(char **cmd);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
 void	do_signals(int	mode);
-void	heredoc_handle(int sig);
-void	handle_sigint(int sig);
-void	stop_signals(void);
+void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
+void	handle_sigint(int sig, siginfo_t *data, void *non_used_data);
+void	do_sigign(int signum);
+
+int	g_exit;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 14:07:05 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:41:22 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	do_signals(NON_STANDAR);
 	free_tok(&(tokens->first_tok));
 	free(tokens->toks);
 	if (cmd->exit_code != 0)
@@ -139,34 +140,37 @@ int	executor(t_tokens *tokens)
 	is_first = 1;
 	cmd = NULL;
 	exit_hd = check_hd(tokens);
-	if (exit_hd) //close hd file
-		return (exit_hd);
-	while (i < tokens->tok_cnt)
+	if (exit_hd == 0)
 	{
-		new_cmd = init_cmd(tokens, i);
-		if (tokens->error == MALLOC_ERROR)
-			return (MALLOC_ERROR);
-		new_cmd->prev = cmd;
-		cmd = new_cmd;
-		i += args_cnt(tokens, i);
-		if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+		while (i < tokens->tok_cnt)
 		{
-			is_first = 0;
-			exec_blt(cmd->args, tokens->env);
-			break ;
+			new_cmd = init_cmd(tokens, i);
+			if (tokens->error == MALLOC_ERROR)
+				return (MALLOC_ERROR);
+			new_cmd->prev = cmd;
+			cmd = new_cmd;
+			i += args_cnt(tokens, i);
+			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+			{
+				is_first = 0;
+				exec_blt(cmd->args, tokens->env);
+				break ;
+			}
+			tokens->cmd_cnt ++;
+			pipe_redir(tokens, cmd, i);
+			pid = fork();
+			if (pid == 0 && cmd->args[0])
+				do_execve(tokens, cmd);
+			else if (pid == 0 && !cmd->args[0])
+				exit(0);
 		}
-		tokens->cmd_cnt ++;
-		pipe_redir(tokens, cmd, i);
-		pid = fork();
-		if (pid == 0 && cmd->args[0])
-			do_execve(tokens, cmd);
-		else if (pid == 0 && !cmd->args[0])
-			exit(0);
+		wait_process(cmd, pid, tokens->cmd_cnt);
 	}
-	wait_process(cmd, pid, tokens->cmd_cnt);
 	dup2(tokens->initfd[0], STDIN_FILENO);
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
 	close(tokens->initfd[1]);
+	if (exit_hd == 1)
+		return 1;
 	return (cmd->exit_code);
 }

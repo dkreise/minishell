@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 13:43:56 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:52:56 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 	j = 0;
 	if (tnext->value[0] == '?')
 	{
-		temp_val = ft_itoa(tokens->prev_exit);
+		if (g_exit != 0)
+			temp_val = ft_itoa(g_exit);
+		else
+			temp_val = ft_itoa(tokens->prev_exit);
 		if (!temp_val)
 			return (dol_malloc_err(tokens));
 		j ++;
