@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/27 21:44:22 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:04:59 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,8 +208,8 @@ void update_global(int *err_exit)
 {
 	if (g_exit > 0)
 	{
-		g_exit = 0;
 		err_exit[0] = 1;
+		g_exit = 0;
 	}
 }
 
@@ -228,13 +228,12 @@ int main(int ac, char **av, char **environment)
 		env = dup_env(environment);
 	err_exit[0] = 0;
 	g_exit = 0;
-	//int fdstart[2];
 	while (1)
 	{
 		do_signals(INTERACTIVE);
-		//do_sigign(SIGQUIT);;
+		do_sigign(SIGQUIT);
 		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
-		//do_sigign(SIGINT);
+		do_sigign(SIGINT);
 		if (!line)
 		{
 		    if (isatty(STDIN_FILENO))

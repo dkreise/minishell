@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/19 18:06:01 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 16:36:35 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	// open file protection
 	if (file == -1)
 	{
+		dprintf(2, "hree\n");
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
 		cmd->exit_code = 1;
 	}

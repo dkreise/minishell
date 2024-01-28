@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/27 21:49:02 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/28 17:53:34 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,10 @@ void	ft_echo(char **cmd);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
 void	do_signals(int	mode);
-void	heredoc_handle(int sig);
-void	handle_sigint(int sig);
+void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
+void	handle_sigint(int sig, siginfo_t *data, void *non_used_data);
 void	do_sigign(int signum);
 
-extern int	g_exit;
+int	g_exit;
 
 #endif

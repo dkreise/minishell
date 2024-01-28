@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /Users/rpliego/42/minishell2/inc/readline
+BUILD_DIR = /Users/rpliego/42/minishell/inc/readline
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

@@ -6,13 +6,11 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 21:47:21 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:05:01 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-int	g_exit;
 
 // cat < tst.txt >> outptttt | ls
 t_tokens test_struct(void)
@@ -164,6 +162,9 @@ int	executor(t_tokens *tokens)
 	// 	dprintf(2, "lalala %i\n", exit_hd);
 	// 	//return (exit_hd);
 	// }
+	//dprintf(2, "hd:  %i\n", exit_hd);
+	if (exit_hd == 0)
+	{
 	while (i < tokens->tok_cnt)
 	{
 		new_cmd = init_cmd(tokens, i);
@@ -184,8 +185,9 @@ int	executor(t_tokens *tokens)
 		else if (pid == 0 && !cmd->args[0])
 			exit(0);
 	}
+	
 	//dprintf(2, "i got here %i\n", exit_hd);
-	wait_process(cmd, pid, tokens->cmd_cnt);
+	wait_process(cmd, pid, tokens->cmd_cnt);}
 	dup2(tokens->initfd[0], STDIN_FILENO);
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
