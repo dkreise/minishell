@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 19:17:27 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:24:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	do_hd(t_tokens *tokens, int i)
 		}
 		close(hdfd[1]);
 		close(hdfd[0]);
-		exit(0);
+		exit (0);
 	}
 	else
 	{
@@ -52,10 +52,10 @@ static int	do_hd(t_tokens *tokens, int i)
 		if (WTERMSIG(status) == SIGINT)
 		{
 			printf("\n");
-			return 1;
+			return (1);
 		}
 	}
-	return 0;
+	return (0);
 }
 
 int	check_hd(t_tokens *tokens)

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/28 19:04:43 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 11:09:04 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 		free_tok_env_exit(&tok_first, &env);
 	else if (tok_first->error != 0)
 	{
-		new_exit = tok_first->error;
+		new_exit = 258;
 		print_error(tok_first->error);
 		free_tok(&tok_first);
 	}

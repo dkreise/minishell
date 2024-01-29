@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 18:46:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 11:10:14 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,14 @@ int add_specchar(char *line, t_token **tok_first, int *i)
 	{
 		malloc_error(tok_first, NULL);
 		return (MALLOC_ERROR);
+	}
+	if (!*tok_first || (*tok_first)->type == SPACET)
+	{
+		if (is_specchar(line[*i]) == PIPE)
+		{
+			addback_token(tok_first, str, PIPE);
+			return (PIPE);
+		}
 	}
 	*i = *i + 1;
 	return (addback_token(tok_first, str, is_specchar(line[*i - 1])));

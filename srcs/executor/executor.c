@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 18:41:22 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 11:32:41 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ int	executor(t_tokens *tokens)
 			new_cmd->prev = cmd;
 			cmd = new_cmd;
 			i += args_cnt(tokens, i);
+			if (cmd->exit_code == 1)
+				continue ;
 			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
 			{
 				is_first = 0;
