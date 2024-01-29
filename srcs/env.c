@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:28:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:35:29 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:49:56 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,19 @@ char	*update_shlvl(char *str)
 	str++;
 	ato = ft_atoi(str);
 	ato += 1;
+	if (ato > 999)
+	{
+		ft_putstr_fd("Reseting SHLVL to 1\n", 2);
+		return (ft_strjoin("SHLVL=", "1", 4));
+	}
 	return (ft_strjoin("SHLVL=", ft_itoa(ato), 4));
 }
 
-t_env	*dup_env(char **env_array)
+void	*aux_dup_env(char **env_array, t_env *env)
 {
-	t_env	*first;
-	t_env	*env;
 	t_env	*new;
 	int		i;
 
-	if (!env_array)
-		return (NULL);
-	first = malloc(sizeof(t_env));
-	if (!first)
-		return (NULL);
-	first->data = ft_strdup(env_array[0]);
-	if (ft_strncmp("SHLVL", first->data, 5) == 0)
-		first->data = ft_strdup(update_shlvl(env_array[0]));
-	first->unset_flag = 0;
-	first->next = NULL;
-	env = first;
 	i = 0;
 	while (env_array[++i] != NULL)
 	{
@@ -70,5 +62,25 @@ t_env	*dup_env(char **env_array)
 		env->next = new;
 		env = new;
 	}
+	return (NULL);
+}
+
+t_env	*dup_env(char **env_array)
+{
+	t_env	*first;
+	t_env	*env;
+
+	if (!env_array)
+		return (NULL);
+	first = malloc(sizeof(t_env));
+	if (!first)
+		return (NULL);
+	first->data = ft_strdup(env_array[0]);
+	if (ft_strncmp("SHLVL", first->data, 5) == 0)
+		first->data = ft_strdup(update_shlvl(env_array[0]));
+	first->unset_flag = 0;
+	first->next = NULL;
+	env = first;
+	aux_dup_env(env_array, env);
 	return (first);
 }
