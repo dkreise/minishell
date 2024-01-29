@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 17:26:22 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:26:00 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	replace_value(char *cmd, t_env *env)
 {
-	t_env *temp;
-	
+	t_env	*temp;
+
 	temp = env;
-	while(temp != NULL)
+	while (temp != NULL)
 	{
 		if (mod_strcmp(cmd, temp->data) == TRUE)
 		{
@@ -59,9 +59,9 @@ void	special_export(t_env *env)
 
 void	normal_export(char *cmd, t_env **env)
 {
-	t_env *new;
-	t_env *temp;
-	int	i;
+	t_env	*new;
+	t_env	*temp;
+	int		i;
 
 	i = 1;
 	temp = *env;

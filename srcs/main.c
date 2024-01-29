@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 17:42:32 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:27:39 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 			free_tokens(&exp_tokens, EXP);
 		}
 	}
-	return(new_exit);
+	return (new_exit);
 }
 
-int main(int ac, char **av, char **environment)
+int	main(int ac, char **av, char **environment)
 {
 	char	*line;
 	t_env	*env;
-	int			err_exit[2];
+	int		err_exit[2];
 
 	(void)av;
 	line = NULL;
@@ -114,8 +114,3 @@ int main(int ac, char **av, char **environment)
 	mini_loop(line, env, err_exit);
 	return (0);
 }
-
-
-// a ^= b;
-// b ^= a;
-// a ^= b;

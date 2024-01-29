@@ -6,13 +6,12 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:42:14 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 17:37:02 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:22:56 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "readline.h"
-#include <sys/ioctl.h>
 #include "minishell.h"
 
 void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data)
@@ -64,8 +63,8 @@ void	signals_print_handler(void)
 	tcsetattr(0, TCSANOW, &tc);
 }
 
-void	do_signals(int	mode)
-{	
+void	do_signals(int mode)
+{
 	struct sigaction	signal;
 
 	signal.sa_flags = SA_RESTART | SA_SIGINFO;
@@ -79,4 +78,3 @@ void	do_signals(int	mode)
 	sigaction(SIGQUIT, &signal, NULL);
 	return ;
 }
-

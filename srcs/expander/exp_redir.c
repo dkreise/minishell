@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   exp_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:39:49 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:20:47 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:21:17 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe)
+void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int ispipe)
 {
 	t_token	*tnext;
 	int		exp_type;
 
 	tnext = tokens->toks[*i]->next;
-	exp_type = tokens->toks[*i]->type + is_pipe;
+	exp_type = tokens->toks[*i]->type + ispipe;
 	if (tnext->type == tokens->toks[*i]->type) // '<<'
 	{
 		*i = *i + 1;
@@ -30,7 +30,7 @@ void	exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe)
 		*i = *i + 1;
 		tnext = tnext->next;
 	}
-	if (tnext->type <= DOLLAR) // or <= DOLLAR ???   '<< str' or '< str' or '<<str' or '<str'
+	if (tnext->type <= DOLLAR)
 	{
 		*i = *i + 1;
 		exp_str(tokens, exp_tok, i, exp_type);

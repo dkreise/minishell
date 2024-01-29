@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 17:43:49 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:23:11 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <libft.h>
 
@@ -31,8 +32,6 @@
 # define PARS 1
 # define EXP 2
 # define MALLOC_ERROR 42
-//# include "../inc/libft/libft.h"
-
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -78,24 +77,24 @@ typedef struct s_env
 {
 	char			*data;
 	int				unset_flag;
-	struct s_env	*next; 
-} t_env;
+	struct s_env	*next;
+}	t_env;
 
 // TYPE: 0:str, 1:space, 2:' ', 3:" ", 4:$, 5:<, 6:>, 7:| (((4:>,<,|,$)))
 typedef struct s_token
 {
 	char			*value;
-	int 			type;
+	int				type;
 	struct s_token	*next;
 	int				hd_file;
 	int				error;
-} t_token;
+}	t_token;
 
 //struct I need for executor:
 
 typedef struct s_tokens
 {
-	t_token *first_tok;
+	t_token	*first_tok;
 	t_token	**toks;
 	int		tok_cnt;
 	t_env	*env;
@@ -104,7 +103,7 @@ typedef struct s_tokens
 	int		cmd_cnt;
 	int		prev_exit;
 	int		error;
-} t_tokens;
+}	t_tokens;
 /*
 types of tokens: 0:none, 1:<, 2:>, 3:<<, 4:>>, AFTER PIPE 5:none, 6:<, 7:>,
 	8:<<, 9:>> 
@@ -124,7 +123,7 @@ typedef struct s_cmd
 	//int			last_ind;
 	//char	*
 	//struct s_cmd	*next;
-} t_cmd;
+}	t_cmd;
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
 
@@ -146,7 +145,7 @@ t_token		*parser(char *line);
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
 void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
-void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
+void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int ispipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code);
 char		*find_env(char *str, int *j, t_tokens *tokens);
