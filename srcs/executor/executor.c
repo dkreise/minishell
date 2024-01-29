@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/29 11:32:41 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 12:47:31 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,12 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 		exit(cmd->exit_code); 
 	}
 	execve(cmd->args[0], cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
-	if (!tokens->paths)
-		dprintf(2, "paths are null\n");
 	if (tokens->paths)
 	{
 		while (tokens->paths[i])
 		{
 			path = ft_strjoin(ft_strjoin(tokens->paths[i], "/", NONE),
 					cmd->args[0], FIRST);
-			// malloc protection
-			//dprintf(2, "path: %s\n", path);
 			execve(path, cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
 			free(path);
 			i ++;
@@ -150,14 +146,13 @@ int	executor(t_tokens *tokens)
 			new_cmd->prev = cmd;
 			cmd = new_cmd;
 			i += args_cnt(tokens, i);
-			if (cmd->exit_code == 1)
-				continue ;
-			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]))
+			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]) && cmd->exit_code == 0)
 			{
 				is_first = 0;
 				exec_blt(cmd->args, tokens->env);
 				break ;
 			}
+			is_first = 0;
 			tokens->cmd_cnt ++;
 			pipe_redir(tokens, cmd, i);
 			pid = fork();
