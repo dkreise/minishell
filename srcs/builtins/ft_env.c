@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:11:05 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/22 18:55:49 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:13:37 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,19 @@ int	is_correct(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '=' )//&& str[i + 1] != '\0')
-			return (1);
+		if (str[i] == '=' )
+			return (TRUE);
 		i++;
 	}
-	return (0);
+	return (FALSE);
 }
 
 void	ft_env(t_env *env)
 {
 	while (env)
 	{
-		if (is_correct(env->data) == 1 && env->unset_flag == 0)
-		{
-			//printf("unset flag ---->%i\n", env->unset_flag);
+		if (is_correct(env->data) == TRUE && env->unset_flag == FALSE)
 			printf("%s\n", env->data);
-		}
 		env = env->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 16:36:35 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:27:16 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 	// open file protection
 	if (file == -1)
 	{
-		dprintf(2, "hree\n");
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
 		cmd->exit_code = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 17:59:50 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:15:01 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static int	do_hd(t_tokens *tokens, int i)
 		tokens->toks[i]->hd_file = hdfd[0];
 		close(hdfd[1]);
 		if (WTERMSIG(status) == SIGINT)
+		{
+			printf("\n");
 			return 1;
+		}
 		//return 0;
 	}
 	//do_signals(INTERACTIVE);

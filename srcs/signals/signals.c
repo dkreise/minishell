@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:42:14 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/28 18:11:11 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:37:02 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data)
 	if (sig == SIGINT)
 	{
 		g_exit = 1;
-		rl_replace_line("", 1);
+		printf("\n\n");
 		rl_on_new_line();
+		rl_replace_line("", 1);
 		rl_redisplay();
-		printf("\n");
-		//dprintf(2,"bobobbobobobobo\n");
 		exit(1);
 	}
 }
@@ -66,7 +65,7 @@ void	signals_print_handler(void)
 }
 
 void	do_signals(int	mode)
-{
+{	
 	struct sigaction	signal;
 
 	signal.sa_flags = SA_RESTART | SA_SIGINFO;

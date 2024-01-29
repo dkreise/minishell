@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/28 17:53:34 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:43:49 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	free_paths(t_tokens *tokens);
 void	free_tokens(t_tokens *tokens, int type);
 int		executor(t_tokens *tokens);
 
-//~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~~~BUILTINS~~~~~~~~~~~~~~//
 int		check_blt(char *cmd);
 void	ft_env(t_env *env);
 void	ft_export(char **line, t_env **env);
@@ -183,15 +183,24 @@ void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);
 int		ft_pwd(void);
 int		ft_cd(char **cmd, t_env *env);
-void	ft_exit(char **cmd);
+int		ft_exit(char **cmd);
 void	exec_blt(char **cmd, t_env *env);
 void	ft_echo(char **cmd);
+int		var_exist(char *cmd, t_env *env);
+
+//~~~~~~~~~~~~~~~~ENVIROMENT~~~~~~~~~~~~~~//
+t_env	*our_env(void);
+char	*update_shlvl(char *str);
+t_env	*dup_env(char **env_array);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
 void	do_signals(int	mode);
 void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
 void	handle_sigint(int sig, siginfo_t *data, void *non_used_data);
 void	do_sigign(int signum);
+
+void	mini_loop(char *line, t_env *env, int err_exit[2]);
+int	new_exit(char *line, t_env *env, int prev_exit);
 
 int	g_exit;
 

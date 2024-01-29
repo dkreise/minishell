@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:57:38 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/23 21:54:18 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:20:53 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_numeric(char **str)
 	return (FALSE);
 }
 
-void	ft_exit(char **cmd)
+int	ft_exit(char **cmd)
 {
 	if (cmd[1] == NULL)
 	{
@@ -40,7 +40,7 @@ void	ft_exit(char **cmd)
 	else if (cmd[2])
 	{
 		printf("exit: too many arguments\n");
-		exit(1);
+		return (1);
 	}	
 	else if (is_numeric(cmd) == FALSE)
 	{

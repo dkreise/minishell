@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:05:32 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/26 15:52:55 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:12:21 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	have_n_flag(char *str)
 	if (!str)
 		return (FALSE);
 	if (str[0] != '-')
+		return (FALSE);
+	if (!str[1])
 		return (FALSE);
 	while (str[i])
 	{
