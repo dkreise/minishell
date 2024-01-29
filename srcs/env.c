@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:28:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:49:56 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 19:56:52 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*update_shlvl(char *str)
 	str++;
 	ato = ft_atoi(str);
 	ato += 1;
-	if (ato > 999)
+	if (ato > 999 || ato < 0)
 	{
 		ft_putstr_fd("Reseting SHLVL to 1\n", 2);
 		return (ft_strjoin("SHLVL=", "1", 4));

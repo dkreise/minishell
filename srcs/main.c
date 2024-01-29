@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:34:29 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 19:56:39 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	main(int ac, char **av, char **environment)
 		ft_putstr_fd("ONLY ./minishell\n", 2);
 		return (1);
 	}
-	print_header();
+	//print_header();
 	if (*environment == NULL)
 		env = our_env();
 	else
