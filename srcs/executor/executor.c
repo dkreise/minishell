@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/29 12:47:31 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:47:22 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 	if (check_blt(cmd->args[0]))
 	{
 		// change arg of exec_blt to whole cmd to be able to set exit in err case
-		exec_blt(cmd->args, tokens->env);
+		exec_blt(cmd, tokens->env);
 		exit(cmd->exit_code); 
 	}
 	execve(cmd->args[0], cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
@@ -149,7 +149,7 @@ int	executor(t_tokens *tokens)
 			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]) && cmd->exit_code == 0)
 			{
 				is_first = 0;
-				exec_blt(cmd->args, tokens->env);
+				exec_blt(cmd, tokens->env);
 				break ;
 			}
 			is_first = 0;

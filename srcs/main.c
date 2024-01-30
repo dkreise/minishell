@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 11:09:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:01:54 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,11 @@ int	check_blt(char *cmd)
 	return (0);
 }
 
-void	exec_blt(char **cmd, t_env *env)
+void	exec_blt(t_cmd *cmd_s, t_env *env)//(char **cmd, t_env *env)
 {
+	char	**cmd;
+
+	cmd = cmd_s->args;
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
 	else if (ft_strncmp(cmd[0], "export", 7) == 0)
@@ -104,7 +107,7 @@ void	exec_blt(char **cmd, t_env *env)
 	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
 		ft_pwd();
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-		ft_cd(cmd, env);
+		cmd_s->exit_code = ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
 		ft_exit(cmd);
 	else if (ft_strncmp(cmd[0], "echo", 5) == 0)
@@ -263,77 +266,8 @@ int main(int ac, char **av, char **environment)
 			add_history(line);
 			err_exit[0] = err_exit[1];
 		}
-		// dprintf(2, "exit: %i\n", err_exit[0]);
-		// dprintf(2, "gl: %i\n", g_exit);
-		//update_global(err_exit);
 		g_exit = 0;
-		// dprintf(2, "exit: %i\n", err_exit[0]);
-		// dprintf(2, "gl: %i\n", g_exit);
 		free(line);
 	}
 	return (0);
 }
-
-/*
-int	new_exit(char *line, t_env *env, int prev_exit)
-{
-	t_token		*tok_first;
-	int			new_exit;
-
-	new_exit = 0;
-	tok_first = parser(line);
-	//print_toklst("PARSER", tok_first);
-	if (!tok_first || tok_first->error == MALLOC_ERROR)
-		free_tok_env_exit(&tok_first, &env);
-	else if (tok_first->error != 0)
-	{
-		new_exit = tok_first->error;
-		print_error(tok_first->error);
-		free_tok(&tok_first);
-	}
-	else
-	{
-		// pars_tokens = init_tokens(&tok_first, env, prev_exit);
-		// if (tok_first->error == MALLOC_ERROR)
-		// 	free_tok_env_exit(&tok_first, &env);
-		// new_tok = expander(&pars_tokens);
-		// //print_toklst("EXPANDER", new_tok);
-		// if (!new_tok && pars_tokens.error == 0)
-		// {
-		// 	new_exit = prev_exit;
-		// 	free_tokens(&pars_tokens, PARS);
-		// }
-		// else if (pars_tokens.error == MALLOC_ERROR)
-		// {
-		// 	free_tokens(&pars_tokens, PARS);
-		// 	free_tok_env_exit(&new_tok, &env);
-		// }
-		// else if (pars_tokens.error != 0)
-		// {
-		// 	new_exit = 258;
-		// 	print_error(pars_tokens.error);
-		// 	free_tokens(&pars_tokens, PARS);
-		// 	free_tok(&new_tok);
-		// }
-		// else
-		// {
-		// 	// exp_tokens = init_exp_tokens(&new_tok, env, prev_exit);
-		// 	// if (new_tok->error == MALLOC_ERROR)
-		// 	// {
-		// 	// 	free_tokens(&pars_tokens, PARS);
-		// 	// 	free_tokens(&exp_tokens, EXP);
-		// 	// 	free_env(&env);
-		// 	// 	exit(1);
-		// 	// }
-		// 	// new_exit = executor(&exp_tokens);
-		// 	// free_tokens(&pars_tokens, PARS);
-		// 	// free_tokens(&exp_tokens, EXP);
-		// 	// if (new_exit == MALLOC_ERROR)
-		// 	// 	exit (1);
-		// 	new_exit = do_executor(&env, prev_exit, &new_tok, &pars_tokens);
-		// }
-		new_exit = do_expander(env, prev_exit, tok_first);
-	}
-	return (new_exit);
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/28 18:39:26 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:47:04 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int		mod_strcmp(char *cmd, char *env);
 int		ft_pwd(void);
 int		ft_cd(char **cmd, t_env *env);
 void	ft_exit(char **cmd);
-void	exec_blt(char **cmd, t_env *env);
+void	exec_blt(t_cmd *cmd_s, t_env *env);
 void	ft_echo(char **cmd);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
