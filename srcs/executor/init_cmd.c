@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/29 12:01:39 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 18:37:37 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	init_cmd_args(t_tokens *tokens, t_cmd *cmd, int i)
 		if (tokens->toks[i]->type == NONE)
 		{
 			cmd->args[j] = ft_strdup(tokens->toks[i]->value);
+			dprintf(2, "init:::::%p\n", tokens->toks[i]->value);
 			if (cmd->args[j] == NULL)
 			{
 				malloc_error(NULL, tokens);
@@ -68,6 +69,7 @@ t_cmd	*init_cmd(t_tokens *tokens, int i)
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
+	dprintf(2, "cmd new ptr:: %p\n", cmd);
 	if (cmd == NULL)
 	{
 		malloc_error(NULL, tokens);
@@ -77,6 +79,7 @@ t_cmd	*init_cmd(t_tokens *tokens, int i)
 	if (tokens->toks[i]->type >= PIPE)
 		tokens->toks[i]->type -= PIPE;
 	cmd->args = ft_calloc(args_cnt(tokens, i) + 1, sizeof(char *));
+	dprintf(2, "cmd args ptr:: %p\n", cmd->args);
 	if (cmd->args == NULL)
 	{
 		malloc_error(NULL, tokens);

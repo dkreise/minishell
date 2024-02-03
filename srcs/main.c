@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/30 18:01:54 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 19:39:33 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char *update_shlvl(char *str)
 	str++;
 	ato = ft_atoi(str);
 	ato += 1;
-	return (ft_strjoin("SHLVL=", ft_itoa(ato), 4));
+	return (ft_strjoin("SHLVL=", ft_itoa(ato), SECOND));
 }
 
 t_env	*dup_env(char **env_array)
@@ -58,7 +58,7 @@ t_env	*dup_env(char **env_array)
 		if (ft_strncmp("SHLVL", env_array[i], 5) == 0)
 		{
 			//printf("entrooooo\n\n");
-			new->data = ft_strdup(update_shlvl(env_array[i]));
+			new->data = update_shlvl(env_array[i]);
 			//printf("------%s------\n", new->data);
 		}
 		else
@@ -109,9 +109,10 @@ void	exec_blt(t_cmd *cmd_s, t_env *env)//(char **cmd, t_env *env)
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		cmd_s->exit_code = ft_cd(cmd, env);
 	else if (ft_strncmp(cmd[0], "exit", 6) == 0)
-		ft_exit(cmd);
+		cmd_s->exit_code = ft_exit(cmd);
 	else if (ft_strncmp(cmd[0], "echo", 5) == 0)
 		ft_echo(cmd);
+	//free(&cmd_s);
 }
 
 void	print_toklst(char *header, t_token *tok_first)
@@ -152,8 +153,8 @@ int	do_executor(t_env **env, int prev_exit, t_token **new_tok, t_tokens *pars_to
 		free_env(env);
 		exit(1);
 	}
-	new_exit = executor(&exp_tokens);
 	free_tokens(pars_tokens, PARS);
+	new_exit = executor(&exp_tokens);
 	free_tokens(&exp_tokens, EXP);
 	if (new_exit == MALLOC_ERROR)
 		exit (1);
@@ -258,6 +259,10 @@ int main(int ac, char **av, char **environment)
 		    if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
 			free_env(&env);
+			//env->data = "lalalalalala";
+			//dprintf(2, "env??: %s\n", env->data);
+			//write(2, "lalal\n", 6);
+			//ft_putstr_fd(env->data, 2);
 		    exit(0);
 		}
 		if (ft_strlen(line) != 0)

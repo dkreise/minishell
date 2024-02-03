@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 18:44:03 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:27:30 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,8 @@ void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i)
 		close(cmd->pipefd[1]);
 	}
 	else if (i == tokens->tok_cnt && !cmd->redir_out_flg)
+	{
 		dup2(tokens->initfd[1], STDOUT_FILENO);
+		close(tokens->initfd[1]);
+	}
 }

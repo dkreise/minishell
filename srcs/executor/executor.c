@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:36:27 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/29 13:47:22 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 19:41:12 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,16 @@ char	**get_paths(t_token **tok_first, char **env, int i, int j)
 void	do_execve(t_tokens *tokens, t_cmd *cmd)
 {
 	char	*path;
+	char	**lst_env;
 	int		i;
 
 	i = 0;
+	lst_env = lst_to_arr((t_token **)NULL, tokens->env);
 	do_signals(NON_STANDAR);
+	dprintf(2, "tokfirsttok::::%s|\n", tokens->first_tok->value);
 	free_tok(&(tokens->first_tok));
 	free(tokens->toks);
+	free_env(&(tokens->env));
 	if (cmd->exit_code != 0)
 		exit(cmd->exit_code);
 	if (check_blt(cmd->args[0]))
@@ -82,18 +86,19 @@ void	do_execve(t_tokens *tokens, t_cmd *cmd)
 		exec_blt(cmd, tokens->env);
 		exit(cmd->exit_code); 
 	}
-	execve(cmd->args[0], cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
+	execve(cmd->args[0], cmd->args, lst_env);
 	if (tokens->paths)
 	{
 		while (tokens->paths[i])
 		{
 			path = ft_strjoin(ft_strjoin(tokens->paths[i], "/", NONE),
 					cmd->args[0], FIRST);
-			execve(path, cmd->args, lst_to_arr((t_token **)NULL, tokens->env));
+			execve(path, cmd->args, lst_env);
 			free(path);
 			i ++;
 		}
 	}
+	free_lst(lst_env);
 	cmd->exit_code = 127;
 	exit_error(cmd->args[0], "command not found\n", tokens, cmd);
 }
@@ -130,13 +135,13 @@ int	executor(t_tokens *tokens)
 	t_cmd	*cmd;
 	t_cmd	*new_cmd;
 	int		is_first;
-	int		exit_hd;
+	int		exit_exec;
 
 	i = 0;
 	is_first = 1;
 	cmd = NULL;
-	exit_hd = check_hd(tokens);
-	if (exit_hd == 0)
+	exit_exec = check_hd(tokens);
+	if (exit_exec == 0)
 	{
 		while (i < tokens->tok_cnt)
 		{
@@ -149,6 +154,7 @@ int	executor(t_tokens *tokens)
 			if (is_first && i == tokens->tok_cnt && check_blt(cmd->args[0]) && cmd->exit_code == 0)
 			{
 				is_first = 0;
+				dprintf(2, "where is blt???\n");
 				exec_blt(cmd, tokens->env);
 				break ;
 			}
@@ -157,9 +163,15 @@ int	executor(t_tokens *tokens)
 			pipe_redir(tokens, cmd, i);
 			pid = fork();
 			if (pid == 0 && cmd->args[0])
+			{
 				do_execve(tokens, cmd);
+			}
 			else if (pid == 0 && !cmd->args[0])
+			{
+				dprintf(2, "::::::::::::::::::::::::::::\n");
+				free_cmd(&cmd);
 				exit(0);
+			}
 		}
 		wait_process(cmd, pid, tokens->cmd_cnt);
 	}
@@ -167,7 +179,10 @@ int	executor(t_tokens *tokens)
 	dup2(tokens->initfd[1], STDOUT_FILENO);
 	close(tokens->initfd[0]);
 	close(tokens->initfd[1]);
-	if (exit_hd == 1)
+	if (exit_exec == 1)
 		return 1;
-	return (cmd->exit_code);
+	exit_exec = cmd->exit_code;
+	dprintf(2, "FREEEEEEEEEEEEEEEEEEEEEEE\n");
+	free_cmd(&cmd);
+	return (exit_exec);
 }

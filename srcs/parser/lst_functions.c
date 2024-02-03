@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 14:48:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 17:26:17 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_token	*new_token(char *value, int type)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
+	dprintf(2, "new tok :: %p\n", new);
 	if (new)
 	{
 		new->value = value;
@@ -49,6 +50,7 @@ int	addback_token(t_token **tok, char *value, int type)
 {
 	t_token	*last;
 
+	dprintf(2, "ptr in addback_token:::: %p\n", value);
 	if (*tok == NULL)
 	{
 		*tok = new_token(value, type);
@@ -67,16 +69,18 @@ int	addback_token(t_token **tok, char *value, int type)
 
 t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 {
-	t_token **toks;
+	t_token	**toks;
 	int		i;
 
 	i = 0;
 	toks = malloc(sizeof(t_token *) * tok_cnt);
+	dprintf(2, "toks ptr lst:: %p\n", toks);
 	if (!toks)
 		return (NULL);
 	while (i < tok_cnt)
 	{
 		toks[i] = tok;
+		dprintf(2, "toks[i] :: %p\n", toks[i]);
 		tok = tok->next;
 		i ++;
 	}
@@ -96,7 +100,6 @@ int	env_cnt(t_env *env)
 	}
 	return (cnt);
 }
-
 
 char	**lst_to_arr(t_token **exp_tok, t_env *env)
 {
@@ -123,5 +126,5 @@ char	**lst_to_arr(t_token **exp_tok, t_env *env)
 		}
 		env_first = env_first->next;
 	}
-	return(env_arr);
+	return (env_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/29 11:10:14 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 15:19:33 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	add_dblquote(char *line, t_token **tok_first, int *i)
 	return (addback_token(tok_first, str, DBL_Q));
 }
 
-int add_specchar(char *line, t_token **tok_first, int *i)
+int	add_specchar(char *line, t_token **tok_first, int *i)
 {
 	char	*str;
 

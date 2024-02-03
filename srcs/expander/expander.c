@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 14:39:54 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/03 16:44:24 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code)
 	tokens.initfd[1] = dup(STDOUT_FILENO);
 	tokens.cmd_cnt = 0;
 	tokens.error = 0;
-	free(env_lst);
+	free_lst(env_lst);
 	return (tokens);
 }
 
 t_token	*expander(t_tokens *tokens)
 {
 	int		i;
-	t_token *exp_tok;
+	t_token	*exp_tok;
 
 	exp_tok = NULL;
 	i = 0;

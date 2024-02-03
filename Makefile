@@ -3,7 +3,7 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
 #########
 
 #########
@@ -48,8 +48,8 @@ all: conf
 	$(MAKE) $(NAME) --no-print-directory
 
 conf:
-	@if [ ! -f $(READL)config.status ]; then\
-		cd $(READL) && ./configure &> /dev/null; \
+	@if [ ! -f $(READLINE)config.status ]; then\
+		cd $(READLINE) && ./configure &> /dev/null; \
 		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
 	fi
 
