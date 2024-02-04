@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 19:15:01 by rpliego          ###   ########.fr       */
+/*   Created: 2024/02/01 13:56:18 by rpliego           #+#    #+#             */
+/*   Updated: 2024/02/01 13:56:32 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static int	do_hd(t_tokens *tokens, int i)
 	limiter = tokens->toks[i]->value;
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
-	// if (pid == -1)
-	// 	return -1;
 	if (pid == 0)
 	{
 		do_signals(HEREDOC);
@@ -43,7 +41,6 @@ static int	do_hd(t_tokens *tokens, int i)
 			free(line);
 		}
 		close(hdfd[1]);
-		// tokens->toks[i]->hd_file = hdfd[0];
 		close(hdfd[0]);
 		exit(0);
 	}
@@ -57,15 +54,7 @@ static int	do_hd(t_tokens *tokens, int i)
 			printf("\n");
 			return 1;
 		}
-		//return 0;
 	}
-	//do_signals(INTERACTIVE);
-	// tokens->toks[i]->hd_file = hdfd[0];
-	// waitpid(pid, &status, 0);
-	// close(hdfd[1]);
-	// do_signals(INTERACTIVE);
-	// if (WTERMSIG(status) == SIGINT)
-	// 	return 1;
 	return 0;
 }
 
@@ -73,23 +62,14 @@ int	check_hd(t_tokens *tokens)
 {
 	int		i;
 	int exit_hd;
-	//pid_t	pid;
-	//int		status;
 
 	i = 0;
 	exit_hd = 0;
-	//pid = fork();
-	//if (pid == 0)
-	//{
-		while (i < tokens->tok_cnt)
-		{
-			if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
-				exit_hd = do_hd(tokens, i);
-			i ++;
-		}
-		//exit(0);
-	//}
-	//waitpid(pid, &status, 0);
-	//do_signals(INTERACTIVE);
+	while (i < tokens->tok_cnt)
+	{
+		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
+			exit_hd = do_hd(tokens, i);
+		i ++;
+	}
 	return (exit_hd);
 }	

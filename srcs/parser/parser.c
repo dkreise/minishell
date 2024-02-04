@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 17:23:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:21:47 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,23 @@ t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code)
 	return (tokens);
 }
 
+int	add_pars_tok(t_token **tok_first, char *line, int *i)
+{
+	int	err;
+
+	if (line[*i] == ' ')
+		err = add_space(line, tok_first, i);
+	else if (line[*i] == '\'')
+		err = add_singquote(line, tok_first, i);
+	else if (line[*i] == '\"')
+		err = add_dblquote(line, tok_first, i);
+	else if (is_specchar(line[*i]))
+		err = add_specchar(line, tok_first, i);
+	else
+		err = add_str(line, tok_first, i);
+	return (err);
+}
+
 t_token	*parser(char *line)
 {
 	int		i;
@@ -62,16 +79,7 @@ t_token	*parser(char *line)
 	tok_first = NULL;
 	while (line[i] != '\0')
 	{
-		if (line[i] == ' ')
-			err = add_space(line, &tok_first, &i);
-		else if (line[i] == '\'')
-			err = add_singquote(line, &tok_first, &i);
-		else if (line[i] == '\"')
-			err = add_dblquote(line, &tok_first, &i);
-		else if (is_specchar(line[i]))
-			err = add_specchar(line, &tok_first, &i);
-		else
-			err = add_str(line, &tok_first, &i);
+		err = add_pars_tok(&tok_first, line, &i);
 		if (err != 0)
 		{
 			if (tok_first)
@@ -79,7 +87,8 @@ t_token	*parser(char *line)
 			return (tok_first);
 		}
 	}
-	if (tok_first && i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
+	if (tok_first && i >= 1 && (line[i - 1] == '|'
+			|| line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
-	return(tok_first);
+	return (tok_first);
 }

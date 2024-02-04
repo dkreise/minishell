@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 13:51:19 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:22:03 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	addback_token(t_token **tok, char *value, int type)
 
 t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 {
-	t_token **toks;
+	t_token	**toks;
 	int		i;
 
 	i = 0;
@@ -83,35 +83,44 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 	return (toks);
 }
 
-
-char	**lst_to_arr(t_env *env)
+int	env_cnt(t_env *env)
 {
-	int		cnt;
-	int		i;
-	char	**env_arr;
-	t_env	*env_first;
+	int	cnt;
 
 	cnt = 0;
-	i = 0;
-	env_first = env;
 	while (env)
 	{
 		if (env->unset_flag == 0)
 			cnt ++;
 		env = env->next;
 	}
-	env_arr = ft_calloc(sizeof(char *), cnt + 1);
-	// malloc protection
+	return (cnt);
+}
+
+char	**lst_to_arr(t_token **exp_tok, t_env *env)
+{
+	int		i;
+	char	**env_arr;
+	t_env	*env_first;
+
+	i = 0;
+	env_first = env;
+	env_arr = ft_calloc(sizeof(char *), env_cnt(env) + 1);
+	if (env_arr == NULL)
+		malloc_error(exp_tok, NULL);
 	while (env_first)
 	{
 		if (env_first->unset_flag == 0)
 		{
 			env_arr[i] = ft_strdup(env_first->data);
-			// malloc protection
+			if (env_arr[i] == NULL)
+			{
+				malloc_error(exp_tok, NULL);
+				return (NULL);
+			}
 			i ++;
 		}
 		env_first = env_first->next;
 	}
-	return(env_arr);
+	return (env_arr);
 }
-

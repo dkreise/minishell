@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/25 12:37:13 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/02 13:49:39 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	free_tok(t_token **tok)
 		free(cur);
 		cur = tnext;
 	}
-
 }
 
 void	free_env(t_env **env)
@@ -109,7 +108,7 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 	}
 	else
 		perror(arg);
-	if (exit_code > 0)
+	if (exit_code == 127)
 	{
 		free_env(&(tokens->env));
 		free_paths(tokens);

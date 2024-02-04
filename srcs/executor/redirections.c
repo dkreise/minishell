@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:53:10 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 19:27:16 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:57:25 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,43 @@
 
 void	in_redir(t_tokens *tokens, t_cmd *cmd, int i)
 {
-	int	file;
+	int	fd;
 	int	type;
 
 	type = tokens->toks[i]->type;
-	file = 0;
+	fd = 0;
 	if (type == IN)
-		file = open(tokens->toks[i]->value, O_RDONLY);
+		fd = open(tokens->toks[i]->value, O_RDONLY);
 	else if (type == HEREDOC)
-		file = tokens->toks[i]->hd_file;
-	// open file protection
-	if (file == -1)
+		fd = tokens->toks[i]->hd_file;
+	if (fd == -1)
 	{
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
 		cmd->exit_code = 1;
 	}
-	dup2(file, STDIN_FILENO);
-	close(file);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 	cmd->redir_in_flg = 1;
 }
 
 void	out_redir(t_tokens *tokens, t_cmd *cmd, int i)
 {
-	int	file;
+	int	fd;
 	int	type;
 
 	type = tokens->toks[i]->type;
-	file = 0;
+	fd = 0;
 	if (type == OUT)
-		file = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == APPEND_OUT)
-		file = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	// open file protection
-	if (file == -1)
+		fd = open(tokens->toks[i]->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
 	{
 		exit_error(tokens->toks[i]->value, NULL, tokens, cmd);
 		cmd->exit_code = 1;
 	}
-	dup2(file, STDOUT_FILENO);
-	close(file);
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
 	cmd->redir_out_flg = 1;
 }
 
@@ -67,24 +65,25 @@ void	do_redir(t_tokens *tokens, t_cmd *cmd, int i)
 		out_redir(tokens, cmd, i);
 }
 
-void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i) 
+void	pipe_redir_aux(t_cmd *cmd)
 {
-	//dprintf(2, "cmd: %s\n", cmd->args[0]);
-	if (!cmd->redir_in_flg && cmd->prev != NULL)
+	if (!cmd->prev->pipe_done_flg)
 	{
-		if (!cmd->prev->pipe_done_flg)
-		{
-			pipe(cmd->prev->pipefd);
-			cmd->prev->pipe_done_flg = 1;
-			close(cmd->prev->pipefd[1]);
-		}
-		if (cmd->prev->pipe_done_flg)
-		{
-			dup2(cmd->prev->pipefd[0], STDIN_FILENO);
-			close(cmd->prev->pipefd[0]);
-			//dprintf(2, "in->pipe\n");
-		}
+		pipe(cmd->prev->pipefd);
+		cmd->prev->pipe_done_flg = 1;
+		close(cmd->prev->pipefd[1]);
 	}
+	if (cmd->prev->pipe_done_flg)
+	{
+		dup2(cmd->prev->pipefd[0], STDIN_FILENO);
+		close(cmd->prev->pipefd[0]);
+	}
+}
+
+void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i)
+{
+	if (!cmd->redir_in_flg && cmd->prev != NULL)
+		pipe_redir_aux(cmd);
 	else if (cmd->redir_in_flg && cmd->prev != NULL)
 	{
 		if (cmd->prev->pipe_done_flg)
@@ -96,15 +95,11 @@ void	pipe_redir(t_tokens *tokens, t_cmd *cmd, int i)
 		cmd->pipe_done_flg = 1;
 		dup2(cmd->pipefd[1], STDOUT_FILENO);
 		close(cmd->pipefd[1]);
-		//dprintf(2, "out->pipe\n");
 	}
 	else if (i == tokens->tok_cnt && !cmd->redir_out_flg)
-	{
 		dup2(tokens->initfd[1], STDOUT_FILENO);
-		//dprintf(2, "1->out\n");
-	}
-
 }
+
 
 
 

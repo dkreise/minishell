@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:26:00 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:24:39 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ int	have_numb(char **cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		if (ft_isdigit(cmd[i][0]) == TRUE)
+		if (ft_isdigit(cmd[i][0]) == TRUE
+			|| cmd[i][0] == '/' || cmd[i][0] == '=')
 		{
 			printf("export: '%s': not a valid identifier\n", cmd[i]);
 			return (TRUE);

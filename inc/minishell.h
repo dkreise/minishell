@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:23:11 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:26:53 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define O "\033[38;5;208m"	//orange
 # define F "\033[38;5;128m" //purple
 
-//~~~~~~~~~~~~~~~~SIGNALS DEFINES~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~~~SIGNALS MACROS~~~~~~~~~~~~~~//
 # define INTERACTIVE 1
 # define NON_STANDAR 2
 # define HERDOC 3
@@ -126,7 +126,6 @@ typedef struct s_cmd
 }	t_cmd;
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
-
 t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
 int			addback_token(t_token **tok, char *value, int type);
@@ -139,67 +138,70 @@ int			is_specchar(char c);
 void		print_error(int tok_char);
 void		malloc_error(t_token **first_tok, t_tokens *tokens);
 t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code);
-char		**lst_to_arr(t_env *env);
+char		**lst_to_arr(t_token **exp_tok, t_env *env);
 t_token		*parser(char *line);
 
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
 void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
-void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int ispipe);
+void		exp_in_out(t_tokens *tokens,
+				t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
+char		*exp_dbl_q(t_tokens *tokens, int *i);
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code);
-char		*find_env(char *str, int *j, t_tokens *tokens);
+char		*dol_malloc_err(t_tokens *tokens);
+char		*find_env(char *str, size_t *j, t_tokens *tokens);
 char		*exp_dollar(t_tokens *tokens, int *i);
 t_token		*expander(t_tokens *tokens);
 
-void	print_toklst(char *header, t_token *tok_first);
+void		print_toklst(char *header, t_token *tok_first);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
-t_token	**tok_to_lst(t_token *tok, int tok_cnt);
-int		args_cnt(t_tokens *tokens, int i);
-t_cmd	*init_cmd(t_tokens *tokens, int i);
-void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
-char	**get_paths(char **env);
-void	do_execve(t_tokens *tokens, t_cmd *cmd);
-void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
-int		check_hd(t_tokens *tokens);
-void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
-void	free_cmd(t_cmd **cmd);
-void	free_tok(t_token **tok);
-void	free_env(t_env **env);
-void	free_paths(t_tokens *tokens);
-void	free_tokens(t_tokens *tokens, int type);
-int		executor(t_tokens *tokens);
+t_token		**tok_to_lst(t_token *tok, int tok_cnt);
+int			args_cnt(t_tokens *tokens, int i);
+t_cmd		*init_cmd(t_tokens *tokens, int i);
+void		in_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		out_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		do_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		pipe_redir(t_tokens *tokens, t_cmd *cmd, int i);
+char		**get_paths(t_token **tok_first, char **env, int i, int j);
+void		do_execve(t_tokens *tokens, t_cmd *cmd);
+void		wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
+int			check_hd(t_tokens *tokens);
+void		exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
+void		free_cmd(t_cmd **cmd);
+void		free_tok(t_token **tok);
+void		free_env(t_env **env);
+void		free_paths(t_tokens *tokens);
+void		free_tokens(t_tokens *tokens, int type);
+int			executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTINS~~~~~~~~~~~~~~//
-int		check_blt(char *cmd);
-void	ft_env(t_env *env);
-void	ft_export(char **line, t_env **env);
-void	ft_unset(char **cmd, t_env **env);
-int		mod_strcmp(char *cmd, char *env);
-int		ft_pwd(void);
-int		ft_cd(char **cmd, t_env *env);
-int		ft_exit(char **cmd);
-void	exec_blt(char **cmd, t_env *env);
-void	ft_echo(char **cmd);
-int		var_exist(char *cmd, t_env *env);
+int			check_blt(char *cmd);
+void		ft_env(t_env *env);
+void		ft_export(char **line, t_env **env);
+void		ft_unset(char **cmd, t_env **env);
+int			mod_strcmp(char *cmd, char *env);
+int			ft_pwd(void);
+int			ft_cd(char **cmd, t_env *env);
+int			ft_exit(char **cmd);
+void		exec_blt(char **cmd, t_env *env);
+void		ft_echo(char **cmd);
+int			var_exist(char *cmd, t_env *env);
 
 //~~~~~~~~~~~~~~~~ENVIROMENT~~~~~~~~~~~~~~//
-t_env	*our_env(void);
-char	*update_shlvl(char *str);
-t_env	*dup_env(char **env_array);
+t_env		*our_env(void);
+char		*update_shlvl(char *str);
+t_env		*dup_env(char **env_array);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
-void	do_signals(int	mode);
-void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
-void	handle_sigint(int sig, siginfo_t *data, void *non_used_data);
-void	do_sigign(int signum);
+void		do_signals(int mode);
+void		heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
+void		handle_sigint(int sig, siginfo_t *data, void *non_used_data);
+void		do_sigign(int signum);
 
-void	mini_loop(char *line, t_env *env, int err_exit[2]);
-int	new_exit(char *line, t_env *env, int prev_exit);
+void		mini_loop(char *line, t_env *env);
+int			new_exit(char *line, t_env *env, int prev_exit);
 
 int	g_exit;
 

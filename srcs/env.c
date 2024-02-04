@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:28:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 19:56:52 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/03 18:36:20 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*update_shlvl(char *str)
 		ft_putstr_fd("Reseting SHLVL to 1\n", 2);
 		return (ft_strjoin("SHLVL=", "1", 4));
 	}
-	return (ft_strjoin("SHLVL=", ft_itoa(ato), 4));
+	return (ft_strjoin("SHLVL=", ft_itoa(ato), SECOND));
 }
 
 void	*aux_dup_env(char **env_array, t_env *env)
@@ -54,7 +54,7 @@ void	*aux_dup_env(char **env_array, t_env *env)
 		if (!new)
 			return (NULL);
 		if (ft_strncmp("SHLVL", env_array[i], 5) == 0)
-			new->data = ft_strdup(update_shlvl(env_array[i]));
+			new->data = update_shlvl(env_array[i]);
 		else
 			new->data = ft_strdup(env_array[i]);
 		new->unset_flag = 0;
@@ -70,14 +70,14 @@ t_env	*dup_env(char **env_array)
 	t_env	*first;
 	t_env	*env;
 
-	if (!env_array)
-		return (NULL);
+	// if (!env_array)
+	// 	return (NULL);
 	first = malloc(sizeof(t_env));
 	if (!first)
 		return (NULL);
 	first->data = ft_strdup(env_array[0]);
 	if (ft_strncmp("SHLVL", first->data, 5) == 0)
-		first->data = ft_strdup(update_shlvl(env_array[0]));
+		first->data = update_shlvl(first->data);
 	first->unset_flag = 0;
 	first->next = NULL;
 	env = first;
