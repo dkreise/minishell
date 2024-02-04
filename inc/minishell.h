@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/03 16:44:05 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 13:25:16 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,11 +163,13 @@ void	free_env(t_env **env);
 void	free_paths(t_tokens *tokens);
 void	free_tokens(t_tokens *tokens, int type);
 void	free_lst(char **lst);
+int		exec_cmd(t_tokens *tokens, pid_t *pid, t_cmd **cmd, int *is_first);
 int		executor(t_tokens *tokens);
 
 //~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
 int		check_blt(char *cmd);
 void	ft_env(t_env *env);
+int		env_cnt(t_env *env);
 void	ft_export(char **line, t_env **env);
 void	ft_unset(char **cmd, t_env **env);
 int		mod_strcmp(char *cmd, char *env);

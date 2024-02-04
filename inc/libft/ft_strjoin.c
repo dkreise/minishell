@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:28 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/03 18:53:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:04:37 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static void	free_params(char *s1, char *s2, int aux)
 	if (aux == FIRST || aux == BOTH)
 		free(s1);
 	if (aux == SECOND || aux == BOTH)
-	{
-		dprintf(2, "ARE WE HEREE OR WHAT\n");
 		free(s2);
-	}
 }
 
 char	*ft_strjoin(char const *s1, char const *s2, int aux)

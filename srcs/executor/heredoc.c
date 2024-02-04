@@ -6,43 +6,48 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 19:24:54 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 12:56:06 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+static void	do_hd_loop(t_tokens *tokens, int i, int hdfd[2])
+{
+	char	*line;
+	char	*limiter;
+
+	limiter = tokens->toks[i]->value;
+	while (1)
+	{
+		line = readline("\033[1;33m>\033[m ");
+		if (!line)
+			exit(0);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& line[ft_strlen(limiter)] == '\0')
+			break ;
+		ft_putstr_fd(line, hdfd[1]);
+		ft_putstr_fd("\n", hdfd[1]);
+		free(line);
+	}
+	close(hdfd[1]);
+	close(hdfd[0]);
+	exit (0);
+}
+
 static int	do_hd(t_tokens *tokens, int i)
 {
 	int		hdfd[2];
-	char	*line;
-	char	*limiter;
 	pid_t	pid;
 	int		status;
 
 	pipe(hdfd);
-	limiter = tokens->toks[i]->value;
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
 		do_signals(HEREDOC);
-		while (1)
-		{
-			line = readline("\033[1;33m>\033[m ");
-			if (!line)
-				exit(0);
-			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && line[ft_strlen(limiter)] == '\0')
-			{
-				break;
-			}
-			ft_putstr_fd(line, hdfd[1]);
-			ft_putstr_fd("\n", hdfd[1]);
-			free(line);
-		}
-		close(hdfd[1]);
-		close(hdfd[0]);
-		exit (0);
+		do_hd_loop(tokens, i, hdfd);
 	}
 	else
 	{
@@ -61,15 +66,16 @@ static int	do_hd(t_tokens *tokens, int i)
 int	check_hd(t_tokens *tokens)
 {
 	int		i;
-	int exit_hd;
+	int		exit_hd;
 
 	i = 0;
 	exit_hd = 0;
 	while (i < tokens->tok_cnt)
 	{
-		if (tokens->toks[i]->type == HEREDOC || tokens->toks[i]->type == PIPE_HEREDOC)
+		if (tokens->toks[i]->type == HEREDOC
+			|| tokens->toks[i]->type == PIPE_HEREDOC)
 			exit_hd = do_hd(tokens, i);
 		i ++;
 	}
 	return (exit_hd);
-}	
+}

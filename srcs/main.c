@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/03 19:39:33 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 13:25:47 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,10 +259,6 @@ int main(int ac, char **av, char **environment)
 		    if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
 			free_env(&env);
-			//env->data = "lalalalalala";
-			//dprintf(2, "env??: %s\n", env->data);
-			//write(2, "lalal\n", 6);
-			//ft_putstr_fd(env->data, 2);
 		    exit(0);
 		}
 		if (ft_strlen(line) != 0)

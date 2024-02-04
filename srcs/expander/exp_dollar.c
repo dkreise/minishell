@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/03 15:47:17 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:25:05 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 	if (j == ft_strlen(tnext->value))
 		return (temp_val);
 	else
-		return (ft_strjoin(temp_val, ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
+		return (ft_strjoin(temp_val,
+				ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
 }
 
 char	*exp_dollar(t_tokens *tokens, int *i)

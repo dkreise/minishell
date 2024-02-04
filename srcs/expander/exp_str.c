@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 20:09:16 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/03 18:35:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:02:38 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static char	*exp_none_or_snglq(t_token *tcur, int *i, t_tokens *tokens)
 	if (tcur->type == NONE)
 	{
 		temp_val = ft_strdup(tcur->value);
-		dprintf(2, "temp_val ptr:: %p\n", temp_val);
 		if (temp_val == NULL)
 		{
 			malloc_error(NULL, tokens);
@@ -31,7 +30,6 @@ static char	*exp_none_or_snglq(t_token *tcur, int *i, t_tokens *tokens)
 	else if (tcur->type == SNGL_Q)
 	{
 		temp_val = ft_substr(tcur->value, 1, ft_strlen(tcur->value) - 2);
-		dprintf(2, "temp_val snglq ptr:: %p\n", temp_val);
 		if (temp_val == NULL)
 		{
 			malloc_error(NULL, tokens);
@@ -56,7 +54,6 @@ static char	*exp_tok_str(t_token *tcur, t_tokens *tokens, int *i, char *val)
 	if (temp_val == NULL || tokens->error == MALLOC_ERROR)
 		return (NULL);
 	val = ft_strjoin(val, temp_val, BOTH);
-	dprintf(2, "val ptr:: %p\n", val);
 	if (val == NULL)
 	{
 		malloc_error(NULL, tokens);
@@ -74,7 +71,6 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 		return ;
 	tcur = tokens->toks[*i];
 	val = ft_strdup("");
-	dprintf(2, "val \"\":: %p\n", val);
 	if (!val)
 	{
 		malloc_error(NULL, tokens);
@@ -83,7 +79,6 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 	while (tcur->type <= DOLLAR && tcur->type != SPACET)
 	{
 		val = exp_tok_str(tcur, tokens, i, val);
-		dprintf(2, "val in loooop:: %p\n", val);
 		if (val == NULL)
 			return ;
 		if (*i >= tokens->tok_cnt)
@@ -92,6 +87,5 @@ void	exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type)
 		if (!tcur)
 			break ;
 	}
-	dprintf(2, "val exp pointer:: %p\n", val);
 	addback_token(exp_tok, val, exp_type);
 }
