@@ -49,7 +49,7 @@ int	main(int ac, char **av, char **environment)
 	line = NULL;
 	if (ac > 1)
 	{
-		ft_putstr_fd("ONLY ./minishell\n", 2);
+		ft_putstr_fd("Please, use ./minishell\n", 2);
 		return (1);
 	}
 	print_header();
