@@ -6,11 +6,26 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 12:35:49 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 16:02:19 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	exp_error(t_tokens *pars_tokens, t_token **new_tok)
+{
+	print_error(pars_tokens->error);
+	free_tokens(pars_tokens, PARS);
+	free_tok(new_tok);
+	return (258);
+}
+
+void	free_tok_env_exit(t_token **tok_first, t_env **env)
+{
+	free_tok(tok_first);
+	free_env(env);
+	exit(1);
+}
 
 void	free_tokens(t_tokens *tokens, int type)
 {

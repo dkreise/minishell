@@ -3,7 +3,7 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
 #########
 
 #########
@@ -13,7 +13,7 @@ FILES += expander exp_str exp_redir exp_dollar exp_dollar_utils exp_dbl_q
 
 FILES += executor init_cmd redirections errors_exec heredoc exec_cmd free_functions
 
-FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals
+FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals aux_builtins env mini_loop
 
 
 SRC = $(addsuffix .c, $(FILES))
@@ -58,7 +58,7 @@ $(NAME): $(OBJ)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
-	#$(MAKE) clean -C $(READLINE) --no-print-directory
+	$(MAKE) clean -C $(READLINE) --no-print-directory
 	$(MAKE) clean -C $(LIBFT) --no-print-directory
 	$(RM) $(OBJ) $(DEP) --no-print-directory
 	$(RM) -r $(OBJ_DIR) --no-print-directory

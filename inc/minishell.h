@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 13:25:16 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 16:12:25 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <libft.h>
 
@@ -31,8 +32,6 @@
 # define PARS 1
 # define EXP 2
 # define MALLOC_ERROR 42
-//# include "../inc/libft/libft.h"
-
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
 # define E "\033[m"			//end
@@ -45,7 +44,7 @@
 # define O "\033[38;5;208m"	//orange
 # define F "\033[38;5;128m" //purple
 
-//~~~~~~~~~~~~~~~~SIGNALS DEFINES~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~~~SIGNALS MACROS~~~~~~~~~~~~~~//
 # define INTERACTIVE 1
 # define NON_STANDAR 2
 # define HERDOC 3
@@ -78,21 +77,21 @@ typedef struct s_env
 {
 	char			*data;
 	int				unset_flag;
-	struct s_env	*next; 
-} t_env;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_token
 {
 	char			*value;
-	int 			type;
+	int				type;
 	struct s_token	*next;
 	int				hd_file;
 	int				error;
-} t_token;
+}	t_token;
 
 typedef struct s_tokens
 {
-	t_token *first_tok;
+	t_token	*first_tok;
 	t_token	**toks;
 	int		tok_cnt;
 	t_env	*env;
@@ -101,7 +100,7 @@ typedef struct s_tokens
 	int		cmd_cnt;
 	int		prev_exit;
 	int		error;
-} t_tokens;
+}	t_tokens;
 
 typedef struct s_cmd
 {
@@ -112,7 +111,7 @@ typedef struct s_cmd
 	int				redir_out_flg;
 	int				pipe_done_flg;
 	int				exit_code;
-} t_cmd;
+}	t_cmd;
 
 //~~~~~~~~~~~~~~~~PARSER~~~~~~~~~~~~~~//
 t_token		*new_token(char *value, int type);
@@ -133,7 +132,8 @@ t_token		*parser(char *line);
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
 void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);
 void		exp_pipe(t_tokens *tokens, t_token **exp_tok, int *i);
-void		exp_in_out(t_tokens *tokens, t_token **exp_tok, int *i, int is_pipe);
+void		exp_in_out(t_tokens *tokens,
+				t_token **exp_tok, int *i, int is_pipe);
 void		exp_spec_char(t_tokens *tokens, t_token **exp_tok, int *i);
 char		*exp_dbl_q(t_tokens *tokens, int *i);
 t_tokens	init_exp_tokens(t_token **exp_tok, t_env *new_env, int exit_code);
@@ -141,49 +141,60 @@ char		*dol_malloc_err(t_tokens *tokens);
 char		*find_env(char *str, size_t *j, t_tokens *tokens);
 char		*exp_dollar(t_tokens *tokens, int *i);
 t_token		*expander(t_tokens *tokens);
+int			exp_error(t_tokens *pars_tokens, t_token **new_tok);
+void		free_tok_env_exit(t_token **tok_first, t_env **env);
 
-void	print_toklst(char *header, t_token *tok_first);
+void		print_toklst(char *header, t_token *tok_first);
 
 //~~~~~~~~~~~~~~~~EXECUTOR~~~~~~~~~~~~~~//
-t_token	**tok_to_lst(t_token *tok, int tok_cnt);
-int		args_cnt(t_tokens *tokens, int i);
-t_cmd	*init_cmd(t_tokens *tokens, int i);
-void	in_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	out_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	do_redir(t_tokens *tokens, t_cmd *cmd, int i);
-void	pipe_redir(t_tokens *tokens, t_cmd      *cmd, int i);
-char	**get_paths(t_token **tok_first, char **env, int i, int j);
-void	do_execve(t_tokens *tokens, t_cmd *cmd);
-void	wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
-int		check_hd(t_tokens *tokens);
-void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
-void	free_cmd(t_cmd **cmd);
-void	free_tok(t_token **tok);
-void	free_env(t_env **env);
-void	free_paths(t_tokens *tokens);
-void	free_tokens(t_tokens *tokens, int type);
-void	free_lst(char **lst);
-int		exec_cmd(t_tokens *tokens, pid_t *pid, t_cmd **cmd, int *is_first);
-int		executor(t_tokens *tokens);
+t_token		**tok_to_lst(t_token *tok, int tok_cnt);
+int			args_cnt(t_tokens *tokens, int i);
+t_cmd		*init_cmd(t_tokens *tokens, int i);
+void		in_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		out_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		do_redir(t_tokens *tokens, t_cmd *cmd, int i);
+void		pipe_redir(t_tokens *tokens, t_cmd *cmd, int i);
+char		**get_paths(t_token **tok_first, char **env, int i, int j);
+void		do_execve(t_tokens *tokens, t_cmd *cmd);
+void		wait_process(t_cmd *cmd, pid_t pid, int cmd_cnt);
+int			check_hd(t_tokens *tokens);
+void		exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd);
+void		free_cmd(t_cmd **cmd);
+void		free_tok(t_token **tok);
+void		free_env(t_env **env);
+void		free_paths(t_tokens *tokens);
+void		free_tokens(t_tokens *tokens, int type);
+void		free_lst(char **lst);
+int			exec_cmd(t_tokens *tokens, pid_t *pid, t_cmd **cmd, int *is_first);
+int			executor(t_tokens *tokens);
 
-//~~~~~~~~~~~~~~~~BUILTIN~~~~~~~~~~~~~~//
-int		check_blt(char *cmd);
-void	ft_env(t_env *env);
-int		env_cnt(t_env *env);
-void	ft_export(char **line, t_env **env);
-void	ft_unset(char **cmd, t_env **env);
-int		mod_strcmp(char *cmd, char *env);
-int		ft_pwd(void);
-int		ft_cd(char **cmd, t_env *env);
-int		ft_exit(char **cmd);
-void	exec_blt(t_cmd *cmd_s, t_env *env);
-void	ft_echo(char **cmd);
+//~~~~~~~~~~~~~~~~BUILTINS~~~~~~~~~~~~~~//
+int			check_blt(char *cmd);
+void		ft_env(t_env *env);
+int			env_cnt(t_env *env);
+void		ft_export(char **line, t_env **env);
+void		ft_unset(char **cmd, t_env **env);
+int			mod_strcmp(char *cmd, char *env);
+int			ft_pwd(void);
+int			ft_cd(char **cmd, t_env *env);
+int			ft_exit(char **cmd);
+void		exec_blt(t_cmd *cmd_s, t_env *env);
+void		ft_echo(char **cmd);
+int			var_exist(char *cmd, t_env *env);
+
+//~~~~~~~~~~~~~~~~ENVIROMENT~~~~~~~~~~~~~~//
+t_env		*our_env(void);
+char		*update_shlvl(char *str);
+t_env		*dup_env(char **env_array);
 
 //~~~~~~~~~~~~~~~~SIGNALS~~~~~~~~~~~~~~//
-void	do_signals(int	mode);
-void	heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
-void	handle_sigint(int sig, siginfo_t *data, void *non_used_data);
-void	do_sigign(int signum);
+void		do_signals(int mode);
+void		heredoc_handle(int sig, siginfo_t *data, void *non_used_data);
+void		handle_sigint(int sig, siginfo_t *data, void *non_used_data);
+void		do_sigign(int signum);
+
+void		mini_loop(char *line, t_env *env);
+int			new_exit(char *line, t_env *env, int prev_exit);
 
 int	g_exit;
 

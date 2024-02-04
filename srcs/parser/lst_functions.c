@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 11:03:28 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:56:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,6 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 		i ++;
 	}
 	return (toks);
-}
-
-int	env_cnt(t_env *env)
-{
-	int	cnt;
-
-	cnt = 0;
-	while (env)
-	{
-		if (env->unset_flag == 0)
-			cnt ++;
-		env = env->next;
-	}
-	return (cnt);
 }
 
 char	**lst_to_arr(t_token **exp_tok, t_env *env)

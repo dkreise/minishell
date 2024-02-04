@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:57:38 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/31 14:03:47 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:46:18 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_exit(char **cmd)
 	{
 		printf("exit: too many arguments\n");
 		return (1);
-	}	
+	}
 	else if (is_numeric(cmd) == FALSE)
 	{
 		printf("exit: numeric argument required\n");

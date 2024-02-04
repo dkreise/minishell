@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 12:30:06 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 12:54:50 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 16:06:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	blt_and_free(t_tokens *tokens, t_cmd *cmd)
 	free_env(&(tokens->env));
 }
 
-static void	do_execve(t_tokens *tokens, t_cmd *cmd)
+void	do_execve(t_tokens *tokens, t_cmd *cmd)
 {
 	char	*path;
 	char	**lst_env;
