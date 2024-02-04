@@ -30,7 +30,7 @@ DEP = $(addsuffix .d, $(basename $(OBJ)))
 #########
 
 ########
-READLINE = inc/readline
+READLINE = inc/readline/
 READLINE_FLAGS = -L$(READLINE) -lreadline -ltermcap -lft
 LIBFT = inc/libft
 LIBFT_FLAGS = -L$(LIBFT) -lft
@@ -38,7 +38,7 @@ LIBFT_FLAGS = -L$(LIBFT) -lft
 
 
 #########
-$(OBJ_DIR)/%.o: %.c	
+$(OBJ_DIR)/%.o: %.c	Makefile
 	@mkdir -p $(@D)
 	${CC} -MMD $(CFLAGS) -c -I inc -I inc/readline -I inc/libft -DREADLINE_LIBRARY $< -o $@
 
@@ -48,8 +48,8 @@ all: conf
 	$(MAKE) $(NAME) --no-print-directory
 
 conf:
-	@if [ ! -f $(READL)config.status ]; then\
-		cd $(READL) && ./configure &> /dev/null; \
+	@if [ ! -f $(READLINE)config.status ]; then\
+		cd $(READLINE) && ./configure; \
 		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
 	fi
 
@@ -58,7 +58,7 @@ $(NAME): $(OBJ)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
-	#$(MAKE) clean -C $(READLINE) --no-print-directory
+	$(MAKE) clean -C $(READLINE) --no-print-directory
 	$(MAKE) clean -C $(LIBFT) --no-print-directory
 	$(RM) $(OBJ) $(DEP) --no-print-directory
 	$(RM) -r $(OBJ_DIR) --no-print-directory
@@ -67,7 +67,7 @@ clean:
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT)
 	$(RM) $(NAME) --no-print-directory
-	@echo "EVERYTHING REMOVED   "
+	@echo "\033[3;EVERYTHING REMOVED   "
 
 re:	fclean all
 
