@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:28 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/09 19:28:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:04:37 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	free_params(char *s1, char *s2, int aux)
 {
 	if (aux == FIRST || aux == BOTH)
 		free(s1);
-	else if (aux == SECOND || aux == BOTH)
+	if (aux == SECOND || aux == BOTH)
 		free(s2);
 }
 

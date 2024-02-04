@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 21:29:31 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/14 20:06:00 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:27:41 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,3 @@ void	ft_unset(char **cmd, t_env **env)
 		i++;
 	}
 }
-
-	// if (mod_strcmp(cmd[1], (*env)->data) == 1)
-	// {
-	// 	remove = *env;
-	// 	*env = (*env)->next;
-	// 	free(remove->data);
-	// 	free(remove);
-	// 	//printf("%s", (*env)->data);
-	// 	return ;
-	// }

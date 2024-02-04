@@ -5,7 +5,7 @@ minishell
 *.o
 */*.o
 *
-!srcs/*
+!srcs/
 !Makefile
 !inc/*.h
 !inc/libft/*.c

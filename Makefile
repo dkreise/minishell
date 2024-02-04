@@ -3,7 +3,7 @@ NAME = minishell
 #########
 RM = rm -f
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g -fsanitize=address
 #########
 
 #########
@@ -11,9 +11,9 @@ FILES = main parser lst_functions add_token errors_parser
 
 FILES += expander exp_str exp_redir exp_dollar exp_dollar_utils exp_dbl_q 
 
-FILES += executor init_cmd redirections errors_exec heredoc
+FILES += executor init_cmd redirections errors_exec heredoc exec_cmd free_functions
 
-FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals
+FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals aux_builtins env mini_loop
 
 
 SRC = $(addsuffix .c, $(FILES))
@@ -48,8 +48,8 @@ all: conf
 	$(MAKE) $(NAME) --no-print-directory
 
 conf:
-	@if [ ! -f $(READL)config.status ]; then\
-		cd $(READL) && ./configure &> /dev/null; \
+	@if [ ! -f $(READLINE)config.status ]; then\
+		cd $(READLINE) && ./configure &> /dev/null; \
 		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
 	fi
 
@@ -58,7 +58,7 @@ $(NAME): $(OBJ)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
 clean:
-	#$(MAKE) clean -C $(READLINE) --no-print-directory
+	$(MAKE) clean -C $(READLINE) --no-print-directory
 	$(MAKE) clean -C $(LIBFT) --no-print-directory
 	$(RM) $(OBJ) $(DEP) --no-print-directory
 	$(RM) -r $(OBJ_DIR) --no-print-directory

@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:05:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 14:48:02 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:56:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	addback_token(t_token **tok, char *value, int type)
 
 t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 {
-	t_token **toks;
+	t_token	**toks;
 	int		i;
 
 	i = 0;
@@ -82,21 +82,6 @@ t_token	**tok_to_lst(t_token *tok, int tok_cnt)
 	}
 	return (toks);
 }
-
-int	env_cnt(t_env *env)
-{
-	int	cnt;
-
-	cnt = 0;
-	while (env)
-	{
-		if (env->unset_flag == 0)
-			cnt ++;
-		env = env->next;
-	}
-	return (cnt);
-}
-
 
 char	**lst_to_arr(t_token **exp_tok, t_env *env)
 {
@@ -123,5 +108,5 @@ char	**lst_to_arr(t_token **exp_tok, t_env *env)
 		}
 		env_first = env_first->next;
 	}
-	return(env_arr);
+	return (env_arr);
 }

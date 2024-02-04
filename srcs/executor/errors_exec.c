@@ -6,79 +6,25 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 18:26:29 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 16:17:06 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 16:02:19 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	free_cmd(t_cmd **cmd)
+int	exp_error(t_tokens *pars_tokens, t_token **new_tok)
 {
-	t_cmd	*cur;
-	t_cmd	*freed;
-	int		i;
-
-	cur = *cmd;
-	i = 0;
-	while (cur)
-	{
-		while (cur->args[i])
-		{
-			free(cur->args[i]);
-			i ++;
-		}
-		free(cur->args);
-		freed = cur;
-		cur = cur->prev;
-		free(freed);
-	}
+	print_error(pars_tokens->error);
+	free_tokens(pars_tokens, PARS);
+	free_tok(new_tok);
+	return (258);
 }
 
-void	free_tok(t_token **tok)
+void	free_tok_env_exit(t_token **tok_first, t_env **env)
 {
-	t_token	*cur;
-	t_token	*tnext;
-
-	cur = *tok;
-	while (cur)
-	{
-		tnext = cur->next;
-		free(cur->value);
-		free(cur);
-		cur = tnext;
-	}
-
-}
-
-void	free_env(t_env **env)
-{
-	t_env	*cur;
-	t_env	*enext;
-
-	cur = *env;
-	while (cur)
-	{
-		enext = cur->next;
-		free(cur->data);
-		free(cur);
-		cur = enext;
-	}
-}
-
-void	free_paths(t_tokens *tokens)
-{
-	int	i;
-
-	i = 0;
-	if (tokens->paths)
-	{
-		while (tokens->paths[i])
-		{
-			free(tokens->paths[i]);
-			i ++;
-		}
-		free(tokens->paths);
-	}
+	free_tok(tok_first);
+	free_env(env);
+	exit(1);
 }
 
 void	free_tokens(t_tokens *tokens, int type)
@@ -111,7 +57,6 @@ void	exit_error(char *arg, char *msg, t_tokens *tokens, t_cmd *cmd)
 		perror(arg);
 	if (exit_code == 127)
 	{
-		free_env(&(tokens->env));
 		free_paths(tokens);
 		free_cmd(&cmd);
 		exit(exit_code);

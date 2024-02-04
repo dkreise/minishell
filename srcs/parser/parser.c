@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 14:53:48 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:56:39 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ t_token	*parser(char *line)
 			return (tok_first);
 		}
 	}
-	if (tok_first && i >= 1 && (line[i - 1] == '|' || line[i - 1] == '>' || line[i - 1] == '<'))
+	if (tok_first && i >= 1 && (line[i - 1] == '|'
+			|| line[i - 1] == '>' || line[i - 1] == '<'))
 		tok_first->error = 258;
-	return(tok_first);
+	return (tok_first);
 }

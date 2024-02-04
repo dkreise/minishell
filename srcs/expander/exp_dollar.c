@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 19:27:01 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/28 18:52:56 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:53:24 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ static char	*exp_tok_dol_aux(t_tokens *tokens)
 	return (val);
 }
 
+static char	*exp_exit(t_tokens *tokens)
+{
+	if (g_exit != 0)
+		return (ft_itoa(g_exit));
+	else
+		return (ft_itoa(tokens->prev_exit));
+}
+
 static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 {
 	char	*temp_val;
@@ -36,10 +44,7 @@ static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 	j = 0;
 	if (tnext->value[0] == '?')
 	{
-		if (g_exit != 0)
-			temp_val = ft_itoa(g_exit);
-		else
-			temp_val = ft_itoa(tokens->prev_exit);
+		temp_val = exp_exit(tokens);
 		if (!temp_val)
 			return (dol_malloc_err(tokens));
 		j ++;
@@ -55,7 +60,8 @@ static char	*exp_tok_dol(t_token *tnext, t_tokens *tokens)
 	if (j == ft_strlen(tnext->value))
 		return (temp_val);
 	else
-		return (ft_strjoin(temp_val, ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
+		return (ft_strjoin(temp_val,
+				ft_substr(tnext->value, j, ft_strlen(tnext->value) - j), BOTH));
 }
 
 char	*exp_dollar(t_tokens *tokens, int *i)
