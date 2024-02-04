@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 12:30:06 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 16:06:23 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 17:36:42 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	blt_and_free(t_tokens *tokens, t_cmd *cmd)
 		exit(cmd->exit_code);
 	if (check_blt(cmd->args[0]))
 	{
-		exec_blt(cmd, tokens->env);
+		exec_blt(cmd, tokens->env, tokens->prev_exit);
 		exit(cmd->exit_code);
 	}
 	free_env(&(tokens->env));
@@ -82,7 +82,7 @@ int	exec_cmd(t_tokens *tokens, pid_t *pid, t_cmd **cmd, int *is_first)
 		if (*is_first && i == tokens->tok_cnt && check_blt((*cmd)->args[0])
 			&& (*cmd)->exit_code == 0)
 		{
-			exec_blt(*cmd, tokens->env);
+			exec_blt(*cmd, tokens->env, tokens->prev_exit);
 			break ;
 		}
 		*is_first = 0;

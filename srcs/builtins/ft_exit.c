@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:57:38 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 15:46:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 17:37:31 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	is_numeric(char **str)
 	return (FALSE);
 }
 
-int	ft_exit(char **cmd)
+int	ft_exit(char **cmd, int prev_exit)
 {
 	if (cmd[1] == NULL)
 	{
 		printf("exit\n");
-		exit(0);
+		exit(prev_exit);
 	}
 	else if (cmd[2])
 	{

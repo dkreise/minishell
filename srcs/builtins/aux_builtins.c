@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:21:25 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 16:11:06 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 17:35:52 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int check_blt(char *cmd)
     return (0);
 }
 
-void    exec_blt(t_cmd *cmd_s, t_env *env)
+void    exec_blt(t_cmd *cmd_s, t_env *env, int prev_exit)
 {
     char    **cmd;
 
@@ -80,7 +80,7 @@ void    exec_blt(t_cmd *cmd_s, t_env *env)
     else if (ft_strncmp(cmd[0], "cd", 3) == 0)
         cmd_s->exit_code = ft_cd(cmd, env);
     else if (ft_strncmp(cmd[0], "exit", 6) == 0)
-        cmd_s->exit_code = ft_exit(cmd);
+        cmd_s->exit_code = ft_exit(cmd, prev_exit);
     else if (ft_strncmp(cmd[0], "echo", 5) == 0)
         ft_echo(cmd);
 }
