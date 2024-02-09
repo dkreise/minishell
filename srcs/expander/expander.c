@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:14:15 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/09 16:46:31 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/09 19:21:18 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_token	*expander(t_tokens *tokens)
 	{
 		if (tokens->toks[i]->type == NONE)
 			exp_str(tokens, &exp_tok, &i, NONE);
-		if (tokens->toks[i]->type == SPACET)
+		else if (tokens->toks[i]->type == SPACET)
 			i ++;
 		else if (tokens->toks[i]->type == SNGL_Q)
 			exp_str(tokens, &exp_tok, &i, NONE);

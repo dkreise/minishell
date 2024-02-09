@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/08 11:55:53 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/09 21:11:43 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int			ft_pwd(void);
 int			ft_cd(char **cmd, t_env *env);
 int			error_cd(int n);
 void		get_pwd(t_env *env);
-void		update_pwd(t_env *env);
+void		update_pwd(t_env *env, int flag, char *buff);
 int			ft_exit(char **cmd, int prev_exit);
 void		exec_blt(t_cmd *cmd_s, t_env *env, int prev_exit);
 void		ft_echo(char **cmd);

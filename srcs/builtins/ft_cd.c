@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:21:27 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/09 00:47:26 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/09 21:11:10 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_cd(char **cmd, t_env *env)
 	t_env	*aux;
 	int		ret;
 	int		flag;
+	char	buff[1024];
 
 	aux = env;
 	ret = 0;
@@ -85,6 +86,6 @@ int	ft_cd(char **cmd, t_env *env)
 		ret = (cd_no_arg(env));
 	else
 		ret = (execute_cd(cmd));
-	update_pwd(env);
+	update_pwd(env, 0, buff);
 	return (ret);
 }
