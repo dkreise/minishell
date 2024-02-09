@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:43 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 15:49:15 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/09 14:49:29 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	do_hd_loop(t_tokens *tokens, int i, int hdfd[2])
 	char	*line;
 	char	*limiter;
 
+	do_sigign(SIGQUIT);
 	limiter = tokens->toks[i]->value;
 	while (1)
 	{
@@ -54,7 +55,7 @@ static int	do_hd(t_tokens *tokens, int i)
 		waitpid(pid, &status, 0);
 		tokens->toks[i]->hd_file = hdfd[0];
 		close(hdfd[1]);
-		if (WTERMSIG(status) == SIGINT)
+		if (WIFSIGNALED(status))
 		{
 			printf("\n");
 			return (1);

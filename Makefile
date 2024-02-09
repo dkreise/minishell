@@ -13,7 +13,7 @@ FILES += expander exp_str exp_redir exp_dollar exp_dollar_utils exp_dbl_q
 
 FILES += executor init_cmd redirections errors_exec heredoc exec_cmd free_functions
 
-FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals aux_builtins env mini_loop
+FILES += ft_env ft_export ft_unset ft_pwd ft_cd ft_exit ft_echo signals aux_builtins env mini_loop aux_cd_builtin
 
 
 SRC = $(addsuffix .c, $(FILES))
@@ -30,7 +30,7 @@ DEP = $(addsuffix .d, $(basename $(OBJ)))
 #########
 
 ########
-READLINE = inc/readline
+READLINE = inc/readline/
 READLINE_FLAGS = -L$(READLINE) -lreadline -ltermcap -lft
 LIBFT = inc/libft
 LIBFT_FLAGS = -L$(LIBFT) -lft
@@ -49,11 +49,11 @@ all: conf
 
 conf:
 	@if [ ! -f $(READLINE)config.status ]; then\
-		cd $(READLINE) && ./configure &> /dev/null; \
+		cd $(READLINE) && ./configure; \
 		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
 	fi
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) Makefile
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(READLINE_FLAGS) -DREADLINE_LIBRARY $(LIBFT_FLAGS)
 	@echo "\033[3;36mEVERYTHING DONE  "
 
@@ -66,6 +66,8 @@ clean:
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT)
+	@rm -f inc/readline/config.status
+	@rm -f inc/readline/config.log
 	$(RM) $(NAME) --no-print-directory
 	@echo "EVERYTHING REMOVED   "
 

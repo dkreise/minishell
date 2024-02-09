@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exp_dollar_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:44:07 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 13:44:23 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/08 15:07:08 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_env	*find_var(t_tokens *tokens, char *var)
 	temp_env = tokens->env;
 	while (temp_env != NULL)
 	{
-		if (mod_strcmp(var, temp_env->data) == 1)
+		if (mod_strcmp(var, temp_env->data) == 1 && temp_env->unset_flag == 0)
 			break ;
 		temp_env = temp_env->next;
 	}

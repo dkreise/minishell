@@ -6,7 +6,7 @@
 /*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/01 14:24:39 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:20:08 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	replace_value(char *cmd, t_env *env)
 	{
 		if (mod_strcmp(cmd, temp->data) == TRUE)
 		{
+			free(temp->data);
 			temp->data = ft_strdup(cmd);
 			temp->unset_flag = 0;
 		}
@@ -89,7 +90,9 @@ int	have_numb(char **cmd)
 		if (ft_isdigit(cmd[i][0]) == TRUE
 			|| cmd[i][0] == '/' || cmd[i][0] == '=')
 		{
-			printf("export: '%s': not a valid identifier\n", cmd[i]);
+			ft_putstr_fd("export: '", 2);
+			ft_putstr_fd(cmd[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (TRUE);
 		}
 		i++;

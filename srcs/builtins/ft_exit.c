@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:57:38 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 15:46:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 17:54:40 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ int	is_numeric(char **str)
 	return (FALSE);
 }
 
-int	ft_exit(char **cmd)
+int	ft_exit(char **cmd, int prev_exit)
 {
 	if (cmd[1] == NULL)
 	{
-		printf("exit\n");
-		exit(0);
+		ft_putstr_fd("exit\n", 2);
+		exit(prev_exit);
 	}
 	else if (cmd[2])
 	{
-		printf("exit: too many arguments\n");
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (1);
 	}
 	else if (is_numeric(cmd) == FALSE)
 	{
-		printf("exit: numeric argument required\n");
+		ft_putstr_fd("exit: numeric argument required\n", 2);
 		exit(255);
 	}
 	else
 	{
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 2);
 		exit(ft_atoi(cmd[1]));
 	}
 }

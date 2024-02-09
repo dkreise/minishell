@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:28:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 15:56:18 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/04 16:28:01 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ t_env	*dup_env(char **env_array)
 	t_env	*first;
 	t_env	*env;
 
-	// if (!env_array)
-	// 	return (NULL);
 	first = malloc(sizeof(t_env));
 	if (!first)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:39:15 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 16:02:22 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/08 12:58:58 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	do_expander(t_env *env, int prev_exit, t_token *tok_first)
 	if (tok_first->error == MALLOC_ERROR)
 		free_tok_env_exit(&tok_first, &env);
 	new_tok = expander(&pars_tokens);
-	//print_toklst("EXPANDER", new_tok);
 	if (!new_tok && pars_tokens.error == 0)
 	{
 		new_exit = prev_exit;
@@ -70,7 +69,6 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 
 	new_exit = 0;
 	tok_first = parser(line);
-	//print_toklst("PARSER", tok_first);
 	if (!tok_first || tok_first->error == MALLOC_ERROR)
 		free_tok_env_exit(&tok_first, &env);
 	else if (tok_first->error != 0)
@@ -92,15 +90,15 @@ void	mini_loop(char *line, t_env *env)
 	while (1)
 	{
 		do_signals(INTERACTIVE);
-		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		do_sigign(SIGQUIT);
+		line = readline("\033[1;33mмини-оболочка-0.1$\033[m ");
 		do_sigign(SIGINT);
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
 			free_env(&env);
-			exit(0);
+			exit(err_exit[0]);
 		}
 		if (ft_strlen(line) != 0)
 		{

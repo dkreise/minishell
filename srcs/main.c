@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:44:44 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 16:10:55 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/02/07 14:15:30 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,6 @@ void	print_header(void)
 	printf("%s| '_ ` _ || | '_ `| / __| '_ ` / _ | | |\n", F);
 	printf("%s| | | | | | | | | | |__ | | | |  __/ | |\n", F);
 	printf("%s|_| |_| |_|_|_| |_|_|___/_| |_||___|_|_|\n\n\n", F);
-}
-
-void	print_toklst(char *header, t_token *tok_first)
-{
-	dprintf(2, "%s\n", header);
-	while (tok_first != NULL)
-	{
-		printf("type: %i value: %s.\n", tok_first->type, tok_first->value);
-		tok_first = tok_first->next;
-	}
-}
-
-void update_global(int *err_exit)
-{
-	if (g_exit > 0)
-	{
-		g_exit = 0;
-		err_exit[0] = 1;
-	}
 }
 
 int	main(int ac, char **av, char **environment)
