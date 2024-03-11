@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 19:11:52 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 15:49:39 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:18:23 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	init_cmd_args(t_tokens *tokens, t_cmd *cmd, int i)
 			break ;
 		else if (tokens->toks[i]->type > NONE && tokens->toks[i]->type < PIPE)
 			do_redir(tokens, cmd, i);
-		if (cmd->exit_code == 1)
-			break ;
+		// if (cmd->exit_code == 1)
+		// 	break ;
 		i ++;
 	}
 }
