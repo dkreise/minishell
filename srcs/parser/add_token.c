@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:24:30 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 15:55:27 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:01:00 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	add_space(char *line, t_token **tok_first, int *ind)
 	return (addback_token(tok_first, str, SPACET));
 }
 
-int	add_singquote(char *line, t_token **tok_first, int *i)
+int	add_singquote(char *line, t_token **tok_first, int *i, int mode)
 {
 	char	*str;
 	int		start;
@@ -56,8 +56,9 @@ int	add_singquote(char *line, t_token **tok_first, int *i)
 	}
 	else
 	{
-		addback_token(tok_first, str, SNGL_Q);
-		return (258);
+		*i = start + 1;
+		addback_token(tok_first, ft_strdup("\'"), SNGL_Q);
+		return (258 - mode);
 	}
 	*i = *i + 1;
 	return (addback_token(tok_first, str, SNGL_Q));
@@ -91,7 +92,7 @@ int	add_dblquote(char *line, t_token **tok_first, int *i)
 	return (addback_token(tok_first, str, DBL_Q));
 }
 
-int	add_specchar(char *line, t_token **tok_first, int *i)
+int	add_specchar(char *line, t_token **tok_first, int *i, int mode)
 {
 	char	*str;
 
@@ -103,7 +104,7 @@ int	add_specchar(char *line, t_token **tok_first, int *i)
 	}
 	if (!*tok_first || (*tok_first)->type == SPACET)
 	{
-		if (is_specchar(line[*i]) == PIPE)
+		if (is_specchar(line[*i]) == PIPE && mode == NONE)
 		{
 			addback_token(tok_first, str, PIPE);
 			return (PIPE);

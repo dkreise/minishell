@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:09:32 by dkreise           #+#    #+#             */
-/*   Updated: 2024/02/04 15:56:39 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/13 14:52:16 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,24 @@ t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code)
 	return (tokens);
 }
 
-int	add_pars_tok(t_token **tok_first, char *line, int *i)
+int	add_pars_tok(t_token **tok_first, char *line, int *i, int mode)
 {
 	int	err;
 
 	if (line[*i] == ' ')
 		err = add_space(line, tok_first, i);
 	else if (line[*i] == '\'')
-		err = add_singquote(line, tok_first, i);
+		err = add_singquote(line, tok_first, i, mode);
 	else if (line[*i] == '\"')
 		err = add_dblquote(line, tok_first, i);
 	else if (is_specchar(line[*i]))
-		err = add_specchar(line, tok_first, i);
+		err = add_specchar(line, tok_first, i, mode);
 	else
 		err = add_str(line, tok_first, i);
 	return (err);
 }
 
-t_token	*parser(char *line)
+t_token	*parser(char *line, int mode)
 {
 	int		i;
 	t_token	*tok_first;
@@ -79,7 +79,7 @@ t_token	*parser(char *line)
 	tok_first = NULL;
 	while (line[i] != '\0')
 	{
-		err = add_pars_tok(&tok_first, line, &i);
+		err = add_pars_tok(&tok_first, line, &i, mode);
 		if (err != 0)
 		{
 			if (tok_first)

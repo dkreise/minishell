@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/03/13 12:13:52 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/13 14:47:20 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define FALSE 0
 # define PARS 1
 # define EXP 2
+# define DBL_Q_EXP 258
 # define MALLOC_ERROR 42
 
 //~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~//
@@ -118,16 +119,16 @@ t_token		*new_token(char *value, int type);
 t_token		*token_last(t_token *tok);
 int			addback_token(t_token **tok, char *value, int type);
 int			add_space(char *line, t_token **tok_first, int *i);
-int			add_singquote(char *line, t_token **tok_first, int *i);
+int			add_singquote(char *line, t_token **tok_first, int *i, int mode);
 int			add_dblquote(char *line, t_token **tok_first, int *i);
-int			add_specchar(char *line, t_token **tok_first, int *i);
+int			add_specchar(char *line, t_token **tok_first, int *i, int mode);
 int			add_str(char *line, t_token **tok_first, int *i);
 int			is_specchar(char c);
 void		print_error(int tok_char);
 void		malloc_error(t_token **first_tok, t_tokens *tokens);
 t_tokens	init_tokens(t_token **tok_first, t_env *new_env, int exit_code);
 char		**lst_to_arr(t_token **exp_tok, t_env *env);
-t_token		*parser(char *line);
+t_token		*parser(char *line, int mode);
 
 //~~~~~~~~~~~~~~~~EXPANDER~~~~~~~~~~~~~~//
 void		exp_str(t_tokens *tokens, t_token **exp_tok, int *i, int exp_type);

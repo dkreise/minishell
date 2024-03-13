@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:40:36 by dkreise           #+#    #+#             */
-/*   Updated: 2024/01/27 13:43:00 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:01:08 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	*exp_tok_dblq(t_tokens dbl_tokens, t_tokens *tokens, int *j)
 {
 	char	*temp_val;
 
+	//dprintf(2, "value:: %s\n", dbl_tokens.toks[*j]->value);
 	if (dbl_tokens.toks[*j]->type == DOLLAR)
 	{
 		temp_val = exp_dollar(&dbl_tokens, j);
@@ -72,7 +73,7 @@ char	*exp_dbl_q(t_tokens *tokens, int *i)
 	t_tokens	dbl_tokens;
 	char		*val;
 
-	first_dbl_tok = parser(tokens->toks[*i]->value);
+	first_dbl_tok = parser(tokens->toks[*i]->value, DBL_Q_EXP);
 	if (first_dbl_tok && first_dbl_tok->error == MALLOC_ERROR)
 	{
 		tokens->error = MALLOC_ERROR;

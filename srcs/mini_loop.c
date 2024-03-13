@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:39:15 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/08 12:58:58 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/03/13 14:07:07 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	new_exit(char *line, t_env *env, int prev_exit)
 	int			new_exit;
 
 	new_exit = 0;
-	tok_first = parser(line);
+	tok_first = parser(line, NONE);
 	if (!tok_first || tok_first->error == MALLOC_ERROR)
 		free_tok_env_exit(&tok_first, &env);
 	else if (tok_first->error != 0)
