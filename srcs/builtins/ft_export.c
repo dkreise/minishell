@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:09:13 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/05 18:20:08 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:12:16 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,42 +80,104 @@ void	normal_export(char *cmd, t_env **env)
 	}
 }
 
-int	have_numb(char **cmd)
-{
-	int	i;
+// int	have_numb(char **cmd)
+// {
+// 	int	i;
 
-	i = 0;
-	while (cmd[i])
-	{
-		if (ft_isdigit(cmd[i][0]) == TRUE
-			|| cmd[i][0] == '/' || cmd[i][0] == '=')
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		if (ft_isdigit(cmd[i][0]) == TRUE
+// 			|| cmd[i][0] == '/' || cmd[i][0] == '=')
+// 		{
+// 			ft_putstr_fd("export: '", 2);
+// 			ft_putstr_fd(cmd[i], 2);
+// 			ft_putstr_fd("': not a valid identifier\n", 2);
+// 			return (TRUE);
+// 		}
+// 		i++;
+// 	}
+// 	return (FALSE);
+// }
+
+int	have_numb(char *cmd)
+{
+	//int	i;
+	int	j;
+	int	exit_code;
+
+	//i = 0;
+	exit_code = 0;
+	//while (cmd[i])
+	//{
+		j = 0;
+		while ((cmd[j] == '_' || ft_isalnum(cmd[j])) && cmd[j] != '\0')
+			j ++;
+		if (ft_isdigit(cmd[0]) || cmd[0] == '='
+			|| (cmd[j] != '=' && cmd[j] != '\0'))
 		{
 			ft_putstr_fd("export: '", 2);
-			ft_putstr_fd(cmd[i], 2);
+			ft_putstr_fd(cmd, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (TRUE);
+			exit_code = 1;
 		}
-		i++;
-	}
-	return (FALSE);
+		//i++;
+	//}
+	return (exit_code);
 }
 
-void	ft_export(char **cmd, t_env **env)
+// int	ft_export(char **cmd, t_env **env)
+// {
+// 	int	i;
+// 	int numb;
+
+// 	i = 1;
+// 	if (!cmd[1])
+// 		special_export(*env);
+// 	else
+// 	{
+// 		numb = have_numb(cmd);
+// 		if (numb == FALSE)
+// 		{
+// 			while (cmd[i] != NULL)
+// 			{
+// 				if (var_exist(cmd[i], *env) == 1)
+// 					replace_value(cmd[i], *env);
+// 				else
+// 					normal_export(cmd[i], env);
+// 				i++;
+// 			}
+// 		}
+// 		else
+// 			return (1);
+// 	}
+// 	return (0);
+// }
+
+int	ft_export(char **cmd, t_env **env)
 {
 	int	i;
+	int exit_code;
 
 	i = 1;
+	exit_code = 0;
 	if (!cmd[1])
 		special_export(*env);
-	else if (have_numb(cmd) == FALSE)
+	else
 	{
 		while (cmd[i] != NULL)
 		{
-			if (var_exist(cmd[i], *env) == 1)
-				replace_value(cmd[i], *env);
+			if (have_numb(cmd[i]) == 0)
+			{
+				if (var_exist(cmd[i], *env) == 1)
+					replace_value(cmd[i], *env);
+				else
+					normal_export(cmd[i], env);
+			}
 			else
-				normal_export(cmd[i], env);
+				exit_code = 1;
 			i++;
 		}
 	}
+	return (exit_code);
 }

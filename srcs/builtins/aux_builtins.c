@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:21:25 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/04 17:54:04 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:12:34 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	exec_blt(t_cmd *cmd_s, t_env *env, int prev_exit)
 	if (ft_strncmp(cmd[0], "env", 4) == 0)
 		ft_env(env);
 	else if (ft_strncmp(cmd[0], "export", 7) == 0)
-		ft_export(cmd, &env);
+		cmd_s->exit_code = ft_export(cmd, &env);
 	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
 		ft_unset(cmd, &env);
 	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)

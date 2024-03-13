@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 17:50:18 by rpliego           #+#    #+#             */
-/*   Updated: 2024/02/09 21:11:43 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:13:52 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int			executor(t_tokens *tokens);
 int			check_blt(char *cmd);
 void		ft_env(t_env *env);
 int			env_cnt(t_env *env);
-void		ft_export(char **line, t_env **env);
+int			ft_export(char **line, t_env **env);
 void		ft_unset(char **cmd, t_env **env);
 int			mod_strcmp(char *cmd, char *env);
 int			ft_pwd(void);
