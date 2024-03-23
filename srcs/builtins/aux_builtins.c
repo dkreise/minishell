@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:21:25 by rpliego           #+#    #+#             */
-/*   Updated: 2024/03/13 12:12:34 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/23 15:53:17 by rpliego          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	mod_strcmp(char *cmd, char *env)
 			return (FALSE);
 		i++;
 	}
-	if (cmd[i] == '\0' && (env[i] == '\0' || env[i] == '='))
+	if ((cmd[i] == '\0' || cmd[i] == '=') && (env[i] == '\0' || env[i] == '='))
 		return (TRUE);
 	return (FALSE);
 }
