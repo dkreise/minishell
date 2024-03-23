@@ -6,7 +6,7 @@
 /*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:40:36 by dkreise           #+#    #+#             */
-/*   Updated: 2024/03/13 15:01:08 by dkreise          ###   ########.fr       */
+/*   Updated: 2024/03/23 16:48:55 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*exp_tok_dblq(t_tokens dbl_tokens, t_tokens *tokens, int *j)
 {
 	char	*temp_val;
 
-	//dprintf(2, "value:: %s\n", dbl_tokens.toks[*j]->value);
 	if (dbl_tokens.toks[*j]->type == DOLLAR)
 	{
 		temp_val = exp_dollar(&dbl_tokens, j);

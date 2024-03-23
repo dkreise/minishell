@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpliego <rpliego@student.42barcelo>        +#+  +:+       +#+        */
+/*   By: dkreise <dkreise@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 22:11:05 by rpliego           #+#    #+#             */
-/*   Updated: 2024/01/29 18:25:38 by rpliego          ###   ########.fr       */
+/*   Updated: 2024/03/22 18:48:24 by dkreise          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_correct(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '=' )
+		if (str[i] == '=')
 			return (TRUE);
 		i++;
 	}
